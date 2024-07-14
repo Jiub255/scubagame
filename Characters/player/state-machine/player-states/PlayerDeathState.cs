@@ -1,12 +1,12 @@
 using Godot;
 
-public class PlayerDieState : PlayerActionState
+public class PlayerDeathState : PlayerActionState
 {
 	private float DeathDuration { get; } = 1.5f;
 	private float DeathTimer { get; set; } = 0f;
 	private float DeathFloatSpeed { get; set; } = 50f;
 	
-	public PlayerDieState(Player player) : base(player) {}
+	public PlayerDeathState(Player player) : base(player) {}
 
 	public override void EnterState()
 	{

@@ -31,7 +31,7 @@ public class PlayerWaterState : PlayerLocationState, ICanExitWater
 			CharacterBody2D.Data.Air--;
 			if (CharacterBody2D.Data.Air <= 0)
 			{
-				ChangeState(new PlayerDieState(CharacterBody2D));
+				ChangeState(new PlayerDeathState(CharacterBody2D));
 			}
 		}
 	}

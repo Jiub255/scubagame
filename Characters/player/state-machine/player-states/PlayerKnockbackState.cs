@@ -1,12 +1,12 @@
 using Godot;
 
-public class PlayerTakeDamageState : PlayerActionState
+public class PlayerKnockbackState : PlayerActionState
 {
 	public float KnockbackTimer { get; set; } = 0f;
 	public float KnockbackDuration { get; } = 1f;
 	public float KnockbackSpeed { get; } = 75f;
 	
-	public PlayerTakeDamageState(Player player) : base(player)
+	public PlayerKnockbackState(Player player) : base(player)
 	{
 	}
 
@@ -32,10 +32,6 @@ public class PlayerTakeDamageState : PlayerActionState
 	public override void ExitState()
 	{
 		animationStateMachinePlayback.Travel("move-blend-tree");	
-	}
-
-	public override void ProcessState(double delta) 
-	{
 	}
 
 	public override void PhysicsProcessState(double delta)
