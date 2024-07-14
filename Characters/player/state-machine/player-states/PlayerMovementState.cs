@@ -1,13 +1,12 @@
 using Godot;
-using System;
 
-public class PlayerMovementState3 : PlayerActionState, IDamageable, ICanMove, ICanAttack
+public class PlayerMovementState : PlayerActionState, IDamageable, ICanMove, ICanAttack
 {
 	public float Acceleration { get; set; }
 	public string MovementBlendPath { get; } = "parameters/move-blend-tree/move-blend-space/blend_position";
 	public Vector2 Direction { get; set; }
 	
-	public PlayerMovementState3(Player3 player) : base(player)
+	public PlayerMovementState(Player player) : base(player)
 	{
 	}
 
@@ -16,11 +15,7 @@ public class PlayerMovementState3 : PlayerActionState, IDamageable, ICanMove, IC
 	public override void ExitState() {}
 	
 	public void HandleAttack()
-	{
-		GD.Print($"Gun acquired: {CharacterBody2D.Data.HarpoonGun.GunAcquired}");
-		GD.Print($"Reloading: {CharacterBody2D.Data.Reloading}");
-		GD.Print($"Attack pressed: {Input.IsActionPressed("attack")}");
-		
+	{		
 		if (CharacterBody2D.Data.HarpoonGun.GunAcquired &&
 			!CharacterBody2D.Data.Reloading &&
 			Input.IsActionPressed("attack"))
@@ -38,34 +33,37 @@ public class PlayerMovementState3 : PlayerActionState, IDamageable, ICanMove, IC
 		CharacterBody2D.Data.AttackTimer = CharacterBody2D.Data.HarpoonGun.AttackTimerLength;
 	}
 	
-	public void HandleMovement()
-	{
+    public void GetMovementInput()
+    {
 		Direction = Input.GetVector("left", "right", "up", "down").Normalized();
-	}
+    }
 
-	public override void PhysicsProcessState(double delta)
-	{
-		float fdelta = (float)delta;
-		
+    public void Move(float delta)
+    {
 		if (Direction == Vector2.Zero)
 		{
-			Decelerate(fdelta);
+			Decelerate(delta);
 		}
 		else
 		{
-			Accelerate(fdelta);
+			Accelerate(delta);
 			HandleSpriteFlip();
 		}
 
 		Animate();
+    }
+
+	public override void PhysicsProcessState(double delta)
+	{
+		/* float fdelta = (float)delta; */	
 	}
 
-	private void Decelerate(float fdelta)
+	private void Decelerate(float delta)
 	{
 		float deceleration = CharacterBody2D.Data.ScubaGear.Deceleration;
-		if (CharacterBody2D.Velocity.Length() > (deceleration * fdelta))
+		if (CharacterBody2D.Velocity.Length() > (deceleration * delta))
 		{
-			CharacterBody2D.Velocity -= CharacterBody2D.Velocity.Normalized() * (deceleration * fdelta);
+			CharacterBody2D.Velocity -= CharacterBody2D.Velocity.Normalized() * (deceleration * delta);
 		}
 		else
 		{
@@ -114,22 +112,18 @@ public class PlayerMovementState3 : PlayerActionState, IDamageable, ICanMove, IC
 		CharacterBody2D.AnimationTree.Set(MovementBlendPath, Direction);
 	}
 
-	public override void ProcessState(double delta)
-	{
-	}
-
 	public void TakeDamage(int damage, Vector2 knockbackDirection)
 	{
 		CharacterBody2D.Data.Health -= damage;
 		if (CharacterBody2D.Data.Health <= 0)
 		{
-			ChangeState(new PlayerDieState3(CharacterBody2D));
+			ChangeState(new PlayerDieState(CharacterBody2D));
 		}
 		else 
 		{
 			// Maybe set outside of if block if you want death state to have knockback. 
 			CharacterBody2D.Data.KnockbackDirection = knockbackDirection;
-			ChangeState(new PlayerTakeDamageState3(CharacterBody2D));
+			ChangeState(new PlayerTakeDamageState(CharacterBody2D));
 		}
 	}
 }

@@ -1,12 +1,11 @@
-[gd_scene load_steps=29 format=3 uid="uid://b0tfvp5guiu6a"]
+[gd_scene load_steps=28 format=3 uid="uid://ccg2paoo6j4n7"]
 
-[ext_resource type="Script" path="res://Characters/player/Player.cs" id="1_0ijdo"]
-[ext_resource type="Resource" uid="uid://dnwwgqbjjr7t6" path="res://Characters/player/player-data.tres" id="2_phnge"]
-[ext_resource type="Resource" uid="uid://rlyiej3fnis3" path="res://Characters/player/inventory/inventory.tres" id="3_j52lf"]
-[ext_resource type="PackedScene" uid="uid://bfpiky8dum16u" path="res://components/collector.tscn" id="3_skfvg"]
-[ext_resource type="Texture2D" uid="uid://dnkh6rote1ehq" path="res://Characters/player/spritesheets/Diver 6.png" id="3_ytjlq"]
-[ext_resource type="Script" path="res://Characters/player/AnimationTreeState.cs" id="5_q4ogh"]
-[ext_resource type="PackedScene" uid="uid://b4gi8gb2m74wl" path="res://Characters/player/harpoon/harpoon-gun.tscn" id="6_w7wqg"]
+[ext_resource type="Script" path="res://Characters/player/Player.cs" id="1_7uoe3"]
+[ext_resource type="Resource" uid="uid://dnwwgqbjjr7t6" path="res://Characters/player/player-data.tres" id="2_y5bjs"]
+[ext_resource type="Resource" uid="uid://rlyiej3fnis3" path="res://Characters/player/inventory/inventory.tres" id="3_5nrfy"]
+[ext_resource type="Texture2D" uid="uid://dnkh6rote1ehq" path="res://Characters/player/spritesheets/Diver 6.png" id="4_te3b8"]
+[ext_resource type="PackedScene" uid="uid://bfpiky8dum16u" path="res://components/collector.tscn" id="5_w5nj6"]
+[ext_resource type="PackedScene" uid="uid://b4gi8gb2m74wl" path="res://Characters/player/harpoon/harpoon-gun.tscn" id="6_vqwjf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1acjh"]
 size = Vector2(15, 24)
@@ -175,12 +174,12 @@ graph_offset = Vector2(-68, -44)
 
 [node name="Player" type="CharacterBody2D"]
 collision_mask = 2
-script = ExtResource("1_0ijdo")
-_data = ExtResource("2_phnge")
-_inventory = ExtResource("3_j52lf")
+script = ExtResource("1_7uoe3")
+_data = ExtResource("2_y5bjs")
+_inventory = ExtResource("3_5nrfy")
 
 [node name="BodySprite" type="Sprite2D" parent="."]
-texture = ExtResource("3_ytjlq")
+texture = ExtResource("4_te3b8")
 hframes = 7
 vframes = 4
 
@@ -197,8 +196,8 @@ libraries = {
 tree_root = SubResource("AnimationNodeStateMachine_8vuip")
 anim_player = NodePath("../AnimationPlayer")
 parameters/current_length = 1.0
-parameters/current_position = 0.0994443
-parameters/current_delta = 0.1
+parameters/current_position = 0.592978
+parameters/current_delta = 0.00714286
 parameters/End/current_length = null
 parameters/End/current_position = null
 parameters/End/current_delta = null
@@ -206,18 +205,18 @@ parameters/Start/current_length = 0.0
 parameters/Start/current_position = 0.0
 parameters/Start/current_delta = 0.0
 parameters/move-blend-tree/current_length = 1.0
-parameters/move-blend-tree/current_position = 0.0994443
-parameters/move-blend-tree/current_delta = 0.1
+parameters/move-blend-tree/current_position = 0.592978
+parameters/move-blend-tree/current_delta = 0.00714286
 parameters/move-blend-tree/move-blend-space/current_length = 1.0
-parameters/move-blend-tree/move-blend-space/current_position = 0.0994443
-parameters/move-blend-tree/move-blend-space/current_delta = 0.1
+parameters/move-blend-tree/move-blend-space/current_position = 0.592978
+parameters/move-blend-tree/move-blend-space/current_delta = 0.00714286
 parameters/move-blend-tree/move-blend-space/blend_position = Vector2(0, 0.010453)
 parameters/move-blend-tree/move-blend-space/0/current_length = null
 parameters/move-blend-tree/move-blend-space/0/current_position = null
 parameters/move-blend-tree/move-blend-space/0/current_delta = null
 parameters/move-blend-tree/move-blend-space/1/current_length = 1.0
-parameters/move-blend-tree/move-blend-space/1/current_position = 0.0994443
-parameters/move-blend-tree/move-blend-space/1/current_delta = 0.1
+parameters/move-blend-tree/move-blend-space/1/current_position = 0.592978
+parameters/move-blend-tree/move-blend-space/1/current_delta = 0.00714286
 parameters/move-blend-tree/move-blend-space/2/current_length = null
 parameters/move-blend-tree/move-blend-space/2/current_position = null
 parameters/move-blend-tree/move-blend-space/2/current_delta = null
@@ -228,21 +227,20 @@ parameters/move-blend-tree/move-blend-space/4/current_length = null
 parameters/move-blend-tree/move-blend-space/4/current_position = null
 parameters/move-blend-tree/move-blend-space/4/current_delta = null
 parameters/move-blend-tree/move-time-scale/current_length = 1.0
-parameters/move-blend-tree/move-time-scale/current_position = 0.0994443
-parameters/move-blend-tree/move-time-scale/current_delta = 0.1
+parameters/move-blend-tree/move-time-scale/current_position = 0.592978
+parameters/move-blend-tree/move-time-scale/current_delta = 0.00714286
 parameters/move-blend-tree/move-time-scale/scale = 1.0
 parameters/move-blend-tree/output/current_length = 1.0
-parameters/move-blend-tree/output/current_position = 0.0994443
-parameters/move-blend-tree/output/current_delta = 0.1
+parameters/move-blend-tree/output/current_position = 0.592978
+parameters/move-blend-tree/output/current_delta = 0.00714286
 parameters/take-damage/current_length = 1.0
 parameters/take-damage/current_position = 0.0305086
 parameters/take-damage/current_delta = 0.006901
-script = ExtResource("5_q4ogh")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
 position_smoothing_enabled = true
 
-[node name="Collector" parent="." instance=ExtResource("3_skfvg")]
+[node name="Collector" parent="." instance=ExtResource("5_w5nj6")]
 
-[node name="HarpoonGun" parent="." instance=ExtResource("6_w7wqg")]
+[node name="HarpoonGun" parent="." instance=ExtResource("6_vqwjf")]

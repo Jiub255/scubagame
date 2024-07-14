@@ -20,9 +20,7 @@ public partial class SkyArea : Area2D
 	{
 		if (body is ICanExitWater waterExiter)
 		{
-			// TODO: Disable controls, set gravity. 
-			// Do in airborne state. 
-			GD.Print("Player hit sky");
+			//this.PrintDebug("Player hit sky");
 			waterExiter.ExitWater();
 		}
 	}
@@ -31,9 +29,7 @@ public partial class SkyArea : Area2D
 	{
 		if (body is ICanEnterWater waterEnterer)
 		{
-			// TODO: Enable controls, disable gravity. 
-			// Return to movement state. 
-			GD.Print("Player left sky");
+			//this.PrintDebug("Player left sky");
 			waterEnterer.EnterWater();
 		}
 	}

@@ -1,4 +1,4 @@
 public interface ICollectable
 {
-    public void GetCollected(Player3 player);
+    public void GetCollected(Player player);
 }

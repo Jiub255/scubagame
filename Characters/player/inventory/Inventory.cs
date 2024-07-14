@@ -22,7 +22,6 @@ public partial class Inventory : Resource
 	public void AddCoins(int number)
 	{
 		Coins += number;
-		GD.Print($"You have {Coins} coins.");
 	}
 	
 	public void ClearInventory()

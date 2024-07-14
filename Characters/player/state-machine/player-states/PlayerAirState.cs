@@ -1,12 +1,11 @@
 using Godot;
-using System;
 
-public class AirState : PlayerLocationState, ICanEnterWater
+public class PlayerAirState : PlayerLocationState, ICanEnterWater
 {
 	private float Gravity { get; } = 175f;
 	private RandomNumberGenerator RNG { get; } 
 	
-	public AirState(Player3 characterBody2D) : base(characterBody2D)
+	public PlayerAirState(Player characterBody2D) : base(characterBody2D)
 	{
 		RNG = new RandomNumberGenerator();
 	}
@@ -29,15 +28,17 @@ public class AirState : PlayerLocationState, ICanEnterWater
 
 	public override void PhysicsProcessState(double delta)
 	{
+		this.PrintDebug($"Physics process velocity before: {CharacterBody2D.Velocity}");
 		CharacterBody2D.Velocity += Gravity * Vector2.Down * (float)delta;
+		this.PrintDebug($"Physics process velocity after : {CharacterBody2D.Velocity}");
 	}
 
 	public override void ProcessState(double delta)
 	{
 	}
 
-    public void EnterWater()
-    {
-		ChangeState(new WaterState(CharacterBody2D));
-    }
+	public void EnterWater()
+	{
+		ChangeState(new PlayerWaterState(CharacterBody2D));
+	}
 }

@@ -1,6 +1,6 @@
 using Godot;
 
-public partial class Player : CharacterBody2D, IDamageable
+public partial class Player : CharacterBody2D, IDamageable, ICanEnterWater, ICanExitWater
 {
 	[Export]
 	private PlayerData _data;
@@ -13,8 +13,8 @@ public partial class Player : CharacterBody2D, IDamageable
 	public AnimationTree AnimationTree { get; private set; }
 	public Sprite2D Sprite { get; private set; }
 	public HarpoonGun HarpoonGun { get; private set; }
-	private PlayerStateMachine PlayerStateMachine { get; set; }
-	//public PlayerStateMachine2 Machine { get; private set; }
+	private PlayerLocationStateMachine LocationMachine { get; set; }
+	private PlayerActionStateMachine ActionMachine { get; set; }
 	
 	public override void _Ready()
 	{
@@ -23,15 +23,17 @@ public partial class Player : CharacterBody2D, IDamageable
 		AnimationTree = GetNode<AnimationTree>("AnimationTree");
 		Sprite = GetNode<Sprite2D>("BodySprite");
 		HarpoonGun = GetNode<HarpoonGun>("HarpoonGun");
-		PlayerStateMachine = new PlayerStateMachine(this);
+		LocationMachine = new PlayerLocationStateMachine(this);
+		ActionMachine = new PlayerActionStateMachine(this);
 
 		Data.Changed += SetSprites;
 
 		SetSprites();
+
 		Data.RefillAir();
 		
 		// Just for testing.
-		Data.Health = Data.ScubaGear.MaxHealth;
+		Data.RefillHealth();
 	}
 
 	public override void _ExitTree()
@@ -40,7 +42,7 @@ public partial class Player : CharacterBody2D, IDamageable
 
 		Data.Changed -= SetSprites;
 		
-		PlayerStateMachine.ExitTree();
+		//Machine.ExitTree();
 	}
 
 	private void SetSprites()
@@ -52,32 +54,67 @@ public partial class Player : CharacterBody2D, IDamageable
 	public override void _Process(double delta)
 	{
 		base._Process(delta);
+		LocationMachine.ProcessState(delta);
+		ActionMachine.ProcessState(delta);
 		
-		PlayerStateMachine.ProcessState(delta);
+		// TODO: Not sure if splitting up movement like this is a good idea.
+		if (LocationMachine.CurrentState.CanMove)
+		{
+			if (ActionMachine.CurrentState is ICanMove movable)
+			{
+				movable.GetMovementInput();
+			}
+		}
+		
+		if (ActionMachine.CurrentState is ICanAttack attackable)
+		{
+			attackable.HandleAttack();
+		}
+
+		//this.PrintDebug($"Velocity: {Velocity}");
+		this.PrintDebug($"ActionState: {ActionMachine.CurrentState}, LocationState: {LocationMachine.CurrentState}");
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
 		base._PhysicsProcess(delta);
+		LocationMachine.PhysicsProcessState(delta);
+		ActionMachine.PhysicsProcessState(delta);
 		
-		PlayerStateMachine.PhysicsProcessState(delta);
+		// TODO: Not sure if splitting up movement like this is a good idea.
+		if (LocationMachine.CurrentState.CanMove)
+		{
+			if (ActionMachine.CurrentState is ICanMove movable)
+			{
+				movable.Move((float)delta);
+			}
+		}
+		
 		HarpoonGun.RotateGun(Velocity);
 		MoveAndSlide();
 	}
-
+	
 	public void TakeDamage(int damage, Vector2 knockbackDirection)
 	{
-		Data.KnockbackDirection = knockbackDirection;
-		PlayerStateMachine.CurrentState.MaybeTakeDamage(damage);
+		if (ActionMachine.CurrentState is IDamageable damageable)
+		{
+			damageable.TakeDamage(damage, knockbackDirection);
+		}
 	}
-	
-	public void Jump()
+
+	public void EnterWater()
 	{
-		PlayerStateMachine.CurrentState.Jump();
+		if (LocationMachine.CurrentState is ICanEnterWater waterEnterer)
+		{
+			waterEnterer.EnterWater();
+		}
 	}
-	
-	public void Land()
+
+	public void ExitWater()
 	{
-		PlayerStateMachine.CurrentState.Land();
+		if (LocationMachine.CurrentState is ICanExitWater waterExiter)
+		{
+			waterExiter.ExitWater();
+		}
 	}
 }

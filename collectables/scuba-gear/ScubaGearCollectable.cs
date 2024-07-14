@@ -6,7 +6,7 @@ public partial class ScubaGearCollectable : Area2D, ICollectable
 	private ScubaGearData _scubaGearData;
 	public ScubaGearData ScubaGearData { get { return _scubaGearData; } }
 	
-	public void GetCollected(Player3 player)
+	public void GetCollected(Player player)
 	{
 		player.Data.ScubaGear = ScubaGearData;
 		QueueFree();

@@ -6,7 +6,7 @@ public partial class HarpoonGunCollectable : Area2D, ICollectable
 	private HarpoonGunData _harpoonGunData;
 	public HarpoonGunData HarpoonGunData { get { return _harpoonGunData; } }
 	
-	public void GetCollected(Player3 player)
+	public void GetCollected(Player player)
 	{
 		player.Data.HarpoonGun = HarpoonGunData;
 		QueueFree();

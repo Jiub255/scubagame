@@ -1,6 +1,6 @@
 using Godot;
 
-public class PlayerDieState : PlayerState
+public class PlayerDieState : PlayerActionState
 {
 	private float DeathDuration { get; } = 1.5f;
 	private float DeathTimer { get; set; } = 0f;
@@ -16,16 +16,16 @@ public class PlayerDieState : PlayerState
 
 	private void SetupAnimation()
 	{
-		Player.Sprite.FlipV = true;
+		CharacterBody2D.Sprite.FlipV = true;
 		animationStateMachinePlayback.Travel("take-damage");
 	}
 
 	private void SetupDeath()
 	{
 		DeathTimer = DeathDuration;
-		Player.Velocity = Vector2.Up * DeathFloatSpeed;
+		CharacterBody2D.Velocity = Vector2.Up * DeathFloatSpeed;
 		// TODO: Change collision layers so player doesn't hit enemies but does hit sky.
-		Player.SetCollisionMaskValue(6, true);
+		CharacterBody2D.SetCollisionMaskValue(6, true);
 	}
 
 	public override void ProcessState(double delta)
@@ -42,21 +42,17 @@ public class PlayerDieState : PlayerState
 		}
 	}
 
-    private void Die()
+	private void Die()
 	{
 		// Just resetting scene for now.
 		// What to keep when you die? 
-		Player.Data.ResetPlayerData();
-		Player.Inventory.ClearInventory();
-		Player.GetTree().ReloadCurrentScene();
+		CharacterBody2D.Data.ResetPlayerData();
+		CharacterBody2D.Inventory.ClearInventory();
+		CharacterBody2D.GetTree().ReloadCurrentScene();
 	}
 
 	public override void ExitState() {}
 
 	public override void PhysicsProcessState(double delta) {}
 
-	public override void MaybeTakeDamage(int damage)
-	{
-		// Don't take damage in this state.
-	}
 }

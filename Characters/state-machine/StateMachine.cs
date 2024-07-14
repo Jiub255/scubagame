@@ -1,11 +1,10 @@
 using Godot;
-using System;
 
-public abstract class StateMachine3<T> where T : CharacterBody2D
+public abstract class StateMachine<T> where T : CharacterBody2D
 {
-	public virtual State3<T> CurrentState { get; protected set; }
+	public virtual State<T> CurrentState { get; protected set; }
 	
-	public StateMachine3(T character)
+	public StateMachine(T character)
 	{
 		
 	}
@@ -20,9 +19,9 @@ public abstract class StateMachine3<T> where T : CharacterBody2D
 		CurrentState?.PhysicsProcessState(delta);
 	}
 	
-	public void ChangeState(State3<T> newState)
+	public void ChangeState(State<T> newState)
 	{
-		GD.Print($"Old state : {CurrentState}");
+		this.PrintDebug($"Old state : {CurrentState}");
 		if (CurrentState == newState)
 		{
 			return;
@@ -38,6 +37,6 @@ public abstract class StateMachine3<T> where T : CharacterBody2D
 			CurrentState.OnStateChanged += ChangeState;
 			CurrentState.EnterState();
 		}
-		GD.Print($"New state : {CurrentState}");
+		this.PrintDebug($"New state : {CurrentState}");
 	}
 }

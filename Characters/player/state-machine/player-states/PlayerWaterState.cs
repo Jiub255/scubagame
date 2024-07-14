@@ -1,6 +1,6 @@
-public class WaterState : PlayerLocationState, ICanExitWater
-{
-	public WaterState(Player3 characterBody2D) : base(characterBody2D)
+public class PlayerWaterState : PlayerLocationState, ICanExitWater
+{	
+	public PlayerWaterState(Player characterBody2D) : base(characterBody2D)
 	{
 	}
 
@@ -12,7 +12,7 @@ public class WaterState : PlayerLocationState, ICanExitWater
 
 	public void ExitWater()
 	{
-		ChangeState(new AirState(CharacterBody2D));
+		ChangeState(new PlayerAirState(CharacterBody2D));
 	}
 
 	public override void PhysicsProcessState(double delta) {}
@@ -31,7 +31,7 @@ public class WaterState : PlayerLocationState, ICanExitWater
 			CharacterBody2D.Data.Air--;
 			if (CharacterBody2D.Data.Air <= 0)
 			{
-				//ChangeState(CharacterBody2D.Machine.Factory.DieState);
+				ChangeState(new PlayerDieState(CharacterBody2D));
 			}
 		}
 	}

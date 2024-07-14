@@ -3,13 +3,13 @@ using System;
 
 public partial class Collector : Area2D
 {
-	public Player3 Player { get; set; }
+	public Player Player { get; set; }
 
 	public override void _Ready()
 	{
 		base._Ready();
 
-		Player = GetParent<Player3>();
+		Player = GetParent<Player>();
 		AreaEntered += OnCollectorAreaEntered;
 	}
 
@@ -22,7 +22,7 @@ public partial class Collector : Area2D
 
 	private void OnCollectorAreaEntered(Area2D otherArea)
 	{
-		GD.Print("Entered area");
+		//this.PrintDebug("Entered collector area");
 		if (otherArea is ICollectable collectableArea)
 		{
 			collectableArea.GetCollected(Player);

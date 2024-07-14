@@ -1,4 +1,5 @@
 public interface ICanMove
 {
-	public void HandleMovement();
+	public void GetMovementInput();
+	public void Move(float delta);
 }

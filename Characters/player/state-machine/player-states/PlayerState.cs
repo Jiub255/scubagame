@@ -1,10 +1,10 @@
 using Godot;
 
-public abstract class PlayerState3 : State3<Player3>
+public abstract class PlayerState : State<Player>
 {
 	protected AnimationNodeStateMachinePlayback animationStateMachinePlayback { get; set; }
 	
-	public PlayerState3(Player3 player) : base(player)
+	public PlayerState(Player player) : base(player)
 	{
 		animationStateMachinePlayback = 
 			(AnimationNodeStateMachinePlayback)CharacterBody2D.AnimationTree.Get("parameters/playback");

@@ -1,14 +1,9 @@
-using Godot;
-using System;
-
-public abstract class PlayerActionState : PlayerState3
+public abstract class PlayerActionState : PlayerState
 {
-	protected PlayerActionState(Player3 player) : base(player)
+	protected PlayerActionState(Player player) : base(player)
 	{
 	}
 
-	public abstract override void EnterState();
-	public abstract override void ExitState();
 	public override void ProcessState(double delta)
 	{
 		TickAttackTimer((float)delta);
@@ -27,5 +22,4 @@ public abstract class PlayerActionState : PlayerState3
 			}
 		}
 	}
-	public abstract override void PhysicsProcessState(double delta);
 }
