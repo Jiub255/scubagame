@@ -1,0 +1,67 @@
+[gd_scene load_steps=11 format=3 uid="uid://cxtfao04mqwg5"]
+
+[ext_resource type="Script" path="res://collectables/chest/Chest.cs" id="1_hxrpp"]
+[ext_resource type="Texture2D" uid="uid://u485g3rgf321" path="res://assets/SpearFishing Assets Pack/Sprites/Chests-16x32.png" id="2_mwy1l"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uumm2"]
+atlas = ExtResource("2_mwy1l")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g8of1"]
+atlas = ExtResource("2_mwy1l")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ifa5u"]
+atlas = ExtResource("2_mwy1l")
+region = Rect2(32, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e33kv"]
+atlas = ExtResource("2_mwy1l")
+region = Rect2(0, 32, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_53pei"]
+atlas = ExtResource("2_mwy1l")
+region = Rect2(16, 32, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_32ggr"]
+atlas = ExtResource("2_mwy1l")
+region = Rect2(32, 32, 16, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2h10s"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uumm2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g8of1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ifa5u")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e33kv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_53pei")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_32ggr")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i6gqu"]
+
+[node name="Chest" type="Area2D"]
+collision_layer = 4
+script = ExtResource("1_hxrpp")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_2h10s")
+frame = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_i6gqu")

@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://cq3kbafc6pbp7"]
+
+[ext_resource type="Script" path="res://collectables/scuba-gear/ScubaGearCollectable.cs" id="1_5wkmk"]
+[ext_resource type="Resource" uid="uid://bjlutwcvtg1u8" path="res://collectables/scuba-gear/scuba-gear-2.tres" id="2_7cf02"]
+[ext_resource type="Texture2D" uid="uid://cvrlk65iyhhia" path="res://Characters/player/spritesheets/Diver 2.png" id="3_grvd7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ggdcd"]
+size = Vector2(17, 32)
+
+[node name="ScubaGear2" type="Area2D"]
+collision_layer = 4
+script = ExtResource("1_5wkmk")
+_scubaGearData = ExtResource("2_7cf02")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("3_grvd7")
+hframes = 7
+vframes = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_ggdcd")

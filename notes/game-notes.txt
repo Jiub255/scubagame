@@ -1,0 +1,58 @@
+Now it's a diving game.
+
+
+TODO:
+-------------
+
+Have harpoon gun follow mouse, independent of travel direction.
+	Then add controller support, crosscode style. Left stick movement, right stick aim.
+
+Fix fish moving when shot.
+
+Have "doors" into other maps, to represent a third dimension kind of. 2.5d-ish. Good for variety in caves/tunnels.
+<<<<<<< HEAD
+	Or maybe not, but do have cave entrances you can go into.
+	Have enemies follow you in/out of caves if they are targeting you.
+
+Make variety of spaces:
+	tight tunnels
+	wide open depths
+	super deep pits
+	long shallow waters (with land spots you have to jump over while being chased by enemies)
+=======
+>>>>>>> 6639971516971f8be37e8db0bbd8876780a17e11
+
+Make a new parallax background, but have the closest layer be the water layer, so it doesn't move.
+	Try to work above horizon parallax in.
+
+<<<<<<< HEAD
+Make another state machine for Player. Can't mix states like take damage and air. They're separate concepts.
+Maybe have a air/water state machine that controls physics like gravity.
+Then have another for combat, like take damage and die.
+
+Eventually try out behavior trees with enemies, for practice at least.
+
+Make own art.
+	Try procedural generation for background. Simple, like spawning random ocean features as it scrolls.
+	Add swimming fish and stuff to the parallax layers.
+	Maybe try a different theme/idea. Doesn't have to be a diver. Maybe a fish or something. Or a submarine.
+		I like the water mechanics though so keep that.
+
+Have giant whales that can swallow you.
+	Inside of them is like a mini-dungeon, with some reward at the end.
+
+
+DONE:
+-------------
+
+Fix fish swimming in air and through land.
+
+Add breath system.
+	Put Air level on UI.
+=======
+
+
+TODO:
+
+Fix fish swimming in air and through land.
+>>>>>>> 6639971516971f8be37e8db0bbd8876780a17e11

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ScubaGearData" load_steps=3 format=3 uid="uid://cddcsoytshtpq"]
+
+[ext_resource type="Texture2D" uid="uid://bi7ucruuvccx8" path="res://Characters/player/spritesheets/Diver 1.png" id="1_qpyp8"]
+[ext_resource type="Script" path="res://collectables/scuba-gear/ScubaGearData.cs" id="2_l0llf"]
+
+[resource]
+script = ExtResource("2_l0llf")
+_maxHealth = 5
+_maxAir = 60
+_spritesheet = ExtResource("1_qpyp8")
+_minAcceleration = 100.0
+_maxAcceleration = 300.0
+_maxSpeed = 100.0
+_jerk = 100.0
+_deceleration = 300.0

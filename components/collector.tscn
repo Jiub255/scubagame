@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bfpiky8dum16u"]
+
+[ext_resource type="Script" path="res://components/Collector.cs" id="1_xnp5r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b4hn1"]
+size = Vector2(30, 40)
+
+[node name="Collector" type="Area2D"]
+collision_mask = 4
+script = ExtResource("1_xnp5r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_b4hn1")

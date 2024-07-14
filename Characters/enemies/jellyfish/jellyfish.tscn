@@ -1,0 +1,90 @@
+[gd_scene load_steps=9 format=3 uid="uid://c4dyenw1hkh5"]
+
+[ext_resource type="Script" path="res://Characters/enemies/jellyfish/Jellyfish.cs" id="1_30oyf"]
+[ext_resource type="Texture2D" uid="uid://8habl60ynjix" path="res://Characters/enemies/jellyfish/spritesheets/JellyFish.png" id="1_ciurt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dkd1b"]
+
+[sub_resource type="Animation" id="Animation_8ufnw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_vbpnr"]
+resource_name = "swim"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 3]
+}
+
+[sub_resource type="Animation" id="Animation_4qurk"]
+resource_name = "swim_danger"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [4, 7]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ardew"]
+_data = {
+"RESET": SubResource("Animation_8ufnw"),
+"swim": SubResource("Animation_vbpnr"),
+"swim_danger": SubResource("Animation_4qurk")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xmk38"]
+radius = 75.0
+
+[node name="Jellyfish" type="CharacterBody2D"]
+collision_layer = 8
+collision_mask = 81
+script = ExtResource("1_30oyf")
+Health = 5
+Damage = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 4.71239
+texture = ExtResource("1_ciurt")
+hframes = 4
+vframes = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_dkd1b")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_ardew")
+}
+
+[node name="SightRange" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SightRange"]
+shape = SubResource("CircleShape2D_xmk38")
+debug_color = Color(0.513156, 0.566748, 0.3119, 0.42)

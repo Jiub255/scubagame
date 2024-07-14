@@ -1,0 +1,130 @@
+[gd_scene load_steps=10 format=3 uid="uid://fqgno2xgn56e"]
+
+[ext_resource type="Script" path="res://Characters/enemies/fish-1/FishChase.cs" id="1_je00x"]
+[ext_resource type="Texture2D" uid="uid://do6joekxf5v8q" path="res://Characters/enemies/fish-1/spritesheets/Orange.png" id="2_w6m1r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tc3xo"]
+
+[sub_resource type="Animation" id="Animation_atnvp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_m8xel"]
+resource_name = "idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.7333, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 1), Vector2(0, 0), Vector2(0, -1), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_a7vmp"]
+resource_name = "swim-down"
+length = 1.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0, 7, 7]
+}
+
+[sub_resource type="Animation" id="Animation_rp653"]
+resource_name = "swim-up"
+length = 1.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [8, 15, 15]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5jmel"]
+_data = {
+"RESET": SubResource("Animation_atnvp"),
+"idle": SubResource("Animation_m8xel"),
+"swim-down": SubResource("Animation_a7vmp"),
+"swim-up": SubResource("Animation_rp653")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ausdh"]
+radius = 75.0
+
+[node name="Fish-1-Orange" type="CharacterBody2D"]
+collision_layer = 8
+collision_mask = 83
+script = ExtResource("1_je00x")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_w6m1r")
+hframes = 8
+vframes = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_tc3xo")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_5jmel")
+}
+
+[node name="SightRange" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SightRange"]
+shape = SubResource("CircleShape2D_ausdh")
+debug_color = Color(0.513156, 0.566748, 0.3119, 0.42)

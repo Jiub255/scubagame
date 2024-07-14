@@ -1,0 +1,37 @@
+[gd_scene load_steps=3 format=3 uid="uid://x7jr7xj0ls8q"]
+
+[ext_resource type="Script" path="res://game/ui/Ui.cs" id="1_arkjd"]
+[ext_resource type="Resource" uid="uid://rlyiej3fnis3" path="res://Characters/player/inventory/inventory.tres" id="2_xst7o"]
+
+[node name="UI" type="CanvasLayer" node_paths=PackedStringArray("_saveButton", "_loadButton", "_exitButton")]
+script = ExtResource("1_arkjd")
+_saveButton = NodePath("MarginContainer/VBoxContainer/SaveButton")
+_loadButton = NodePath("MarginContainer/VBoxContainer/LoadButton")
+_exitButton = NodePath("MarginContainer/VBoxContainer/ExitButton")
+_saveableDataResource = ExtResource("2_xst7o")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="SaveButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Save"
+
+[node name="LoadButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Load"
+
+[node name="ExitButton" type="Button" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Exit"

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="HarpoonGunData" load_steps=3 format=3 uid="uid://cfaqhbaeqnsxo"]
+
+[ext_resource type="Script" path="res://collectables/harpoon-gun/HarpoonGunData.cs" id="1_4g4ak"]
+[ext_resource type="Texture2D" uid="uid://butmqdrun8anh" path="res://Characters/player/harpoon/harpoon-unloaded.png" id="1_fo3wt"]
+
+[resource]
+script = ExtResource("1_4g4ak")
+_sprite = ExtResource("1_fo3wt")
+_attackTimerLength = 1.0
+_damage = 1
+_speed = 250.0
