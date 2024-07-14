@@ -8,7 +8,7 @@ public partial class PlayerLocationStateMachine : PlayerStateMachine
 		} 
 		set
 		{
-			CurrentState = value;
+			base.CurrentState = value;
 		}
 	}
 	

@@ -41,8 +41,6 @@ public partial class Player : CharacterBody2D, IDamageable, ICanEnterWater, ICan
 		base._ExitTree();
 
 		Data.Changed -= SetSprites;
-		
-		//Machine.ExitTree();
 	}
 
 	private void SetSprites()
@@ -65,7 +63,7 @@ public partial class Player : CharacterBody2D, IDamageable, ICanEnterWater, ICan
 				movable.GetMovementInput();
 			}
 		}
-		
+
 		if (ActionMachine.CurrentState is ICanAttack attackable)
 		{
 			attackable.HandleAttack();

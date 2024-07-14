@@ -27,7 +27,7 @@ public partial class Harpoon : Area2D
 	{
 		if (body is IDamageable damageable)
 		{
-			Vector2 direction = body.Position = GlobalPosition;
+			Vector2 direction = body.Position - GlobalPosition;
 			damageable.TakeDamage(Damage, direction);
 		}
 		QueueFree();
