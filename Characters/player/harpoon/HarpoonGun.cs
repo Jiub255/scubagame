@@ -32,7 +32,7 @@ public partial class HarpoonGun : Node2D
 			// Mouse aim
 			ShootDirection = (GetLocalMousePosition() - Position).Normalized();
 			Sprite.Rotation = ShootDirection.Angle();
-			this.PrintDebug($"mouse dir: {ShootDirection}, rot: {ShootDirection.Angle()}");
+			//this.PrintDebug($"mouse dir: {ShootDirection}, rot: {ShootDirection.Angle()}");
 		}
 	}
 
@@ -46,7 +46,7 @@ public partial class HarpoonGun : Node2D
 			// Controller right joystick aim
 			ShootDirection = aimDirection.Normalized();
 			Sprite.Rotation = ShootDirection.Angle();
-			this.PrintDebug($"controller dir: {ShootDirection}, rot: {ShootDirection.Angle()}");
+			//this.PrintDebug($"controller dir: {ShootDirection}, rot: {ShootDirection.Angle()}");
 		}
 	}
 	

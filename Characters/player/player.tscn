@@ -244,3 +244,4 @@ position_smoothing_enabled = true
 [node name="Collector" parent="." instance=ExtResource("5_w5nj6")]
 
 [node name="HarpoonGun" parent="." instance=ExtResource("6_vqwjf")]
+_deadZone = 0.5

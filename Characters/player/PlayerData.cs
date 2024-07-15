@@ -23,6 +23,7 @@ public partial class PlayerData : Resource
 		set 
 		{ 
 			_air = value;
+			this.PrintDebug($"Air: {_air}");
 			EmitChanged();
 		}
 	}

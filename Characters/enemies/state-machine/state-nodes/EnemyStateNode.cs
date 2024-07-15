@@ -1,11 +1,12 @@
 using Godot;
 
-public abstract partial class EnemyStateNode : Node
+[GlobalClass]
+public abstract partial class EnemyStateNode : Node2D
 {
-	public CharacterBody2D Enemy { get; set; }
+	public Enemy Enemy { get; set; }
 	public Player Target { get; set; }
 	
-	public virtual void InitializeState(CharacterBody2D enemy)
+	public virtual void InitializeState(Enemy enemy)
 	{
 		Enemy = enemy;
 	}

@@ -18,7 +18,7 @@ public abstract class StateMachine<T> where T : CharacterBody2D
 	
 	public void ChangeState(State<T> newState)
 	{
-		this.PrintDebug($"Old state : {CurrentState}");
+		//this.PrintDebug($"Old state: {CurrentState}");
 		if (CurrentState == newState)
 		{
 			return;
@@ -34,6 +34,6 @@ public abstract class StateMachine<T> where T : CharacterBody2D
 			CurrentState.OnStateChanged += ChangeState;
 			CurrentState.EnterState();
 		}
-		this.PrintDebug($"New state : {CurrentState}");
+		this.PrintDebug($"New state: {CurrentState}");
 	}
 }

@@ -13,6 +13,10 @@ public partial class Enemy : CharacterBody2D
 	// Make an enemy data resource?
 	[Export]
 	public int Damage { get; private set; } = 1;
+	[Export]
+	public int IdleSpeed { get; private set; } = 25;
+	[Export]
+	public int ChaseSpeed { get; private set; } = 50;
 
 	private EnemyStateNode CurrentState { get; set; }
 
@@ -48,13 +52,16 @@ public partial class Enemy : CharacterBody2D
 		if (newState == CurrentState) return;
 		if (body is Player player)
 		{
+			this.PrintDebug($"Old state: {CurrentState.Name}");
 			CurrentState?.ExitState();
 			CurrentState = newState;
 			CurrentState?.EnterState();
 			CurrentState.Target = player;
+			this.PrintDebug($"New state: {CurrentState.Name}");
 		}
 	}
 	
+	// TODO: Might not need process at all for this machine.
 	public override void _Process(double delta)
 	{
 		base._Process(delta);
