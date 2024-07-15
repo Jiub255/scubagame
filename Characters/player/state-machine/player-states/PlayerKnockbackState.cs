@@ -2,13 +2,11 @@ using Godot;
 
 public class PlayerKnockbackState : PlayerActionState
 {
-	public float KnockbackTimer { get; set; } = 0f;
-	public float KnockbackDuration { get; } = 1f;
-	public float KnockbackSpeed { get; } = 75f;
+	private float KnockbackTimer { get; set; } = 0f;
+	private float KnockbackDuration { get; } = 1f;
+	private float KnockbackSpeed { get; } = 75f;
 	
-	public PlayerKnockbackState(Player player) : base(player)
-	{
-	}
+	public PlayerKnockbackState(Player player) : base(player) {}
 
 	public override void EnterState()
 	{
@@ -51,6 +49,6 @@ public class PlayerKnockbackState : PlayerActionState
 	private void EndKnockback()
 	{
 		CharacterBody2D.Velocity = Vector2.Zero;
-		ChangeState(new PlayerMovementState(CharacterBody2D));
+		ChangeState(new PlayerRecoveryState(CharacterBody2D));
 	}
 }

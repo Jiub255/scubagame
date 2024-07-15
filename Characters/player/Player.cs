@@ -4,12 +4,11 @@ public partial class Player : CharacterBody2D, IDamageable, ICanEnterWater, ICan
 {
 	[Export]
 	private PlayerData _data;
-	public PlayerData Data { get { return _data; } }
-	
 	[Export]
 	private Inventory _inventory;
-	public Inventory Inventory { get { return _inventory; } }
 	
+	public PlayerData Data { get { return _data; } }
+	public Inventory Inventory { get { return _inventory; } }
 	public AnimationTree AnimationTree { get; private set; }
 	public Sprite2D Sprite { get; private set; }
 	public HarpoonGun HarpoonGun { get; private set; }
@@ -46,7 +45,7 @@ public partial class Player : CharacterBody2D, IDamageable, ICanEnterWater, ICan
 	private void SetSprites()
 	{
 		Sprite.Texture = Data.ScubaGear.Spritesheet;
-		HarpoonGun.Texture = Data.HarpoonGun.GunAcquired ? Data.HarpoonGun.Sprite : null;
+		HarpoonGun.Sprite.Texture = Data.HarpoonGun.GunAcquired ? Data.HarpoonGun.Sprite : null;
 	}
 
 	public override void _Process(double delta)
@@ -70,7 +69,7 @@ public partial class Player : CharacterBody2D, IDamageable, ICanEnterWater, ICan
 		}
 
 		//this.PrintDebug($"Velocity: {Velocity}");
-		this.PrintDebug($"ActionState: {ActionMachine.CurrentState}, LocationState: {LocationMachine.CurrentState}");
+		//this.PrintDebug($"ActionState: {ActionMachine.CurrentState}, LocationState: {LocationMachine.CurrentState}");
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -88,7 +87,7 @@ public partial class Player : CharacterBody2D, IDamageable, ICanEnterWater, ICan
 			}
 		}
 		
-		HarpoonGun.RotateGun(Velocity);
+		HarpoonGun.RotateGun();
 		MoveAndSlide();
 	}
 	

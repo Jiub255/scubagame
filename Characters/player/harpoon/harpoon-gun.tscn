@@ -1,6 +1,5 @@
-[gd_scene load_steps=6 format=3 uid="uid://b4gi8gb2m74wl"]
+[gd_scene load_steps=5 format=3 uid="uid://b4gi8gb2m74wl"]
 
-[ext_resource type="Texture2D" uid="uid://butmqdrun8anh" path="res://Characters/player/harpoon/harpoon-unloaded.png" id="1_qy1ck"]
 [ext_resource type="Script" path="res://Characters/player/harpoon/HarpoonGun.cs" id="2_ilopv"]
 
 [sub_resource type="Animation" id="Animation_33u0w"]
@@ -40,13 +39,14 @@ _data = {
 "kickback": SubResource("Animation_mm1ti")
 }
 
-[node name="HarpoonGun" type="Sprite2D"]
+[node name="HarpoonGun" type="Node2D"]
 z_index = 2
 position = Vector2(6, 3)
-texture = ExtResource("1_qy1ck")
 script = ExtResource("2_ilopv")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_nk311")
 }
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

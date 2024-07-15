@@ -2,6 +2,11 @@ using Godot;
 
 public partial class Jellyfish : EnemySightRange
 {
+	[Export]
+	private float MoveTimeMin { get; set; } = 0.5f;
+	[Export]
+	private float MoveTimeMax { get; set; } = 1.5f;
+	
 	private RandomNumberGenerator RNG { get; set; }
 	private Vector2 RandomDirection { get; set; }
 	private float Timer { get; set; }
@@ -42,6 +47,6 @@ public partial class Jellyfish : EnemySightRange
 	private void SetupNextMovement()
 	{
 		RandomDirection = Vector2.Up.Rotated(RNG.RandfRange(-Mathf.Pi, Mathf.Pi));
-		Timer = RNG.RandfRange(1f, 3f);
+		Timer = RNG.RandfRange(MoveTimeMin, MoveTimeMax);
 	}
 }

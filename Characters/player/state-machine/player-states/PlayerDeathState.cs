@@ -52,7 +52,5 @@ public class PlayerDeathState : PlayerActionState
 	}
 
 	public override void ExitState() {}
-
 	public override void PhysicsProcessState(double delta) {}
-
 }

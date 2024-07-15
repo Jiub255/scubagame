@@ -1,40 +1,52 @@
 using Godot;
-using System;
 
-public partial class HarpoonGun : Sprite2D
+public partial class HarpoonGun : Node2D
 {
+	/// <summary>
+	/// Just for testing.
+	/// </summary>
+	[Export(PropertyHint.Range, "0.0,1.0")]
+	private float _deadZone = 0.5f;
+	
 	private AnimationPlayer AnimationPlayer { get; set; }
+	// TODO: Put this in HarpoonGunData? 
 	private string HarpoonPath { get; } = "res://Characters/player/harpoon/harpoon.tscn";
 	private PackedScene HarpoonScene { get; set; }
-	
-	// TODO: Put this in HarpoonGunData? 
-/* 	private bool _gunAcquired = true;
-	public bool GunAcquired 
-	{ 
-		get { return _gunAcquired; } 
-		set
-		{
-			_gunAcquired = value;
-			ProcessMode = GunAcquired ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
-		}
-	} */
+	public Sprite2D Sprite { get; set; }
 	public Vector2 ShootDirection { get; set; } = Vector2.Right;
 	
 	public override void _Ready()
 	{
 		AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 		HarpoonScene = ResourceLoader.Load<PackedScene>(HarpoonPath);
-		
-		//ProcessMode = GunAcquired ? ProcessModeEnum.Inherit : ProcessModeEnum.Disabled;
+		Sprite = GetNode<Sprite2D>("Sprite2D");
 	}
 
-	// TODO: Have harpoon gun point towards mouse. 
-	public void RotateGun(Vector2 velocity)
+	// Have harpoon gun point towards mouse. 
+	public override void _Input(InputEvent @event)
 	{
-		if (/* GunAcquired &&  */velocity.Length() > 0)
+		base._Input(@event);
+		
+		if (@event is InputEventMouseMotion)
 		{
-			ShootDirection = velocity.Normalized();
-			Rotation = ShootDirection.Angle();
+			// Mouse aim
+			ShootDirection = (GetLocalMousePosition() - Position).Normalized();
+			Sprite.Rotation = ShootDirection.Angle();
+			this.PrintDebug($"mouse dir: {ShootDirection}, rot: {ShootDirection.Angle()}");
+		}
+	}
+
+	// Aim harpoon gun with controller or number keypad. 
+	public void RotateGun()
+	{
+
+		Vector2 aimDirection = Input.GetVector("aim-left", "aim-right", "aim-up", "aim-down", _deadZone);
+		if (aimDirection != Vector2.Zero)
+		{
+			// Controller right joystick aim
+			ShootDirection = aimDirection.Normalized();
+			Sprite.Rotation = ShootDirection.Angle();
+			this.PrintDebug($"controller dir: {ShootDirection}, rot: {ShootDirection.Angle()}");
 		}
 	}
 	
@@ -46,7 +58,7 @@ public partial class HarpoonGun : Sprite2D
 		Harpoon harpoon = HarpoonScene.Instantiate() as Harpoon;
 		GetTree().Root.AddChild(harpoon);
 		harpoon.Position = GlobalPosition;
-		harpoon.Rotation = Rotation;
+		harpoon.Rotation = Sprite.Rotation;
 
 		// Have it set itself up.
 		harpoon.SetupHarpoon(damage, ShootDirection * speed);

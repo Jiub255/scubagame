@@ -6,4 +6,4 @@
 script = ExtResource("2_ob131")
 _attackTimerLength = 1.0
 _damage = 1
-_speed = 250.0
+_speed = 50.0

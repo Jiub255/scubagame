@@ -3,14 +3,13 @@ Now it's a diving game.
 TODO:
 -------------
 
-Have harpoon gun follow mouse, independent of travel direction.
-	Then add controller support, crosscode style. Left stick movement, right stick aim.
+Make more enemies.
+
+Design more level.
 
 Have "doors" into other maps, to represent a third dimension kind of. 2.5d-ish. Good for variety in caves/tunnels.
 	Or maybe not, but do have cave entrances you can go into.
 	Have enemies follow you in/out of caves if they are targeting you.
-
-Add invulnerability time after knockback so you can't get stuck in a death loop.
 
 Make variety of spaces:
 	tight tunnels, wide open depths, super deep pits,
@@ -19,6 +18,7 @@ Make variety of spaces:
 Eventually try out behavior trees with enemies, for practice at least.
 
 Make own art?
+	Start with ultra simple 8x8 pixel art, use max 4 colors. At least makes for easy prototyping.
 	Try procedural generation for background. Simple, like spawning random ocean features as it scrolls.
 	Add swimming fish and stuff to the parallax layers.
 	Try to work above horizon parallax in.
@@ -28,10 +28,13 @@ Make own art?
 Have giant whales that can swallow you.
 	Inside of them is like a mini-dungeon, with some reward at the end.
 
+Maybe, eventually be fighting off huge swarms of enemy fish with crazy area effect weapons. Could be fun.
+
 DONE:
 -------------
 
 Fix fish swimming in air and through land.
+	(used collision layers)
 
 Add breath system.
 	Put Air level on UI.
@@ -42,4 +45,14 @@ Make another state machine for Player. Can't mix states like take damage and air
 
 Make a new parallax background, but have the closest layer be the water layer, so it doesn't move.
 
-Fix fish moving when shot. (accidental = instead of - in direction calculation).
+Fix fish moving when shot.
+	(accidental = instead of - in direction calculation).
+
+Add invulnerability time after knockback so you can't get stuck in a death loop.
+	Maybe put it in recovering state, so you can add movement controls again.
+
+Have harpoon gun follow mouse, independent of travel direction.
+	Then add controller support, crosscode style. Left stick movement, right stick aim.
+
+Fix (very) different harpoon speed when aiming with mouse vs controller/number keys
+	(forgot to normalize a vector during mouse input)

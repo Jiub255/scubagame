@@ -4,10 +4,7 @@ public abstract class StateMachine<T> where T : CharacterBody2D
 {
 	public virtual State<T> CurrentState { get; protected set; }
 	
-	public StateMachine(T character)
-	{
-		
-	}
+	public StateMachine(T character) {}
 	
 	public void ProcessState(double delta)
 	{

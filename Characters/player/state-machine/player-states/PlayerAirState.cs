@@ -28,17 +28,13 @@ public class PlayerAirState : PlayerLocationState, ICanEnterWater
 
 	public override void PhysicsProcessState(double delta)
 	{
-		this.PrintDebug($"Physics process velocity before: {CharacterBody2D.Velocity}");
 		CharacterBody2D.Velocity += Gravity * Vector2.Down * (float)delta;
-		this.PrintDebug($"Physics process velocity after : {CharacterBody2D.Velocity}");
-	}
-
-	public override void ProcessState(double delta)
-	{
 	}
 
 	public void EnterWater()
 	{
 		ChangeState(new PlayerWaterState(CharacterBody2D));
 	}
+
+	public override void ProcessState(double delta) {}
 }

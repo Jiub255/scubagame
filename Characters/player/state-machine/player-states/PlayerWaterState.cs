@@ -1,21 +1,13 @@
 public class PlayerWaterState : PlayerLocationState, ICanExitWater
 {	
-	public PlayerWaterState(Player characterBody2D) : base(characterBody2D)
-	{
-	}
+	public PlayerWaterState(Player characterBody2D) : base(characterBody2D) {}
 
 	public override bool CanMove => true;
-
-	public override void EnterState() {}
-
-	public override void ExitState() {}
 
 	public void ExitWater()
 	{
 		ChangeState(new PlayerAirState(CharacterBody2D));
 	}
-
-	public override void PhysicsProcessState(double delta) {}
 
 	public override void ProcessState(double delta)
 	{
@@ -35,4 +27,8 @@ public class PlayerWaterState : PlayerLocationState, ICanExitWater
 			}
 		}
 	}
+
+	public override void EnterState() {}
+	public override void ExitState() {}
+	public override void PhysicsProcessState(double delta) {}
 }
