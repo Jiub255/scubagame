@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource("1_4g4ak")
 _sprite = ExtResource("1_fo3wt")
-_attackTimerLength = 1.0
+_attackTimerLength = 2.0
 _damage = 1
-_speed = 50.0
+_speed = 150.0

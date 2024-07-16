@@ -4,8 +4,12 @@ using System.Linq;
 [GlobalClass]
 public partial class IdleWaypointState : EnemyStateNode
 {
+	// TODO: Inspector keeps losing these references. 
+	// Need to use Godot.Collections.Array instead?
 	[Export]
 	private Node2D[] Waypoints { get; set; }
+	[Export]
+	private Godot.Collections.Array<Node2D> WaypointsGodot { get; set; }
 	[Export]
 	private float _changeWaypointsRadius = 0.1f;
 	
@@ -25,7 +29,7 @@ public partial class IdleWaypointState : EnemyStateNode
 		base.InitializeState(enemy);
 
 		Positions = Waypoints.Select(x => x.Position).ToArray();
-		Speed = Enemy.IdleSpeed;
+		Speed = Enemy.Data.IdleSpeed;
 	}
 
 	public override void EnterState()

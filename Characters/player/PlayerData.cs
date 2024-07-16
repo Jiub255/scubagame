@@ -7,6 +7,9 @@ public partial class PlayerData : Resource
 	private int _health = 1;
 	private int _air = 0;
 	
+	// TODO: Control death by health/drowning here?
+	// Use events to signal Player to die?
+	// Makes more sense to have player handle that, this is just data. 
 	public int Health 
 	{ 
 		get { return _health; } 

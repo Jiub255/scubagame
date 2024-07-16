@@ -4,8 +4,16 @@ TODO:
 -------------
 
 Make more enemies.
+	Make more idle/wander states.
+	Other chase states?
 
 Design more level.
+	Have separate levels, or just one big world?
+	If one big world, break up tilemap into chunks and dynamically load/unload them,
+		or have separate screens that transition to one another, old school style.
+	Kinda like one big world the best. Figure out how to do tilemap chunks.
+		Might not be necessary yet. The big tilemap wasn't causing the slowdown from before, not sure what was.
+		But still might need eventually if the map gets huge.
 
 Have "doors" into other maps, to represent a third dimension kind of. 2.5d-ish. Good for variety in caves/tunnels.
 	Or maybe not, but do have cave entrances you can go into.
@@ -24,6 +32,9 @@ Make own art?
 	Try to work above horizon parallax in.
 	Maybe try a different theme/idea. Doesn't have to be a diver. Maybe a fish or something. Or a submarine.
 		I like the water mechanics though so keep that.
+		Maybe start as a diver with no gear who swims slowly. Then you find better suits with more speed and air.
+			Then you start finding vehicles, with weapons and other features. Kinda 2d subnautica ripoff idea.
+			Could be fun to vary the movement physics for each vehicle/suit.
 
 Have giant whales that can swallow you.
 	Inside of them is like a mini-dungeon, with some reward at the end.

@@ -9,7 +9,7 @@ public partial class ChaseState : EnemyStateNode
 	{
 		base.InitializeState(enemy);
 
-		Speed = Enemy.ChaseSpeed;
+		Speed = Enemy.Data.ChaseSpeed;
 	}
 
 	public override void EnterState()

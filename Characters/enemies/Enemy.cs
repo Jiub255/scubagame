@@ -4,19 +4,14 @@ using Godot;
 // Also, Get hit state, "revenge" state (where they chase you from further out than 
 // their usual sight range because you shot them), Die/drop loot state.
 // TODO: Might be better to separate out the machine once it gets too complicated. 
-public partial class Enemy : CharacterBody2D
+public partial class Enemy : CharacterBody2D, IDamageable
 {
+	[Export]
+	public EnemyData Data { get; private set; }
 	[Export]
 	public EnemyStateNode IdleState { get; private set; }
 	[Export]
 	public EnemyStateNode ChaseState { get; private set; }
-	// Make an enemy data resource?
-	[Export]
-	public int Damage { get; private set; } = 1;
-	[Export]
-	public int IdleSpeed { get; private set; } = 25;
-	[Export]
-	public int ChaseSpeed { get; private set; } = 50;
 
 	private EnemyStateNode CurrentState { get; set; }
 
@@ -91,6 +86,15 @@ public partial class Enemy : CharacterBody2D
 	private void HitPlayer(Player player)
 	{
 		Vector2 knockbackDirection = (player.Position - Position).Normalized();
-		player.TakeDamage(Damage, knockbackDirection);
+		player.TakeDamage(Data.Damage, knockbackDirection);
+	}
+
+	public void TakeDamage(int damage, Vector2 knockbackDirection)
+	{
+		Data.Health -= damage;
+		if (Data.Health <= 0)
+		{
+			QueueFree();
+		}
 	}
 }
