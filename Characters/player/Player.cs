@@ -26,6 +26,8 @@ public partial class Player : CharacterBody2D, IDamageable, ICanEnterWater, ICan
 		ActionMachine = new PlayerActionStateMachine(this);
 
 		Data.Changed += SetSprites;
+		//Data.OnHealthDeath += () => { };
+		Data.OnDrowned += Drown;
 
 		SetSprites();
 
@@ -40,6 +42,14 @@ public partial class Player : CharacterBody2D, IDamageable, ICanEnterWater, ICan
 		base._ExitTree();
 
 		Data.Changed -= SetSprites;
+		//Data.OnHealthDeath -= () => { };
+		Data.OnDrowned -= Drown;
+	}
+
+	private void Drown()
+	{
+		this.PrintDebug("Drown called");
+		ActionMachine.ChangeState(new PlayerDeathState(this));
 	}
 
 	private void SetSprites()

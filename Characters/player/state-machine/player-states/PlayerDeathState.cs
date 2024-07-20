@@ -48,6 +48,8 @@ public class PlayerDeathState : PlayerActionState
 		// What to keep when you die? 
 		CharacterBody2D.Data.ResetPlayerData();
 		CharacterBody2D.Inventory.ClearInventory();
+		// TODO: Something going wrong with reload? Event subscription nonsense? 
+		// Second drowning death in a row doesn't kill player, air stays at -1 somehow. 
 		CharacterBody2D.GetTree().ReloadCurrentScene();
 	}
 

@@ -1,15 +1,18 @@
+using System;
 using Godot;
 
 [GlobalClass]
 public partial class PlayerData : Resource
 {
 	// Player
+	//public event Action OnHealthDeath;
+	public event Action OnDrowned;
+	
 	private int _health = 1;
 	private int _air = 0;
 	
 	// TODO: Control death by health/drowning here?
 	// Use events to signal Player to die?
-	// Makes more sense to have player handle that, this is just data. 
 	public int Health 
 	{ 
 		get { return _health; } 
@@ -17,6 +20,11 @@ public partial class PlayerData : Resource
 		{
 			_health = value;
 			EmitChanged();
+			/* if (_health <= 0)
+			{
+				_health = 0;
+				OnHealthDeath?.Invoke();
+			} */
 		}
 	}
 	public int Air
@@ -28,6 +36,12 @@ public partial class PlayerData : Resource
 			_air = value;
 			this.PrintDebug($"Air: {_air}");
 			EmitChanged();
+			if (_air <= 0)
+			{
+				_air = 0;
+				this.PrintDebug("Drowned");
+				OnDrowned?.Invoke();
+			}
 		}
 	}
 	public bool Reloading { get; set; } = false;

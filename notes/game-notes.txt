@@ -67,3 +67,6 @@ Have harpoon gun follow mouse, independent of travel direction.
 
 Fix (very) different harpoon speed when aiming with mouse vs controller/number keys
 	(forgot to normalize a vector during mouse input)
+
+Fix state machines.
+	(Subscribing to lambda events is causing problems on scene reload, switched to named methods to fix it.)

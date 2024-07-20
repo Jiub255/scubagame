@@ -19,7 +19,7 @@ public abstract class StateMachine<T> where T : CharacterBody2D
 	public void ChangeState(State<T> newState)
 	{
 		//this.PrintDebug($"Old state: {CurrentState}");
-		if (CurrentState == newState)
+		if (CurrentState?.GetType() == newState?.GetType())
 		{
 			return;
 		}

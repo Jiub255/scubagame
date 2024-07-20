@@ -1,9 +1,10 @@
-[gd_scene load_steps=28 format=3 uid="uid://ccg2paoo6j4n7"]
+[gd_scene load_steps=29 format=3 uid="uid://ccg2paoo6j4n7"]
 
 [ext_resource type="Script" path="res://Characters/player/Player.cs" id="1_7uoe3"]
 [ext_resource type="Resource" uid="uid://dnwwgqbjjr7t6" path="res://Characters/player/player-data.tres" id="2_y5bjs"]
 [ext_resource type="Resource" uid="uid://rlyiej3fnis3" path="res://Characters/player/inventory/inventory.tres" id="3_5nrfy"]
 [ext_resource type="Texture2D" uid="uid://dnkh6rote1ehq" path="res://Characters/player/spritesheets/Diver 6.png" id="4_te3b8"]
+[ext_resource type="Script" path="res://Characters/player/DarknessOverlay.cs" id="5_a3pjb"]
 [ext_resource type="PackedScene" uid="uid://bfpiky8dum16u" path="res://components/collector.tscn" id="5_w5nj6"]
 [ext_resource type="PackedScene" uid="uid://b4gi8gb2m74wl" path="res://Characters/player/harpoon/harpoon-gun.tscn" id="6_vqwjf"]
 
@@ -196,8 +197,8 @@ libraries = {
 tree_root = SubResource("AnimationNodeStateMachine_8vuip")
 anim_player = NodePath("../AnimationPlayer")
 parameters/current_length = 1.0
-parameters/current_position = 0.233251
-parameters/current_delta = 0.006899
+parameters/current_position = 0.758423
+parameters/current_delta = 0.0075
 parameters/End/current_length = null
 parameters/End/current_position = null
 parameters/End/current_delta = null
@@ -205,18 +206,18 @@ parameters/Start/current_length = 0.0
 parameters/Start/current_position = 0.0
 parameters/Start/current_delta = 0.0
 parameters/move-blend-tree/current_length = 1.0
-parameters/move-blend-tree/current_position = 0.233251
-parameters/move-blend-tree/current_delta = 0.006899
+parameters/move-blend-tree/current_position = 0.758423
+parameters/move-blend-tree/current_delta = 0.0075
 parameters/move-blend-tree/move-blend-space/current_length = 1.0
-parameters/move-blend-tree/move-blend-space/current_position = 0.233251
-parameters/move-blend-tree/move-blend-space/current_delta = 0.006899
+parameters/move-blend-tree/move-blend-space/current_position = 0.758423
+parameters/move-blend-tree/move-blend-space/current_delta = 0.0075
 parameters/move-blend-tree/move-blend-space/blend_position = Vector2(0, 0.010453)
 parameters/move-blend-tree/move-blend-space/0/current_length = null
 parameters/move-blend-tree/move-blend-space/0/current_position = null
 parameters/move-blend-tree/move-blend-space/0/current_delta = null
 parameters/move-blend-tree/move-blend-space/1/current_length = 1.0
-parameters/move-blend-tree/move-blend-space/1/current_position = 0.233251
-parameters/move-blend-tree/move-blend-space/1/current_delta = 0.006899
+parameters/move-blend-tree/move-blend-space/1/current_position = 0.758423
+parameters/move-blend-tree/move-blend-space/1/current_delta = 0.0075
 parameters/move-blend-tree/move-blend-space/2/current_length = null
 parameters/move-blend-tree/move-blend-space/2/current_position = null
 parameters/move-blend-tree/move-blend-space/2/current_delta = null
@@ -227,12 +228,12 @@ parameters/move-blend-tree/move-blend-space/4/current_length = null
 parameters/move-blend-tree/move-blend-space/4/current_position = null
 parameters/move-blend-tree/move-blend-space/4/current_delta = null
 parameters/move-blend-tree/move-time-scale/current_length = 1.0
-parameters/move-blend-tree/move-time-scale/current_position = 0.233251
-parameters/move-blend-tree/move-time-scale/current_delta = 0.006899
+parameters/move-blend-tree/move-time-scale/current_position = 0.758423
+parameters/move-blend-tree/move-time-scale/current_delta = 0.0075
 parameters/move-blend-tree/move-time-scale/scale = 1.0
 parameters/move-blend-tree/output/current_length = 1.0
-parameters/move-blend-tree/output/current_position = 0.233251
-parameters/move-blend-tree/output/current_delta = 0.006899
+parameters/move-blend-tree/output/current_position = 0.758423
+parameters/move-blend-tree/output/current_delta = 0.0075
 parameters/take-damage/current_length = 1.0
 parameters/take-damage/current_position = 0.0305086
 parameters/take-damage/current_delta = 0.006901
@@ -240,6 +241,19 @@ parameters/take-damage/current_delta = 0.006901
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(2, 2)
 position_smoothing_enabled = true
+
+[node name="DarknessOverlay" type="CanvasLayer" parent="Camera2D"]
+script = ExtResource("5_a3pjb")
+WaterColor = Color(3.73013e-07, 0.105739, 0.250941, 1)
+
+[node name="ColorRect" type="ColorRect" parent="Camera2D/DarknessOverlay"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0.217186, 0.512243, 0.235294)
 
 [node name="Collector" parent="." instance=ExtResource("5_w5nj6")]
 

@@ -1,0 +1,86 @@
+[gd_scene load_steps=4 format=3 uid="uid://b2rsf1kdxr1py"]
+
+[ext_resource type="Script" path="res://game/world/hud/DebugHud.cs" id="1_qhprf"]
+[ext_resource type="Resource" uid="uid://dnwwgqbjjr7t6" path="res://Characters/player/player-data.tres" id="2_myqw5"]
+[ext_resource type="Script" path="res://game/world/hud/Defocus.cs" id="3_5mo7o"]
+
+[node name="DebugHUD" type="CanvasLayer" node_paths=PackedStringArray("MinAcceleration", "MaxAcceleration", "MaxSpeed", "Jerk", "Deceleration")]
+script = ExtResource("1_qhprf")
+Data = ExtResource("2_myqw5")
+MinAcceleration = NodePath("MarginContainer/HBoxContainer/MinAccelerationVBox/MinAccelerationLineEdit")
+MaxAcceleration = NodePath("MarginContainer/HBoxContainer/MaxAccelerationVBox/MaxAccelerationLineEdit")
+MaxSpeed = NodePath("MarginContainer/HBoxContainer/MaxSpeedVBox/MaxSpeedLineEdit")
+Jerk = NodePath("MarginContainer/HBoxContainer/JerkVBox/JerkLineEdit")
+Deceleration = NodePath("MarginContainer/HBoxContainer/DecelerationVBox/DecelerationLineEdit")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_5mo7o")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="MinAccelerationVBox" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/MinAccelerationVBox"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+text = "Min Accel"
+
+[node name="MinAccelerationLineEdit" type="LineEdit" parent="MarginContainer/HBoxContainer/MinAccelerationVBox"]
+layout_mode = 2
+text = "100"
+
+[node name="MaxAccelerationVBox" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/MaxAccelerationVBox"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+text = "Max Accel"
+
+[node name="MaxAccelerationLineEdit" type="LineEdit" parent="MarginContainer/HBoxContainer/MaxAccelerationVBox"]
+layout_mode = 2
+text = "100"
+
+[node name="MaxSpeedVBox" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/MaxSpeedVBox"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+text = "Max Speed"
+
+[node name="MaxSpeedLineEdit" type="LineEdit" parent="MarginContainer/HBoxContainer/MaxSpeedVBox"]
+layout_mode = 2
+text = "100"
+
+[node name="JerkVBox" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/JerkVBox"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+text = "Jerk"
+
+[node name="JerkLineEdit" type="LineEdit" parent="MarginContainer/HBoxContainer/JerkVBox"]
+layout_mode = 2
+text = "100"
+
+[node name="DecelerationVBox" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer/HBoxContainer/DecelerationVBox"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+text = "Deceleration"
+
+[node name="DecelerationLineEdit" type="LineEdit" parent="MarginContainer/HBoxContainer/DecelerationVBox"]
+layout_mode = 2
+text = "100"

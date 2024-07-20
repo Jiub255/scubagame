@@ -16,7 +16,6 @@ public partial class Enemy : CharacterBody2D, IDamageable
 	private EnemyStateNode CurrentState { get; set; }
 
 	private Area2D SightRange { get; set; }
-	//private Area2D AttackRange { get; set; }
 	
 	// Called by Enemy controller script (parent of state machine).
 	public override void _Ready()
@@ -28,18 +27,28 @@ public partial class Enemy : CharacterBody2D, IDamageable
 		IdleState.InitializeState(this);
 		ChaseState.InitializeState(this);
 
-		SightRange.BodyEntered += (body) => ChangeState(body, ChaseState);
-		SightRange.BodyExited += (body) => ChangeState(body, IdleState);
+		SightRange.BodyEntered += Chase; /* (body) => ChangeState(body, ChaseState); */
+		SightRange.BodyExited += Idle; //(body) => ChangeState(body, IdleState);
 		
 		CurrentState = IdleState;
 	}
 
 	public override void _ExitTree()
 	{
-		base._ExitTree();
+		SightRange.BodyEntered -= Chase; //(body) => ChangeState(body, ChaseState);
+		SightRange.BodyExited -= Idle; //(body) => ChangeState(body, IdleState);
 		
-		SightRange.BodyEntered -= (body) => ChangeState(body, ChaseState);
-		SightRange.BodyExited -= (body) => ChangeState(body, IdleState);
+		base._ExitTree();
+	}
+	
+	private void Chase(Node2D body)
+	{
+		ChangeState(body, ChaseState);
+	}
+	
+	private void Idle(Node2D body)
+	{
+		ChangeState(body, IdleState);
 	}
 	
 	private void ChangeState(Node2D body, EnemyStateNode newState)

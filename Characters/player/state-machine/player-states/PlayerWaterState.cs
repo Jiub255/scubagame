@@ -25,9 +25,7 @@ public class PlayerWaterState : PlayerLocationState, ICanExitWater
 			{
 				// TODO: Can't change LocationState to death, it's an action state.
 				// How to handle this? 
-				// Make action states substates of location states?
-				// Location states CAN change action states, but not vice versa.
-				// ie, water drowning you -> death state. 
+				// Call Drown() on Player? Makes sense, player needs a way to drown in a water game.
 				//ChangeState(new PlayerDeathState(CharacterBody2D));
 			}
 		}
