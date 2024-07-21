@@ -16,6 +16,11 @@
     "res://collectables/scuba-gear/"
   ],
   "table_functions": {
-
+    "filter": [
+      "return true"
+    ],
+    "process": [
+      "return value"
+    ]
   }
 }

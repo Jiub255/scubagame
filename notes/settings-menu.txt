@@ -1,0 +1,7 @@
+TODO: Make settings menu (and main menu)
+
+- Have an easy mode where the gun aims towards where you're going, maybe also some autoaim.
+
+- Volume controls
+
+-

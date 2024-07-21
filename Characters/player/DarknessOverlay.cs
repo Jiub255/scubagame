@@ -28,9 +28,9 @@ public partial class DarknessOverlay : CanvasLayer
 
 		GetCamera();
 		
-		CallDeferred(MethodName.GetWaterLevel);
-		
 		RayCast = GetNode<RayCast2D>("RayCast2D");
+		
+		CallDeferred(MethodName.GetWaterLevel);
 		
 		ColorRect = GetNode<ColorRect>("ColorRect");
 		ColorRect.Color = WaterColor;
@@ -48,6 +48,7 @@ public partial class DarknessOverlay : CanvasLayer
 	
 	private void GetWaterLevel()
 	{
+		RayCast.ForceRaycastUpdate();
 		if (RayCast.IsColliding())
 		{
 			Vector2 collisionPoint = RayCast.GetCollisionPoint();

@@ -1,0 +1,147 @@
+[gd_scene load_steps=14 format=3 uid="uid://dxlc8ht7061c7"]
+
+[ext_resource type="Script" path="res://Characters/enemies/EnemyIdleChase.cs" id="1_qtl8b"]
+[ext_resource type="Resource" uid="uid://b1p85j0ji78j2" path="res://Characters/enemies/enemy-types/fish-1-pink/fish-1-pink.tres" id="2_ymi0q"]
+[ext_resource type="PackedScene" uid="uid://dyhjaq205oauv" path="res://Characters/enemies/state-nodes/waypoint/idle_waypoint_state.tscn" id="3_dnhsg"]
+[ext_resource type="PackedScene" uid="uid://cvss3tdvk463r" path="res://Characters/enemies/state-nodes/chase/chase_state.tscn" id="4_068iu"]
+[ext_resource type="Texture2D" uid="uid://dw68le7r0kjxe" path="res://Characters/enemies/enemy-types/fish-1-pink/Pink.png" id="5_sjk7a"]
+[ext_resource type="Script" path="res://Characters/enemies/SpriteAnimator.cs" id="6_cb8oj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ygsuw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hodwu"]
+radius = 90.0
+
+[sub_resource type="Animation" id="Animation_atnvp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_m8xel"]
+resource_name = "idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.233333, 0.5, 0.733333, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 1), Vector2(0, 0), Vector2(0, -1), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_a7vmp"]
+resource_name = "swim-down"
+length = 1.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 7]
+}
+
+[sub_resource type="Animation" id="Animation_rp653"]
+resource_name = "swim-up"
+length = 1.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [8, 15]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5jmel"]
+_data = {
+"RESET": SubResource("Animation_atnvp"),
+"idle": SubResource("Animation_m8xel"),
+"swim-down": SubResource("Animation_a7vmp"),
+"swim-up": SubResource("Animation_rp653")
+}
+
+[node name="Fish1Pink" type="CharacterBody2D" node_paths=PackedStringArray("IdleState", "ChaseState")]
+collision_layer = 8
+collision_mask = 83
+script = ExtResource("1_qtl8b")
+Data = ExtResource("2_ymi0q")
+IdleState = NodePath("States/IdleWaypointState")
+ChaseState = NodePath("States/ChaseState")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ygsuw")
+debug_color = Color(0.891235, 0.289766, 0.383419, 0.42)
+
+[node name="SightRange" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SightRange"]
+shape = SubResource("CircleShape2D_hodwu")
+debug_color = Color(0.597166, 0.541664, 0.162175, 0.42)
+
+[node name="States" type="Node2D" parent="."]
+
+[node name="IdleWaypointState" parent="States" node_paths=PackedStringArray("Waypoints") instance=ExtResource("3_dnhsg")]
+Waypoints = [NodePath("Waypoints/Waypoint1"), NodePath("Waypoints/Waypoint2"), NodePath("Waypoints/Waypoint3")]
+
+[node name="ChaseState" parent="States" instance=ExtResource("4_068iu")]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("5_sjk7a")
+offset = Vector2(0, 1)
+hframes = 8
+vframes = 4
+script = ExtResource("6_cb8oj")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+libraries = {
+"": SubResource("AnimationLibrary_5jmel")
+}

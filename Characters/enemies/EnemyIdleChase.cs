@@ -10,15 +10,14 @@ public partial class EnemyIdleChase : CharacterBody2D, IDamageable
 	[Export]
 	public EnemyData Data { get; private set; }
 	[Export]
-	public EnemyStateNode IdleState { get; private set; }
+	public EnemyIdleState IdleState { get; private set; }
 	[Export]
-	public EnemyStateNode ChaseState { get; private set; }
+	public EnemyChaseState ChaseState { get; private set; }
 
 	private EnemyStateNode CurrentState { get; set; }
 
 	private Area2D SightRange { get; set; }
 	
-	// Called by Enemy controller script (parent of state machine).
 	public override void _Ready()
 	{
 		base._Ready();
@@ -28,16 +27,16 @@ public partial class EnemyIdleChase : CharacterBody2D, IDamageable
 		IdleState.InitializeState(this);
 		ChaseState.InitializeState(this);
 
-		SightRange.BodyEntered += Chase; /* (body) => ChangeState(body, ChaseState); */
-		SightRange.BodyExited += Idle; //(body) => ChangeState(body, IdleState);
+		SightRange.BodyEntered += Chase;
+		SightRange.BodyExited += Idle; 
 		
 		CurrentState = IdleState;
 	}
 
 	public override void _ExitTree()
 	{
-		SightRange.BodyEntered -= Chase; //(body) => ChangeState(body, ChaseState);
-		SightRange.BodyExited -= Idle; //(body) => ChangeState(body, IdleState);
+		SightRange.BodyEntered -= Chase;
+		SightRange.BodyExited -= Idle;
 		
 		base._ExitTree();
 	}
@@ -60,8 +59,8 @@ public partial class EnemyIdleChase : CharacterBody2D, IDamageable
 			this.PrintDebug($"Old state: {CurrentState.Name}");
 			CurrentState?.ExitState();
 			CurrentState = newState;
-			CurrentState?.EnterState();
 			CurrentState.Target = player;
+			CurrentState?.EnterState();
 			this.PrintDebug($"New state: {CurrentState.Name}");
 		}
 	}
@@ -73,7 +72,7 @@ public partial class EnemyIdleChase : CharacterBody2D, IDamageable
 
 		CurrentState?.ProcessState(delta);
 	}
-
+	
 	public override void _PhysicsProcess(double delta)
 	{
 		base._PhysicsProcess(delta);

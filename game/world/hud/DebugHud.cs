@@ -1,5 +1,3 @@
-using System;
-using System.Reflection;
 using Godot;
 
 public partial class DebugHud : CanvasLayer
@@ -28,11 +26,11 @@ public partial class DebugHud : CanvasLayer
 		MarginContainer.OnDefocus += ReleaseFocus;
 
 		//Data.ScubaGear.Changed += UpdateDebugHUD;
-		MinAcceleration.TextChanged += (text) => OnStatChanged(text, "MinAcceleration");
-		MaxAcceleration.TextChanged += (text) => OnStatChanged(text, "MaxAcceleration");
-		MaxSpeed.TextChanged += (text) => OnStatChanged(text, "MaxSpeed");
-		Jerk.TextChanged += (text) => OnStatChanged(text, "Jerk");
-		Deceleration.TextChanged += (text) => OnStatChanged(text, "Deceleration");
+		MinAcceleration.TextChanged += OnMinAccelerationChanged;
+		MaxAcceleration.TextChanged += OnMaxAccelerationChanged;
+		MaxSpeed.TextChanged += OnMaxSpeedChanged;
+		Jerk.TextChanged += OnJerkChanged;
+		Deceleration.TextChanged += OnDecelerationChanged;
 
 		InitializeDebugHUD();
 	}
@@ -44,11 +42,11 @@ public partial class DebugHud : CanvasLayer
 		MarginContainer.OnDefocus -= ReleaseFocus;
 
 		//Data.ScubaGear.Changed -= UpdateDebugHUD;
-		MinAcceleration.TextChanged -= (text) => OnStatChanged(text, "MinAcceleration");
-		MaxAcceleration.TextChanged -= (text) => OnStatChanged(text, "MaxAcceleration");
-		MaxSpeed.TextChanged -= (text) => OnStatChanged(text, "MaxSpeed");
-		Jerk.TextChanged -= (text) => OnStatChanged(text, "Jerk");
-		Deceleration.TextChanged -= (text) => OnStatChanged(text, "Deceleration");
+		MinAcceleration.TextChanged -= OnMinAccelerationChanged;
+		MaxAcceleration.TextChanged -= OnMaxAccelerationChanged;
+		MaxSpeed.TextChanged -= OnMaxSpeedChanged;
+		Jerk.TextChanged -= OnJerkChanged;
+		Deceleration.TextChanged -= OnDecelerationChanged;
 	}
 	
 	private void ReleaseFocus()
@@ -80,7 +78,37 @@ public partial class DebugHud : CanvasLayer
 		Deceleration.Text = Data.ScubaGear.Deceleration.ToString();
 	}
 	
-	private void OnStatChanged(string newText, string statName)
+	private void OnMinAccelerationChanged(string text)
+	{
+		if (int.TryParse(text, out var minAcceleration))
+		Data.ScubaGear.MinAcceleration = minAcceleration;
+	}
+	
+	private void OnMaxAccelerationChanged(string text)
+	{
+		if (int.TryParse(text, out var maxAcceleration))
+		Data.ScubaGear.MaxAcceleration = maxAcceleration;
+	}
+	
+	private void OnMaxSpeedChanged(string text)
+	{
+		if (int.TryParse(text, out var maxSpeed))
+		Data.ScubaGear.MaxSpeed = maxSpeed;
+	}
+	
+	private void OnJerkChanged(string text)
+	{
+		if (int.TryParse(text, out var jerk))
+		Data.ScubaGear.Jerk = jerk;
+	}
+	
+	private void OnDecelerationChanged(string text)
+	{
+		if (int.TryParse(text, out var deceleration))
+		Data.ScubaGear.Deceleration = deceleration;
+	}
+	
+/* 	private void OnStatChanged(string newText, string statName)
 	{
 		if (int.TryParse(newText, out var value))
 		{
@@ -97,5 +125,5 @@ public partial class DebugHud : CanvasLayer
 				GD.PushError($"{statName} property not found on ScubaGear");
 			}
 		}
-	}
+	} */
 }

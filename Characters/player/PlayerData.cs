@@ -11,8 +11,6 @@ public partial class PlayerData : Resource
 	private int _health = 1;
 	private int _air = 0;
 	
-	// TODO: Control death by health/drowning here?
-	// Use events to signal Player to die?
 	public int Health 
 	{ 
 		get { return _health; } 
@@ -28,13 +26,12 @@ public partial class PlayerData : Resource
 		}
 	}
 	public int Air
-
 	{
 		get { return _air; }
 		set 
 		{ 
 			_air = value;
-			this.PrintDebug($"Air: {_air}");
+			//this.PrintDebug($"Air: {_air}");
 			EmitChanged();
 			if (_air <= 0)
 			{
