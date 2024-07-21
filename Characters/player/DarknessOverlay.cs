@@ -1,11 +1,11 @@
 using Godot;
 
+// TODO: Maybe change color as you go deeper too? Less red, more blue, like real water?
 public partial class DarknessOverlay : CanvasLayer
 {
-	private Camera2D Camera { get; set; }
+	private Player Player { get; set; }
 	private ColorRect ColorRect { get; set; }
-	[Export]
-	private float WaterLevel { get; set; } = -536f;
+	private float WaterLevel { get; set; }
 	[Export]
 	private float ExtinctionCoefficient { get; set; } = 0.1f;
 	[Export(PropertyHint.Range, "0.0, 1.0,")]
@@ -20,12 +20,18 @@ public partial class DarknessOverlay : CanvasLayer
 	private float MaxAlpha { get; set; } = 0.86f;
 	[Export]
 	private Color WaterColor { get; set; }
+	private RayCast2D RayCast { get; set; }
 	
 	public override void _Ready()
 	{
 		base._Ready();
 
-		CallDeferred(MethodName.GetCamera);
+		GetCamera();
+		
+		CallDeferred(MethodName.GetWaterLevel);
+		
+		RayCast = GetNode<RayCast2D>("RayCast2D");
+		
 		ColorRect = GetNode<ColorRect>("ColorRect");
 		ColorRect.Color = WaterColor;
 		
@@ -37,27 +43,48 @@ public partial class DarknessOverlay : CanvasLayer
 	
 	private void GetCamera()
 	{
-		Camera = GetParent() as Camera2D;
+		Player = GetParent() as Player;
+	}
+	
+	private void GetWaterLevel()
+	{
+		if (RayCast.IsColliding())
+		{
+			Vector2 collisionPoint = RayCast.GetCollisionPoint();
+			WaterLevel = collisionPoint.Y;
+			this.PrintDebug($"Water level set to {WaterLevel}");
+		}
+		else
+		{
+			WaterLevel = 0;
+			GD.PushWarning("No water level found, setting to 0.");
+		}
+		RayCast.QueueFree();
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
 		base._PhysicsProcess(delta);
 
-		float depth = Camera.GlobalPosition.Y - WaterLevel;
+		float depth = Player.GlobalPosition.Y - WaterLevel;
+		SetAlpha(depth);
+		//this.PrintDebug($"Depth: {depth}, Alpha: {ColorRect.Color.A}");
+	}
+	
+	private void SetAlpha(float depth)
+	{
 		if (depth <= 0)
 		{
-			ColorRect.Color = NewColor(0);
+			ColorRect.Color = NewColorWithAlpha(0);
 		}
 		else
 		{
 			float intensity = IntensityMultiplier * Mathf.Exp(depth * DepthMultiplier * ExtinctionCoefficient);
-			ColorRect.Color = NewColor(Mathf.Min(intensity, MaxAlpha));
+			ColorRect.Color = NewColorWithAlpha(Mathf.Min(intensity, MaxAlpha));
 		}
-		this.PrintDebug($"Depth: {depth}, Alpha: {ColorRect.Color.A}");
 	}
 	
-	private Color NewColor(float alpha)
+	private Color NewColorWithAlpha(float alpha)
 	{
 		return new Color(
 			ColorRect.Color.R,

@@ -5,7 +5,7 @@ public partial class ChaseState : EnemyStateNode
 {
 	private int Speed { get; set; }
 
-	public override void InitializeState(Enemy enemy)
+	public override void InitializeState(EnemyIdleChase enemy)
 	{
 		base.InitializeState(enemy);
 

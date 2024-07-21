@@ -1,0 +1,21 @@
+{
+  "hidden_columns": {
+    "res://Characters/player/": {
+      "resource_local_to_scene": true,
+      "resource_name": true
+    },
+    "res://collectables/scuba-gear/": {
+      "resource_local_to_scene": true,
+      "resource_name": true
+    }
+  },
+  "recent_paths": [
+    "res://Characters/player/harpoon/",
+    "res://Characters/player/",
+    "res://collectables/chest/",
+    "res://collectables/scuba-gear/"
+  ],
+  "table_functions": {
+
+  }
+}

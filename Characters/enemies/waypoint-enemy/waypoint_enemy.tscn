@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://dvwoi8yofyyxs"]
 
-[ext_resource type="Script" path="res://Characters/enemies/Enemy.cs" id="1_3td10"]
+[ext_resource type="Script" path="res://Characters/enemies/EnemyIdleChase.cs" id="1_3td10"]
 [ext_resource type="Resource" uid="uid://b1p85j0ji78j2" path="res://Characters/enemies/waypoint-enemy/waypoint-enemy-1.tres" id="2_dackk"]
 [ext_resource type="Texture2D" uid="uid://dw68le7r0kjxe" path="res://Characters/enemies/fish-1/spritesheets/Pink.png" id="2_u0gky"]
 [ext_resource type="Script" path="res://Characters/enemies/state-machine/state-nodes/IdleWaypointState.cs" id="3_glmq0"]

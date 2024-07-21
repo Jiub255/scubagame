@@ -24,7 +24,7 @@ public partial class IdleWaypointState : EnemyStateNode
 	private int Index { get; set; } = 0;
 	private int Speed { get; set; }
 
-	public override void InitializeState(Enemy enemy)
+	public override void InitializeState(EnemyIdleChase enemy)
 	{
 		base.InitializeState(enemy);
 

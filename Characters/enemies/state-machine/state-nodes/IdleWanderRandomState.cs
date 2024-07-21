@@ -12,7 +12,7 @@ public partial class IdleWanderRandomState : EnemyStateNode
 	private Vector2 RandomDirection { get; set; }
 	private float Timer { get; set; }
 
-	public override void InitializeState(Enemy enemy)
+	public override void InitializeState(EnemyIdleChase enemy)
 	{
 		base.InitializeState(enemy);
 

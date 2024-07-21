@@ -15,7 +15,7 @@ public partial class EnemyStateMachine : Node2D
 	private Area2D AttackRange { get; set; }
 	
 	// Called by Enemy controller script (parent of state machine).
-	public void InitializeStates(Enemy enemy)
+	public void InitializeStates(EnemyIdleChase enemy)
 	{
 		SightRange = enemy.GetNode<Area2D>("SightRange");
 		AttackRange = enemy.GetNode<Area2D>("AttackRange");

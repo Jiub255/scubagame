@@ -197,8 +197,8 @@ libraries = {
 tree_root = SubResource("AnimationNodeStateMachine_8vuip")
 anim_player = NodePath("../AnimationPlayer")
 parameters/current_length = 1.0
-parameters/current_position = 0.758423
-parameters/current_delta = 0.0075
+parameters/current_position = 0.261111
+parameters/current_delta = 0.006899
 parameters/End/current_length = null
 parameters/End/current_position = null
 parameters/End/current_delta = null
@@ -206,18 +206,18 @@ parameters/Start/current_length = 0.0
 parameters/Start/current_position = 0.0
 parameters/Start/current_delta = 0.0
 parameters/move-blend-tree/current_length = 1.0
-parameters/move-blend-tree/current_position = 0.758423
-parameters/move-blend-tree/current_delta = 0.0075
+parameters/move-blend-tree/current_position = 0.261111
+parameters/move-blend-tree/current_delta = 0.006899
 parameters/move-blend-tree/move-blend-space/current_length = 1.0
-parameters/move-blend-tree/move-blend-space/current_position = 0.758423
-parameters/move-blend-tree/move-blend-space/current_delta = 0.0075
+parameters/move-blend-tree/move-blend-space/current_position = 0.261111
+parameters/move-blend-tree/move-blend-space/current_delta = 0.006899
 parameters/move-blend-tree/move-blend-space/blend_position = Vector2(0, 0.010453)
 parameters/move-blend-tree/move-blend-space/0/current_length = null
 parameters/move-blend-tree/move-blend-space/0/current_position = null
 parameters/move-blend-tree/move-blend-space/0/current_delta = null
 parameters/move-blend-tree/move-blend-space/1/current_length = 1.0
-parameters/move-blend-tree/move-blend-space/1/current_position = 0.758423
-parameters/move-blend-tree/move-blend-space/1/current_delta = 0.0075
+parameters/move-blend-tree/move-blend-space/1/current_position = 0.261111
+parameters/move-blend-tree/move-blend-space/1/current_delta = 0.006899
 parameters/move-blend-tree/move-blend-space/2/current_length = null
 parameters/move-blend-tree/move-blend-space/2/current_position = null
 parameters/move-blend-tree/move-blend-space/2/current_delta = null
@@ -228,12 +228,12 @@ parameters/move-blend-tree/move-blend-space/4/current_length = null
 parameters/move-blend-tree/move-blend-space/4/current_position = null
 parameters/move-blend-tree/move-blend-space/4/current_delta = null
 parameters/move-blend-tree/move-time-scale/current_length = 1.0
-parameters/move-blend-tree/move-time-scale/current_position = 0.758423
-parameters/move-blend-tree/move-time-scale/current_delta = 0.0075
+parameters/move-blend-tree/move-time-scale/current_position = 0.261111
+parameters/move-blend-tree/move-time-scale/current_delta = 0.006899
 parameters/move-blend-tree/move-time-scale/scale = 1.0
 parameters/move-blend-tree/output/current_length = 1.0
-parameters/move-blend-tree/output/current_position = 0.758423
-parameters/move-blend-tree/output/current_delta = 0.0075
+parameters/move-blend-tree/output/current_position = 0.261111
+parameters/move-blend-tree/output/current_delta = 0.006899
 parameters/take-damage/current_length = 1.0
 parameters/take-damage/current_position = 0.0305086
 parameters/take-damage/current_delta = 0.006901
@@ -242,11 +242,15 @@ parameters/take-damage/current_delta = 0.006901
 zoom = Vector2(2, 2)
 position_smoothing_enabled = true
 
-[node name="DarknessOverlay" type="CanvasLayer" parent="Camera2D"]
+[node name="Collector" parent="." instance=ExtResource("5_w5nj6")]
+
+[node name="HarpoonGun" parent="." instance=ExtResource("6_vqwjf")]
+
+[node name="DarknessOverlay" type="CanvasLayer" parent="."]
 script = ExtResource("5_a3pjb")
 WaterColor = Color(3.73013e-07, 0.105739, 0.250941, 1)
 
-[node name="ColorRect" type="ColorRect" parent="Camera2D/DarknessOverlay"]
+[node name="ColorRect" type="ColorRect" parent="DarknessOverlay"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -255,6 +259,8 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0.217186, 0.512243, 0.235294)
 
-[node name="Collector" parent="." instance=ExtResource("5_w5nj6")]
-
-[node name="HarpoonGun" parent="." instance=ExtResource("6_vqwjf")]
+[node name="RayCast2D" type="RayCast2D" parent="DarknessOverlay"]
+target_position = Vector2(0, -5000)
+collision_mask = 32
+collide_with_areas = true
+collide_with_bodies = false
