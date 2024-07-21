@@ -5,12 +5,12 @@ public abstract partial class EnemyStateNode : Node2D
 {
 	protected EnemyIdleChase Enemy { get; private set; }
 	public Player Target { get; set; }
-	protected Graphics Graphics { get; private set; }
+	protected SpriteAnimator SpriteAnimator { get; private set; }
 	
 	public virtual void InitializeState(EnemyIdleChase enemy)
 	{
 		Enemy = enemy;
-		Graphics = enemy.GetNode<Graphics>("Graphics");
+		SpriteAnimator = enemy.GetNode<SpriteAnimator>("Sprite2D");
 	}
 
 	public abstract void EnterState();
@@ -22,15 +22,15 @@ public abstract partial class EnemyStateNode : Node2D
 	{
 		if (Enemy.Velocity == Vector2.Zero)
 		{
-			Graphics.Play("idle");
+			SpriteAnimator.Play("idle");
 		}
 		else if (Enemy.Velocity.Y < 0)
 		{
-			Graphics.Play("swim-up");
+			SpriteAnimator.Play("swim-up");
 		}
 		else
 		{
-			Graphics.Play("swim-down");
+			SpriteAnimator.Play("swim-down");
 		}
 	}
 }

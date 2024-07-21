@@ -41,6 +41,12 @@ Have giant whales that can swallow you.
 
 Maybe, eventually be fighting off huge swarms of enemy fish with crazy area effect weapons. Could be fun.
 
+Maybe, make a two player co-op mode.
+	Also, make a player vs. enemies mode, where one player controls the diver, and the other
+	can control any on screen enemy at any time, and can switch control to any on screen enemy at any time.
+	Could be fun. Could even allow multiple divers and/or enemy controllers.
+
+
 DONE:
 -------------
 

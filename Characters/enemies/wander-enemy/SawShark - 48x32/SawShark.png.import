@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://xxi4gixpeh4f"
-path="res://.godot/imported/Head.png-ad90366d16f6319ec4b3a90b0c0d91d6.ctex"
+uid="uid://bajsc1yf7cy64"
+path="res://.godot/imported/SawShark.png-1f99c225437c0170a148f44183c93e2f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/SpearFishing Assets Pack/Sprites/SawShark - 48x32/Layers/Head.png"
-dest_files=["res://.godot/imported/Head.png-ad90366d16f6319ec4b3a90b0c0d91d6.ctex"]
+source_file="res://Characters/enemies/wander-enemy/SawShark - 48x32/SawShark.png"
+dest_files=["res://.godot/imported/SawShark.png-1f99c225437c0170a148f44183c93e2f.ctex"]
 
 [params]
 

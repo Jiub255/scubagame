@@ -4,6 +4,7 @@ using Godot;
 // Also, Get hit state, "revenge" state (where they chase you from further out than 
 // their usual sight range because you shot them), Die/drop loot state.
 // TODO: Might be better to separate out the machine once it gets too complicated. 
+[GlobalClass]
 public partial class EnemyIdleChase : CharacterBody2D, IDamageable
 {
 	[Export]

@@ -4,8 +4,8 @@
 [ext_resource type="Resource" uid="uid://b1p85j0ji78j2" path="res://Characters/enemies/waypoint-enemy/waypoint-enemy-1.tres" id="2_2dpwt"]
 [ext_resource type="Texture2D" uid="uid://dw68le7r0kjxe" path="res://Characters/enemies/fish-1/spritesheets/Pink.png" id="3_ua3sf"]
 [ext_resource type="Script" path="res://Characters/enemies/state-machine/state-nodes/IdleWaypointState.cs" id="4_laqsn"]
-[ext_resource type="Script" path="res://Characters/enemies/waypoint-enemy/Graphics.cs" id="5_5ygb4"]
 [ext_resource type="Script" path="res://Characters/enemies/state-machine/state-nodes/ChaseState.cs" id="5_go3sx"]
+[ext_resource type="Script" path="res://Characters/enemies/SpriteAnimator.cs" id="6_02txc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ygsuw"]
 
@@ -140,17 +140,14 @@ _changeWaypointsRadius = 1.0
 [node name="ChaseState" type="Node2D" parent="WaypointEnemyBody/States"]
 script = ExtResource("5_go3sx")
 
-[node name="Graphics" type="Node2D" parent="WaypointEnemyBody"]
-script = ExtResource("5_5ygb4")
-
-[node name="Sprite2D" type="Sprite2D" parent="WaypointEnemyBody/Graphics"]
+[node name="Sprite2D" type="Sprite2D" parent="WaypointEnemyBody"]
 texture = ExtResource("3_ua3sf")
 offset = Vector2(0, 1)
 hframes = 8
 vframes = 4
+script = ExtResource("6_02txc")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="WaypointEnemyBody/Graphics"]
-root_node = NodePath("../Sprite2D")
+[node name="AnimationPlayer" type="AnimationPlayer" parent="WaypointEnemyBody/Sprite2D"]
 libraries = {
 "": SubResource("AnimationLibrary_5jmel")
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dvwoi8yofyyxs"]
+[gd_scene load_steps=13 format=3 uid="uid://c402m3hy2etbt"]
 
 [ext_resource type="Script" path="res://Characters/enemies/EnemyIdleChase.cs" id="1_3td10"]
 [ext_resource type="Resource" uid="uid://b1p85j0ji78j2" path="res://Characters/enemies/waypoint-enemy/waypoint-enemy-1.tres" id="2_dackk"]
