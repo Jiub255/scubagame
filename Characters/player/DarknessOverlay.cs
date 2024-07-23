@@ -26,7 +26,7 @@ public partial class DarknessOverlay : CanvasLayer
 	{
 		base._Ready();
 
-		GetCamera();
+		GetPlayer();
 		
 		RayCast = GetNode<RayCast2D>("RayCast2D");
 		
@@ -41,7 +41,7 @@ public partial class DarknessOverlay : CanvasLayer
 		}
 	}
 	
-	private void GetCamera()
+	private void GetPlayer()
 	{
 		Player = GetParent() as Player;
 	}

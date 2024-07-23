@@ -1,5 +1,9 @@
 {
   "hidden_columns": {
+    "res://Characters/enemies/enemy-types/": {
+      "resource_local_to_scene": true,
+      "resource_name": true
+    },
     "res://Characters/player/": {
       "resource_local_to_scene": true,
       "resource_name": true
@@ -13,7 +17,8 @@
     "res://Characters/player/harpoon/",
     "res://Characters/player/",
     "res://collectables/chest/",
-    "res://collectables/scuba-gear/"
+    "res://collectables/scuba-gear/",
+    "res://Characters/enemies/enemy-types/"
   ],
   "table_functions": {
     "filter": [

@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://c5u5qwrouu8sb"]
+
+[ext_resource type="Script" path="res://Characters/player/DarknessOverlay.cs" id="1_ocq56"]
+
+[node name="DarknessOverlay" type="CanvasLayer"]
+script = ExtResource("1_ocq56")
+WaterColor = Color(3.73013e-07, 0.105739, 0.250941, 1)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0.215686, 0.513726, 0)
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+target_position = Vector2(0, -5000)
+collision_mask = 32
+collide_with_areas = true
+collide_with_bodies = false

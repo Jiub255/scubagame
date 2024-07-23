@@ -2,14 +2,12 @@
 
 [ext_resource type="Script" path="res://game/Game.cs" id="1_1ccvl"]
 [ext_resource type="PackedScene" uid="uid://x7jr7xj0ls8q" path="res://game/ui/ui.tscn" id="2_m43h5"]
-[ext_resource type="PackedScene" uid="uid://ls1sykyok5ei" path="res://game/world/world.scn" id="3_avst5"]
+[ext_resource type="PackedScene" uid="uid://c0sqbm0rr4c4v" path="res://game/world/world-2.scn" id="3_5ydu5"]
 
-[node name="Game" type="Node" node_paths=PackedStringArray("_ui", "_world")]
+[node name="Game" type="Node" node_paths=PackedStringArray("_ui")]
 script = ExtResource("1_1ccvl")
 _ui = NodePath("UI")
-_world = NodePath("World")
 
 [node name="UI" parent="." instance=ExtResource("2_m43h5")]
 
-[node name="World" parent="." instance=ExtResource("3_avst5")]
-position = Vector2(38, -148)
+[node name="World2" parent="." instance=ExtResource("3_5ydu5")]

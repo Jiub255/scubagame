@@ -3,6 +3,11 @@ Now it's a diving game.
 TODO:
 -------------
 
+Make c# attribute that makes properties editable during runtime? Or something like that
+	so you don't have to setup testing huds each time.
+
+Have battery var on light? Find battery powerups to recharge?
+
 Make more enemies.
 	Make more idle/wander states.
 	Other chase states?
@@ -76,3 +81,5 @@ Fix (very) different harpoon speed when aiming with mouse vs controller/number k
 
 Fix state machines.
 	(Subscribing to lambda events is causing problems on scene reload, switched to named methods to fix it.)
+
+Take sky off of parallax and put sprite on SkyArea, so you can put in underwater air pockets.

@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ckv81ijn747dl"
-path="res://.godot/imported/Red.png-c835f005e372a79c2d3b7b22ae2cb7f9.ctex"
+path="res://.godot/imported/Red.png-5ce98efe88f1ab1a02b5b82b092907da.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/SpearFishing Assets Pack/Sprites/Fish3 - 32x16/Red.png"
-dest_files=["res://.godot/imported/Red.png-c835f005e372a79c2d3b7b22ae2cb7f9.ctex"]
+source_file="res://Characters/enemies/enemy-types/fish-3-red/Red.png"
+dest_files=["res://.godot/imported/Red.png-5ce98efe88f1ab1a02b5b82b092907da.ctex"]
 
 [params]
 

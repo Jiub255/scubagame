@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://bopdj6lp224im"]
+
+[ext_resource type="Script" path="res://game/world/SkyArea.cs" id="1_3pymx"]
+[ext_resource type="Texture2D" uid="uid://cw8rjn0ehdt31" path="res://assets/mine/square-512.png" id="2_7e6be"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c6d4i"]
+size = Vector2(171, 146)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j4hyi"]
+size = Vector2(171, 146)
+
+[node name="AirPocket" type="Area2D"]
+position = Vector2(-341, 45)
+collision_layer = 32
+script = ExtResource("1_3pymx")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(0.65771, 0.910639, 1, 1)
+z_index = -1
+position = Vector2(9, 18)
+scale = Vector2(0.341128, 0.284825)
+texture = ExtResource("2_7e6be")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(8.5, 18)
+shape = SubResource("RectangleShape2D_c6d4i")
+
+[node name="EnemyBlocker" type="StaticBody2D" parent="."]
+collision_layer = 64
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyBlocker"]
+position = Vector2(8.5, 18)
+shape = SubResource("RectangleShape2D_j4hyi")
+debug_color = Color(0.839996, 0.373187, 0.241825, 0.42)

@@ -45,6 +45,7 @@ public partial class PlayerData : Resource
 	public float AttackTimer { get; set; } = 0f;
 	public Vector2 KnockbackDirection { get; set; }
 	public float AirTimer { get; set; }
+	public float Depth { get; set; }
 	
 	public void RefillAir()
 	{
