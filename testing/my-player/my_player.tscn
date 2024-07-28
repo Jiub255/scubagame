@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cu2voen1d0ajc"]
+[gd_scene load_steps=11 format=3 uid="uid://cu2voen1d0ajc"]
 
 [ext_resource type="Script" path="res://testing/my-player/MyPlayer.cs" id="1_7h0jv"]
 [ext_resource type="Texture2D" uid="uid://v23xg2hqttq3" path="res://assets/mine/diver-atlas2048.png" id="1_m4jac"]
@@ -302,15 +302,32 @@ tracks/11/keys = {
 "values": [-0.201766]
 }
 
+[sub_resource type="Animation" id="Animation_si2d6"]
+resource_name = "idle"
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_i3k74"]
 _data = {
 "RESET": SubResource("Animation_p5let"),
+"idle": SubResource("Animation_si2d6"),
 "swim-left": SubResource("Animation_e6rhc")
 }
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2lymn"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fcino"]
+animation = &"swim-left"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_8ds8d"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_2lymn")
+blend_point_0/pos = 0.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_fcino")
+blend_point_1/pos = 1.0
+min_space = 0.0
+
 [node name="MyPlayer" type="CharacterBody2D"]
 script = ExtResource("1_7h0jv")
-Speed = 20000.0
+Acceleration = 4000.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_ldti3")
@@ -517,7 +534,7 @@ bone_angle = 0.0
 [node name="ArmUR" type="Bone2D" parent="Skeleton2D/Torso"]
 position = Vector2(353.146, 17.2387)
 rotation = 3.27481
-scale = Vector2(0.999999, 0.999999)
+scale = Vector2(0.999998, 0.999998)
 rest = Transform2D(-0.99114, -0.132819, 0.132819, -0.99114, 353.146, 17.2387)
 
 [node name="ArmLR" type="Bone2D" parent="Skeleton2D/Torso/ArmUR"]
@@ -538,13 +555,13 @@ bone_angle = 0.0
 [node name="LegUL" type="Bone2D" parent="Skeleton2D/Torso"]
 position = Vector2(-62.5933, -16.6759)
 rotation = 3.31129
-scale = Vector2(0.999999, 0.999999)
+scale = Vector2(0.999998, 0.999998)
 rest = Transform2D(-0.985637, -0.168879, 0.168879, -0.985637, -62.5933, -16.6759)
 
 [node name="LegLL" type="Bone2D" parent="Skeleton2D/Torso/LegUL"]
 position = Vector2(295.32, 11.0409)
 rotation = 6.03964
-scale = Vector2(1, 1)
+scale = Vector2(0.999999, 0.999999)
 rest = Transform2D(0.970489, -0.241144, 0.241144, 0.970489, 295.32, 11.0409)
 
 [node name="FootL" type="Bone2D" parent="Skeleton2D/Torso/LegUL/LegLL"]
@@ -585,3 +602,17 @@ libraries = {
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.1, 0.1)
 position_smoothing_enabled = true
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeBlendSpace1D_8ds8d")
+anim_player = NodePath("../AnimationPlayer")
+parameters/current_length = 1.0
+parameters/current_position = 1.0
+parameters/current_delta = 0.0
+parameters/blend_position = 0
+parameters/0/current_length = 1.0
+parameters/0/current_position = 1.0
+parameters/0/current_delta = 0.0
+parameters/1/current_length = 1.6
+parameters/1/current_position = 0.493432
+parameters/1/current_delta = 0.0135857
