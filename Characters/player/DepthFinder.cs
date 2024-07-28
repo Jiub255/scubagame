@@ -1,7 +1,8 @@
 using Godot;
 
 public partial class DepthFinder : RayCast2D
-{	private Player Player { get; set; }
+{	
+	private Player Player { get; set; }
 	private float WaterLevel { get; set; }
 	
 	public override void _Ready()
@@ -15,7 +16,9 @@ public partial class DepthFinder : RayCast2D
 	
 	private void GetWaterLevel()
 	{
+		// Necessary for reloading the scene. 
 		ForceRaycastUpdate();
+		
 		if (IsColliding())
 		{
 			Vector2 collisionPoint = GetCollisionPoint();

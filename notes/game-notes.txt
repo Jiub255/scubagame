@@ -3,6 +3,9 @@ Now it's a diving game.
 TODO:
 -------------
 
+Rework movement from scratch. Make it more responsive. And set it up for more variations,
+	like attacks.
+
 Make c# attribute that makes properties editable during runtime? Or something like that
 	so you don't have to setup testing huds each time.
 

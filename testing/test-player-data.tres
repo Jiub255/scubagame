@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="PlayerData" load_steps=4 format=3 uid="uid://dfre0whjax4md"]
+
+[ext_resource type="Script" path="res://Characters/player/PlayerData.cs" id="1_k6y3y"]
+[ext_resource type="Resource" uid="uid://bw151sf1qvadt" path="res://testing/test-harpoon-gun-data.tres" id="1_pp6cd"]
+[ext_resource type="Resource" uid="uid://dblf0l15dou15" path="res://testing/test-scuba-data.tres" id="2_xn60o"]
+
+[resource]
+script = ExtResource("1_k6y3y")
+_scubaGear = ExtResource("2_xn60o")
+_defaultScubaGear = ExtResource("2_xn60o")
+_harpoonGun = ExtResource("1_pp6cd")
+_defaultHarpoonGun = ExtResource("1_pp6cd")

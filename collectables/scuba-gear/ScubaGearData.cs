@@ -92,9 +92,7 @@ public partial class ScubaGearData : Resource
 		}
 		set
 		{
-			this.PrintDebug($"Old jerk value: {_jerk}");
 			_jerk = value;
-			this.PrintDebug($"New jerk value: {_jerk}");
 			EmitChanged();
 		} 
 	}

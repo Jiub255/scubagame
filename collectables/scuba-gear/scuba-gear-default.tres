@@ -5,11 +5,11 @@
 
 [resource]
 script = ExtResource("2_l0llf")
-_maxHealth = 5
-_maxAir = 60
+_maxHealth = 3
+_maxAir = 30
 _spritesheet = ExtResource("1_qpyp8")
 _minAcceleration = 100.0
 _maxAcceleration = 300.0
-_maxSpeed = 123.0
-_jerk = 234.0
+_maxSpeed = 150.0
+_jerk = 200.0
 _deceleration = 300.0

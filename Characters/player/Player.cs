@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 public partial class Player : CharacterBody2D, IDamageable, ICanEnterWater, ICanExitWater
@@ -16,28 +17,30 @@ public partial class Player : CharacterBody2D, IDamageable, ICanEnterWater, ICan
 	private PlayerActionStateMachine ActionMachine { get; set; }
 	
 	public override void _Ready()
-	{
-		base._Ready();
+    {
+        base._Ready();
 
-		AnimationTree = GetNode<AnimationTree>("AnimationTree");
-		Sprite = GetNode<Sprite2D>("BodySprite");
-		HarpoonGun = GetNode<HarpoonGun>("HarpoonGun");
-		LocationMachine = new PlayerLocationStateMachine(this);
-		ActionMachine = new PlayerActionStateMachine(this);
+        AnimationTree = GetNode<AnimationTree>("AnimationTree");
+        Sprite = GetNode<Sprite2D>("BodySprite");
+        HarpoonGun = GetNode<HarpoonGun>("HarpoonGun");
+        LocationMachine = new PlayerLocationStateMachine(this);
+        ActionMachine = new PlayerActionStateMachine(this);
 
-		Data.Changed += SetSprites;
-		//Data.OnHealthDeath += () => { };
-		Data.OnDrowned += Drown;
+        Data.Changed += SetSprites;
+        //Data.OnHealthDeath += () => { };
+        Data.OnDrowned += Drown;
 
-		SetSprites();
+        SetSprites();
 
-		Data.RefillAir();
-		
-		// Just for testing.
-		Data.RefillHealth();
-	}
+        Data.RefillAir();
 
-	public override void _ExitTree()
+        //InitializeComponents();
+
+        // Just for testing.
+        Data.RefillHealth();
+    }
+
+    public override void _ExitTree()
 	{
 		base._ExitTree();
 
@@ -45,6 +48,18 @@ public partial class Player : CharacterBody2D, IDamageable, ICanEnterWater, ICan
 		//Data.OnHealthDeath -= () => { };
 		Data.OnDrowned -= Drown;
 	}
+
+/*     private void InitializeComponents()
+    {
+        Godot.Collections.Array<Node> children = GetChildren();
+        foreach (Node child in children)
+        {
+            if (child is PlayerComponent component)
+            {
+                component.InitializeComponent(this);
+            }
+        }
+    } */
 
 	private void Drown()
 	{
