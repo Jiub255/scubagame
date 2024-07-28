@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://65etx7fw63rt"]
+
+[ext_resource type="Texture2D" uid="uid://bycd803bwq5hj" path="res://assets/mine/parallax-mid.png" id="1_8dbyl"]
+[ext_resource type="PackedScene" uid="uid://cu2voen1d0ajc" path="res://testing/my-player/my_player.tscn" id="1_8n2m4"]
+
+[node name="TestMyPlayer" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_8dbyl")
+
+[node name="MyPlayer" parent="." instance=ExtResource("1_8n2m4")]
