@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public partial class Collector : Area2D
 {
@@ -23,9 +22,9 @@ public partial class Collector : Area2D
 	private void OnCollectorAreaEntered(Area2D otherArea)
 	{
 		//this.PrintDebug("Entered collector area");
-		if (otherArea is ICollectable collectableArea)
+		if (otherArea is ICollectable collectable)
 		{
-			collectableArea.GetCollected(Player);
+			collectable.GetCollected(Player);
 		}
 	}
 }

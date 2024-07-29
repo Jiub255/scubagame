@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://k4oy68bd0xw"]
 
-[ext_resource type="Shader" path="res://testShader.gdshader" id="1_e13dp"]
+[ext_resource type="Shader" path="res://testing/testShader.gdshader" id="1_e13dp"]
 [ext_resource type="Texture2D" uid="uid://cw8rjn0ehdt31" path="res://assets/mine/square-512.png" id="2_accw7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6kps0"]

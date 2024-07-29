@@ -1,8 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://qfih8o0d23ri"]
+[gd_scene load_steps=5 format=3 uid="uid://qfih8o0d23ri"]
 
 [ext_resource type="Script" path="res://testing/Land.cs" id="1_yejf6"]
 [ext_resource type="Texture2D" uid="uid://c7e5o0tersrh3" path="res://assets/mine/land2.png" id="2_n81ke"]
-[ext_resource type="Texture2D" uid="uid://bw7c2ruli5lk3" path="res://assets/mine/land-border.png" id="3_i6x25"]
+[ext_resource type="Texture2D" uid="uid://dexweiybopage" path="res://assets/mine/land-border2c.png" id="3_oydg3"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_8i4ir"]
+resource_local_to_scene = true
+polygon = PackedVector2Array(-50, -50, -50, 50, 50, 50, 50, -50)
 
 [node name="Land" type="StaticBody2D"]
 script = ExtResource("1_yejf6")
@@ -11,17 +15,22 @@ script = ExtResource("1_yejf6")
 texture_repeat = 2
 color = Color(0.346741, 0.279883, 0.192488, 1)
 texture = ExtResource("2_n81ke")
+polygon = PackedVector2Array(-50, -50, -50, 50, 50, 50, 50, -50)
 
 [node name="Line2D" type="Line2D" parent="."]
 texture_filter = 1
 texture_repeat = 2
-points = PackedVector2Array(683, 509)
+points = PackedVector2Array(-50, -50, -50, 50, 50, 50, 50, -50)
 closed = true
 width = 20.0
 default_color = Color(0.489465, 0.406619, 0.702569, 1)
-texture = ExtResource("3_i6x25")
+texture = ExtResource("3_oydg3")
 texture_mode = 1
 joint_mode = 2
 antialiased = true
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-50, -50, -50, 50, 50, 50, 50, -50)
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_8i4ir")

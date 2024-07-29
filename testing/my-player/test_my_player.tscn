@@ -1,8 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://65etx7fw63rt"]
+[gd_scene load_steps=8 format=3 uid="uid://65etx7fw63rt"]
 
 [ext_resource type="Texture2D" uid="uid://bycd803bwq5hj" path="res://assets/mine/parallax-mid.png" id="1_8dbyl"]
 [ext_resource type="PackedScene" uid="uid://cu2voen1d0ajc" path="res://testing/my-player/my_player.tscn" id="1_8n2m4"]
 [ext_resource type="PackedScene" uid="uid://qfih8o0d23ri" path="res://testing/land.tscn" id="3_0e1fn"]
+[ext_resource type="Texture2D" uid="uid://dsjk8e3sm7hoa" path="res://assets/mine/light2.png" id="4_px1i2"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_8nxbd"]
+resource_local_to_scene = true
+polygon = PackedVector2Array(-210, 42, -169, 2, -118, 22, -99, 63, -108, 99, -10, 260, 261, 151, 318, 3, 412, 46, 544, 73, 567, 50, 553, 17, 408, -46, 218, -50, 187, -69, 174, -110, 216, -253, 210, -284, 177, -304, -23, -253, -345, -231, -370, -56, -387, 49)
+
+[sub_resource type="Gradient" id="Gradient_aw5xs"]
+offsets = PackedFloat32Array(0, 0.232824, 0.534351, 0.709924, 1)
+colors = PackedColorArray(0.188235, 0.462745, 0.282353, 1, 0.729656, 0.664759, 3.85046e-07, 1, 0.754646, 0.43708, 0.317387, 1, 0.610494, 0.392789, 0.716485, 1, 0.189397, 0.461124, 0.283322, 1)
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_sfctf"]
+resource_local_to_scene = true
+polygon = PackedVector2Array(-168, -67, -128, -59, -99, -30, -91, 18, -96, 62, -90, 102, 71, 239, 110, 287, 247, 537, 306, 586, 375, 592, 425, 538, 437, 464, 298, 129, 339, 39, 455, 16, 523, 8, 490, -79, 421, -103, 213, -55, 101, -76, 53, -149, 13, -230, -69, -246, -127, -235, -576, -310, -671, -278, -698, -192, -662.434, -132.877, -620.429, -105.139, -579.108, -77.8542, -388, 2, -217, 23, -228, -9, -208.547, -52.4898)
 
 [node name="TestMyPlayer" type="Node2D"]
 
@@ -16,25 +29,51 @@ texture = ExtResource("1_8dbyl")
 position = Vector2(-439, 225)
 
 [node name="Polygon2D" parent="Land" index="0"]
-polygon = PackedVector2Array(-239, 45, -141, -89, 3, -84, 69, 54, -108, 99, -10, 260, 261, 151, 318, 3, 523, 8, 490, -79, 187, -69, 210, -284, -23, -253, -345, -231, -370, -56, -387, 49)
+polygon = PackedVector2Array(-210, 42, -169, 2, -118, 22, -99, 63, -108, 99, -10, 260, 261, 151, 318, 3, 412, 46, 544, 73, 567, 50, 553, 17, 408, -46, 218, -50, 187, -69, 174, -110, 216, -253, 210, -284, 177, -304, -23, -253, -345, -231, -370, -56, -387, 49)
 
 [node name="Line2D" parent="Land" index="1"]
-points = PackedVector2Array(-239, 45, -141, -89, 3, -84, 69, 54, -108, 99, -10, 260, 261, 151, 318, 3, 523, 8, 490, -79, 187, -69, 210, -284, -23, -253, -345, -231, -370, -56, -387, 49)
+points = PackedVector2Array(-210, 42, -169, 2, -118, 22, -99, 63, -108, 99, -10, 260, 261, 151, 318, 3, 412, 46, 544, 73, 567, 50, 553, 17, 408, -46, 218, -50, 187, -69, 174, -110, 216, -253, 210, -284, 177, -304, -23, -253, -345, -231, -370, -56, -387, 49)
 
 [node name="CollisionPolygon2D" parent="Land" index="2"]
-polygon = PackedVector2Array(-239, 45, -141, -89, 3, -84, 69, 54, -108, 99, -10, 260, 261, 151, 318, 3, 523, 8, 490, -79, 187, -69, 210, -284, -23, -253, -345, -231, -370, -56, -387, 49)
+polygon = PackedVector2Array(-210, 42, -169, 2, -118, 22, -99, 63, -108, 99, -10, 260, 261, 151, 318, 3, 412, 46, 544, 73, 567, 50, 553, 17, 408, -46, 218, -50, 187, -69, 174, -110, 216, -253, 210, -284, 177, -304, -23, -253, -345, -231, -370, -56, -387, 49)
+
+[node name="LightOccluder2D" parent="Land" index="3"]
+occluder = SubResource("OccluderPolygon2D_8nxbd")
 
 [node name="Land2" parent="." instance=ExtResource("3_0e1fn")]
 position = Vector2(326, -177)
 
 [node name="Polygon2D" parent="Land2" index="0"]
-polygon = PackedVector2Array(-168, -67, -128, -59, -99, -30, -91, 18, -96, 62, -114, 94, -10, 260, 375, 592, 318, 3, 523, 8, 490, -79, 187, -69, -47, -133, -23, -253, -488.95, -215.444, -755, -194, -662.434, -132.877, -620.429, -105.139, -579.108, -77.8542, -387, 49, -217, 23, -228, -9, -208.547, -52.4898)
+polygon = PackedVector2Array(-168, -67, -128, -59, -99, -30, -91, 18, -96, 62, -90, 102, 71, 239, 110, 287, 247, 537, 306, 586, 375, 592, 425, 538, 437, 464, 298, 129, 339, 39, 455, 16, 523, 8, 490, -79, 421, -103, 213, -55, 101, -76, 53, -149, 13, -230, -69, -246, -127, -235, -576, -310, -671, -278, -698, -192, -662.434, -132.877, -620.429, -105.139, -579.108, -77.8542, -388, 2, -217, 23, -228, -9, -208.547, -52.4898)
 
 [node name="Line2D" parent="Land2" index="1"]
-points = PackedVector2Array(-168, -67, -128, -59, -99, -30, -91, 18, -96, 62, -114, 94, -10, 260, 375, 592, 318, 3, 523, 8, 490, -79, 187, -69, -47, -133, -23, -253, -488.95, -215.444, -755, -194, -662.434, -132.877, -620.429, -105.139, -579.108, -77.8542, -387, 49, -217, 23, -228, -9, -208.547, -52.4898)
+points = PackedVector2Array(-168, -67, -128, -59, -99, -30, -91, 18, -96, 62, -90, 102, 71, 239, 110, 287, 247, 537, 306, 586, 375, 592, 425, 538, 437, 464, 298, 129, 339, 39, 455, 16, 523, 8, 490, -79, 421, -103, 213, -55, 101, -76, 53, -149, 13, -230, -69, -246, -127, -235, -576, -310, -671, -278, -698, -192, -662.434, -132.877, -620.429, -105.139, -579.108, -77.8542, -388, 2, -217, 23, -228, -9, -208.547, -52.4898)
+default_color = Color(1, 1, 1, 1)
+gradient = SubResource("Gradient_aw5xs")
 
 [node name="CollisionPolygon2D" parent="Land2" index="2"]
-polygon = PackedVector2Array(-168, -67, -128, -59, -99, -30, -91, 18, -96, 62, -114, 94, -10, 260, 375, 592, 318, 3, 523, 8, 490, -79, 187, -69, -47, -133, -23, -253, -488.95, -215.444, -755, -194, -662.434, -132.877, -620.429, -105.139, -579.108, -77.8542, -387, 49, -217, 23, -228, -9, -208.547, -52.4898)
+polygon = PackedVector2Array(-168, -67, -128, -59, -99, -30, -91, 18, -96, 62, -90, 102, 71, 239, 110, 287, 247, 537, 306, 586, 375, 592, 425, 538, 437, 464, 298, 129, 339, 39, 455, 16, 523, 8, 490, -79, 421, -103, 213, -55, 101, -76, 53, -149, 13, -230, -69, -246, -127, -235, -576, -310, -671, -278, -698, -192, -662.434, -132.877, -620.429, -105.139, -579.108, -77.8542, -388, 2, -217, 23, -228, -9, -208.547, -52.4898)
+
+[node name="LightOccluder2D" parent="Land2" index="3"]
+occluder = SubResource("OccluderPolygon2D_sfctf")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(3, 331)
+energy = 1.85
+shadow_enabled = true
+texture = ExtResource("4_px1i2")
+
+[node name="PointLight2D2" type="PointLight2D" parent="."]
+position = Vector2(733, 94)
+energy = 1.85
+shadow_enabled = true
+texture = ExtResource("4_px1i2")
+
+[node name="PointLight2D3" type="PointLight2D" parent="."]
+position = Vector2(55, -86)
+energy = 1.85
+shadow_enabled = true
+texture = ExtResource("4_px1i2")
 
 [editable path="Land"]
 [editable path="Land2"]

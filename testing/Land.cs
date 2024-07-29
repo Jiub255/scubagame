@@ -3,9 +3,10 @@ using Godot;
 [Tool]
 public partial class Land : StaticBody2D
 {
-	Polygon2D Polygon2D { get; set; }
-	Line2D Line2D { get; set; }
-	CollisionPolygon2D CollisionPolygon2D { get; set; }
+	private Polygon2D Polygon2D { get; set; }
+	private Line2D Line2D { get; set; }
+	private CollisionPolygon2D CollisionPolygon2D { get; set; }
+	private LightOccluder2D LightOccluder2D { get; set; }
 	
 	public override void _Ready()
 	{
@@ -13,6 +14,7 @@ public partial class Land : StaticBody2D
 		Polygon2D = GetNode<Polygon2D>("Polygon2D");
 		Line2D = GetNode<Line2D>("Line2D");
 		CollisionPolygon2D = GetNode<CollisionPolygon2D>("CollisionPolygon2D");
+		LightOccluder2D = GetNode<LightOccluder2D>("LightOccluder2D");
 		
 /* 		if (!Engine.IsEditorHint())
 		{
@@ -32,6 +34,7 @@ public partial class Land : StaticBody2D
 		{
 			CollisionPolygon2D.Polygon = Polygon2D.Polygon;
 			Line2D.Points = Polygon2D.Polygon;
+			LightOccluder2D.Occluder.Polygon = Polygon2D.Polygon;
 		}
 	}
 }
