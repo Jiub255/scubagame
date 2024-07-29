@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://k4oy68bd0xw"]
+
+[ext_resource type="Shader" path="res://testShader.gdshader" id="1_e13dp"]
+[ext_resource type="Texture2D" uid="uid://cw8rjn0ehdt31" path="res://assets/mine/square-512.png" id="2_accw7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6kps0"]
+shader = ExtResource("1_e13dp")
+shader_parameter/rate = 1.0
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_6kps0")
+texture = ExtResource("2_accw7")

@@ -1,11 +1,40 @@
-[gd_scene load_steps=3 format=3 uid="uid://65etx7fw63rt"]
+[gd_scene load_steps=4 format=3 uid="uid://65etx7fw63rt"]
 
 [ext_resource type="Texture2D" uid="uid://bycd803bwq5hj" path="res://assets/mine/parallax-mid.png" id="1_8dbyl"]
 [ext_resource type="PackedScene" uid="uid://cu2voen1d0ajc" path="res://testing/my-player/my_player.tscn" id="1_8n2m4"]
+[ext_resource type="PackedScene" uid="uid://qfih8o0d23ri" path="res://testing/land.tscn" id="3_0e1fn"]
 
 [node name="TestMyPlayer" type="Node2D"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.264172, 0.189765, 0.0877238, 1)
 texture = ExtResource("1_8dbyl")
 
 [node name="MyPlayer" parent="." instance=ExtResource("1_8n2m4")]
+
+[node name="Land" parent="." instance=ExtResource("3_0e1fn")]
+position = Vector2(-439, 225)
+
+[node name="Polygon2D" parent="Land" index="0"]
+polygon = PackedVector2Array(-239, 45, -141, -89, 3, -84, 69, 54, -108, 99, -10, 260, 261, 151, 318, 3, 523, 8, 490, -79, 187, -69, 210, -284, -23, -253, -345, -231, -370, -56, -387, 49)
+
+[node name="Line2D" parent="Land" index="1"]
+points = PackedVector2Array(-239, 45, -141, -89, 3, -84, 69, 54, -108, 99, -10, 260, 261, 151, 318, 3, 523, 8, 490, -79, 187, -69, 210, -284, -23, -253, -345, -231, -370, -56, -387, 49)
+
+[node name="CollisionPolygon2D" parent="Land" index="2"]
+polygon = PackedVector2Array(-239, 45, -141, -89, 3, -84, 69, 54, -108, 99, -10, 260, 261, 151, 318, 3, 523, 8, 490, -79, 187, -69, 210, -284, -23, -253, -345, -231, -370, -56, -387, 49)
+
+[node name="Land2" parent="." instance=ExtResource("3_0e1fn")]
+position = Vector2(326, -177)
+
+[node name="Polygon2D" parent="Land2" index="0"]
+polygon = PackedVector2Array(-168, -67, -128, -59, -99, -30, -91, 18, -96, 62, -114, 94, -10, 260, 375, 592, 318, 3, 523, 8, 490, -79, 187, -69, -47, -133, -23, -253, -488.95, -215.444, -755, -194, -662.434, -132.877, -620.429, -105.139, -579.108, -77.8542, -387, 49, -217, 23, -228, -9, -208.547, -52.4898)
+
+[node name="Line2D" parent="Land2" index="1"]
+points = PackedVector2Array(-168, -67, -128, -59, -99, -30, -91, 18, -96, 62, -114, 94, -10, 260, 375, 592, 318, 3, 523, 8, 490, -79, 187, -69, -47, -133, -23, -253, -488.95, -215.444, -755, -194, -662.434, -132.877, -620.429, -105.139, -579.108, -77.8542, -387, 49, -217, 23, -228, -9, -208.547, -52.4898)
+
+[node name="CollisionPolygon2D" parent="Land2" index="2"]
+polygon = PackedVector2Array(-168, -67, -128, -59, -99, -30, -91, 18, -96, 62, -114, 94, -10, 260, 375, 592, 318, 3, 523, 8, 490, -79, 187, -69, -47, -133, -23, -253, -488.95, -215.444, -755, -194, -662.434, -132.877, -620.429, -105.139, -579.108, -77.8542, -387, 49, -217, 23, -228, -9, -208.547, -52.4898)
+
+[editable path="Land"]
+[editable path="Land2"]

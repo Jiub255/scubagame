@@ -1,14 +1,18 @@
-using System;
 using Godot;
 
 public partial class MyPlayer : CharacterBody2D, ICanMove
 {
+	[Export]
+	private float MaxSpeed { get; set; } = 2300f;
 	[Export]
 	private float Acceleration { get; set; } = 2000f;
 	[Export]
 	private float DragMultiplier { get; set; } = 0.01f;
 	[Export]
 	private float MinSpeed { get; set; } = 35f;
+	[Export]
+	private float RotationSpeed { get; set; } = 180f;
+
 	private float Drag
 	{
 		get
@@ -16,6 +20,7 @@ public partial class MyPlayer : CharacterBody2D, ICanMove
 			return DragMultiplier * Velocity.LengthSquared();
 		}
 	}
+	private bool FacingLeft { get; set; } = true;
 	private AnimationPlayer AnimationPlayer { get; set; }
 	private Vector2 Direction { get; set; }
 	private AnimationTree AnimationTree { get; set; }
@@ -24,7 +29,6 @@ public partial class MyPlayer : CharacterBody2D, ICanMove
 	{
 		AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 		AnimationTree = GetNode<AnimationTree>("AnimationTree");
-		//AnimationPlayer.Play("swim-left");
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -32,18 +36,6 @@ public partial class MyPlayer : CharacterBody2D, ICanMove
 		GetMovementInput();
 		Move((float)delta);
 		Animate();
-	}
-
-	private void HandleFlip()
-	{
-		if (Velocity.X > 0)
-		{
-			Scale = new Vector2(1, -1);
-		}
-		else
-		{
-			Scale = new Vector2(1, 1);
-		}
 	}
 
 	public void GetMovementInput()
@@ -60,16 +52,19 @@ public partial class MyPlayer : CharacterBody2D, ICanMove
 		else
 		{
 			Accelerate(delta);
-			RotateDiver();
-			HandleFlip();
 		}
-		
-		Velocity -= Velocity.Normalized() * Drag * delta;
-		
+		RotateDiver(delta);
+		HandleFlip();
+		HandleDrag(delta);
 		this.PrintDebug($"Speed: {Velocity.Length()}");
 		MoveAndSlide();
 	}
 	
+	private void Animate()
+	{
+		AnimationTree.Set("parameters/blend_position", Mathf.Min(1, Velocity.Length() / MaxSpeed));
+	}
+
 	private void Decelerate()
 	{
 		if (Velocity.Length() < MinSpeed)
@@ -81,18 +76,33 @@ public partial class MyPlayer : CharacterBody2D, ICanMove
 	private void Accelerate(float delta)
 	{
 		Velocity += Direction * Acceleration * delta;
+		Velocity = Velocity.LimitLength(MaxSpeed);
 	}
 	
-	private void Animate()
+	private void RotateDiver(float delta)
 	{
-		// TODO: Need max speed to set blend position. Or could just set a lower than actual max value
-		// and have anything faster just be fully swimming animation. 
-		float maxSpeedGuess = 240f;
-		AnimationTree.Set("parameters/blend_position", Mathf.Min(1, Velocity.Length() / maxSpeedGuess));
+		if (Velocity != Vector2.Zero)
+		{
+			Rotation = Mathf.LerpAngle(Rotation, Velocity.Angle() + Mathf.Pi, delta * RotationSpeed);
+		}
 	}
-	
-	private void RotateDiver()
+
+	private void HandleFlip()
 	{
-		Rotation = Velocity.Angle() + (Mathf.Pi);
+		if (FacingLeft && Velocity.X > 0)
+		{
+			FacingLeft = false;
+			Scale = new Vector2(Scale.X, -Scale.Y);
+		}
+		else if (!FacingLeft && Velocity.X < 0)
+		{
+			FacingLeft = true;
+			Scale = new Vector2(Scale.X, -Scale.Y);
+		}
+	}
+
+	private void HandleDrag(float delta)
+	{
+		Velocity -= Velocity.Normalized() * Drag * delta;
 	}
 }
