@@ -3,6 +3,8 @@ Now it's a diving game.
 TODO:
 -------------
 
+Make trello-like tool for godot editor. Simple, nothing fancy.
+
 Rework movement from scratch. Make it more responsive. And set it up for more variations,
 	like attacks.
 

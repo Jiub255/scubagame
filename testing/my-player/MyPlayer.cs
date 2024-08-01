@@ -21,13 +21,11 @@ public partial class MyPlayer : CharacterBody2D, ICanMove
 		}
 	}
 	private bool FacingLeft { get; set; } = true;
-	private AnimationPlayer AnimationPlayer { get; set; }
 	private Vector2 Direction { get; set; }
 	private AnimationTree AnimationTree { get; set; }
 
 	public override void _Ready()
 	{
-		AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 		AnimationTree = GetNode<AnimationTree>("AnimationTree");
 	}
 
@@ -56,8 +54,9 @@ public partial class MyPlayer : CharacterBody2D, ICanMove
 		RotateDiver(delta);
 		HandleFlip();
 		HandleDrag(delta);
-		this.PrintDebug($"Speed: {Velocity.Length()}");
 		MoveAndSlide();
+		
+		this.PrintDebug($"Speed: {Velocity.Length()}");
 	}
 	
 	private void Animate()

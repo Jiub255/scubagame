@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://65etx7fw63rt"]
 
 [ext_resource type="Texture2D" uid="uid://bycd803bwq5hj" path="res://assets/mine/parallax-mid.png" id="1_8dbyl"]
-[ext_resource type="PackedScene" uid="uid://cu2voen1d0ajc" path="res://testing/my-player/my_player.tscn" id="1_8n2m4"]
 [ext_resource type="PackedScene" uid="uid://qfih8o0d23ri" path="res://testing/land.tscn" id="3_0e1fn"]
+[ext_resource type="PackedScene" uid="uid://bkf0xxw66gqk6" path="res://testing/my-player/my_player256.tscn" id="4_nr28w"]
 [ext_resource type="Texture2D" uid="uid://dsjk8e3sm7hoa" path="res://assets/mine/light2.png" id="4_px1i2"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_8nxbd"]
@@ -23,10 +23,8 @@ polygon = PackedVector2Array(-168, -67, -128, -59, -99, -30, -91, 18, -96, 62, -
 modulate = Color(0.264172, 0.189765, 0.0877238, 1)
 texture = ExtResource("1_8dbyl")
 
-[node name="MyPlayer" parent="." instance=ExtResource("1_8n2m4")]
-
 [node name="Land" parent="." instance=ExtResource("3_0e1fn")]
-position = Vector2(-439, 225)
+position = Vector2(-848, 415)
 
 [node name="Polygon2D" parent="Land" index="0"]
 polygon = PackedVector2Array(-210, 42, -169, 2, -118, 22, -99, 63, -108, 99, -10, 260, 261, 151, 318, 3, 412, 46, 544, 73, 567, 50, 553, 17, 408, -46, 218, -50, 187, -69, 174, -110, 216, -253, 210, -284, 177, -304, -23, -253, -345, -231, -370, -56, -387, 49)
@@ -41,7 +39,7 @@ polygon = PackedVector2Array(-210, 42, -169, 2, -118, 22, -99, 63, -108, 99, -10
 occluder = SubResource("OccluderPolygon2D_8nxbd")
 
 [node name="Land2" parent="." instance=ExtResource("3_0e1fn")]
-position = Vector2(326, -177)
+position = Vector2(659, 149)
 
 [node name="Polygon2D" parent="Land2" index="0"]
 polygon = PackedVector2Array(-168, -67, -128, -59, -99, -30, -91, 18, -96, 62, -90, 102, 71, 239, 110, 287, 247, 537, 306, 586, 375, 592, 425, 538, 437, 464, 298, 129, 339, 39, 455, 16, 523, 8, 490, -79, 421, -103, 213, -55, 101, -76, 53, -149, 13, -230, -69, -246, -127, -235, -576, -310, -671, -278, -698, -192, -662.434, -132.877, -620.429, -105.139, -579.108, -77.8542, -388, 2, -217, 23, -228, -9, -208.547, -52.4898)
@@ -58,22 +56,24 @@ polygon = PackedVector2Array(-168, -67, -128, -59, -99, -30, -91, 18, -96, 62, -
 occluder = SubResource("OccluderPolygon2D_sfctf")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-position = Vector2(3, 331)
+position = Vector2(28, 96)
 energy = 1.85
 shadow_enabled = true
 texture = ExtResource("4_px1i2")
 
 [node name="PointLight2D2" type="PointLight2D" parent="."]
-position = Vector2(733, 94)
-energy = 1.85
+position = Vector2(-608, 146)
+energy = 0.76
 shadow_enabled = true
 texture = ExtResource("4_px1i2")
 
 [node name="PointLight2D3" type="PointLight2D" parent="."]
-position = Vector2(55, -86)
-energy = 1.85
+position = Vector2(472, 129)
 shadow_enabled = true
 texture = ExtResource("4_px1i2")
+
+[node name="MyPlayer256" parent="." instance=ExtResource("4_nr28w")]
+position = Vector2(157, 202)
 
 [editable path="Land"]
 [editable path="Land2"]

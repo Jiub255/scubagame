@@ -17,30 +17,30 @@ public partial class Player : CharacterBody2D, IDamageable, ICanEnterWater, ICan
 	private PlayerActionStateMachine ActionMachine { get; set; }
 	
 	public override void _Ready()
-    {
-        base._Ready();
+	{
+		base._Ready();
 
-        AnimationTree = GetNode<AnimationTree>("AnimationTree");
-        Sprite = GetNode<Sprite2D>("BodySprite");
-        HarpoonGun = GetNode<HarpoonGun>("HarpoonGun");
-        LocationMachine = new PlayerLocationStateMachine(this);
-        ActionMachine = new PlayerActionStateMachine(this);
+		AnimationTree = GetNode<AnimationTree>("AnimationTree");
+		Sprite = GetNode<Sprite2D>("BodySprite");
+		HarpoonGun = GetNode<HarpoonGun>("HarpoonGun");
+		LocationMachine = new PlayerLocationStateMachine(this);
+		ActionMachine = new PlayerActionStateMachine(this);
 
-        Data.Changed += SetSprites;
-        //Data.OnHealthDeath += () => { };
-        Data.OnDrowned += Drown;
+		Data.Changed += SetSprites;
+		//Data.OnHealthDeath += () => { };
+		Data.OnDrowned += Drown;
 
-        SetSprites();
+		SetSprites();
 
-        Data.RefillAir();
+		Data.RefillAir();
 
-        //InitializeComponents();
+		//InitializeComponents();
 
-        // Just for testing.
-        Data.RefillHealth();
-    }
+		// Just for testing.
+		Data.RefillHealth();
+	}
 
-    public override void _ExitTree()
+	public override void _ExitTree()
 	{
 		base._ExitTree();
 
@@ -50,16 +50,16 @@ public partial class Player : CharacterBody2D, IDamageable, ICanEnterWater, ICan
 	}
 
 /*     private void InitializeComponents()
-    {
-        Godot.Collections.Array<Node> children = GetChildren();
-        foreach (Node child in children)
-        {
-            if (child is PlayerComponent component)
-            {
-                component.InitializeComponent(this);
-            }
-        }
-    } */
+	{
+		Godot.Collections.Array<Node> children = GetChildren();
+		foreach (Node child in children)
+		{
+			if (child is PlayerComponent component)
+			{
+				component.InitializeComponent(this);
+			}
+		}
+	} */
 
 	private void Drown()
 	{
@@ -73,6 +73,16 @@ public partial class Player : CharacterBody2D, IDamageable, ICanEnterWater, ICan
 		HarpoonGun.Sprite.Texture = Data.HarpoonGun.GunAcquired ? Data.HarpoonGun.Sprite : null;
 	}
 
+	public override void _Input(InputEvent @event)
+	{
+		base._Input(@event);
+		
+		if (@event.IsActionPressed("attack") && ActionMachine.CurrentState is ICanAttack attackable)
+		{
+			attackable.HandleAttack();
+		}
+	}
+
 	public override void _Process(double delta)
 	{
 		base._Process(delta);
@@ -80,18 +90,20 @@ public partial class Player : CharacterBody2D, IDamageable, ICanEnterWater, ICan
 		ActionMachine.ProcessState(delta);
 		
 		// TODO: Not sure if splitting up movement like this is a good idea.
-		if (LocationMachine.CurrentState.CanMove)
+		// Put it together in physics process for now. 
+/* 		if (LocationMachine.CurrentState.CanMove)
 		{
 			if (ActionMachine.CurrentState is ICanMove movable)
 			{
 				movable.GetMovementInput();
 			}
-		}
+		} */
 
-		if (ActionMachine.CurrentState is ICanAttack attackable)
+		// TODO: Use _Input instead. 
+/* 		if (ActionMachine.CurrentState is ICanAttack attackable)
 		{
 			attackable.HandleAttack();
-		}
+		} */
 
 		//this.PrintDebug($"Velocity: {Velocity}");
 		//this.PrintDebug($"ActionState: {ActionMachine.CurrentState}, LocationState: {LocationMachine.CurrentState}");
@@ -103,11 +115,11 @@ public partial class Player : CharacterBody2D, IDamageable, ICanEnterWater, ICan
 		LocationMachine.PhysicsProcessState(delta);
 		ActionMachine.PhysicsProcessState(delta);
 		
-		// TODO: Not sure if splitting up movement like this is a good idea.
 		if (LocationMachine.CurrentState.CanMove)
 		{
 			if (ActionMachine.CurrentState is ICanMove movable)
 			{
+				movable.GetMovementInput();
 				movable.Move((float)delta);
 			}
 		}

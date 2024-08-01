@@ -112,11 +112,12 @@ public abstract class PlayerActionState : PlayerState
 		}
 	}
 	
+	// TODO: Handle attack from player class with _Input. Then call this method from that, so less checks/polling here. 
 	public void HandleAttack()
 	{		
 		if (CharacterBody2D.Data.HarpoonGun.GunAcquired &&
-			!CharacterBody2D.Data.Reloading &&
-			Input.IsActionPressed("attack"))
+			!CharacterBody2D.Data.Reloading/*  &&
+			Input.IsActionPressed("attack") */)
 		{
 			Attack();
 		}

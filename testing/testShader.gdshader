@@ -8,7 +8,7 @@ void vertex() {
 	// Called for every vertex the material is visible on.
 	float pi = 3.141592653589793;
 	VERTEX *= .5 + (sin(fract(TIME * rate) * pi * 2.) + 1.) /4.;
-	
+
 	v = VERTEX;
 }
 

@@ -1,0 +1,96 @@
+[gd_scene load_steps=6 format=3 uid="uid://bq6hm5dxgdyyo"]
+
+[ext_resource type="Script" path="res://tools/Kanban.cs" id="1_w0fut"]
+[ext_resource type="StyleBox" uid="uid://bi4h1ygdn3c1v" path="res://tools/kanban_column_stylebox.tres" id="2_5qfuv"]
+[ext_resource type="Script" path="res://tools/KanbanColumn.cs" id="2_jg0si"]
+[ext_resource type="StyleBox" uid="uid://bndhxhucc5g40" path="res://tools/kanban_card_stylebox.tres" id="4_m6151"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ryknb"]
+bg_color = Color(0.212518, 0.379827, 0.213952, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
+[node name="Kanban" type="CanvasLayer"]
+script = ExtResource("1_w0fut")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TitleHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CreateColumnButton" type="Button" parent="MarginContainer/VBoxContainer/TitleHBoxContainer"]
+custom_minimum_size = Vector2(250, 65)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxFlat_ryknb")
+text = "Create New Column"
+
+[node name="BoardHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="Column" type="Panel" parent="MarginContainer/VBoxContainer/BoardHBoxContainer"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_5qfuv")
+script = ExtResource("2_jg0si")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BoardHBoxContainer/Column"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainerOuter" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BoardHBoxContainer/Column/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BoardHBoxContainer/Column/MarginContainer/VBoxContainerOuter"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer/BoardHBoxContainer/Column/MarginContainer/VBoxContainerOuter/VBoxContainer"]
+custom_minimum_size = Vector2(250, 65)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Column Title"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Card" type="Panel" parent="MarginContainer/VBoxContainer/BoardHBoxContainer/Column/MarginContainer/VBoxContainerOuter/VBoxContainer"]
+custom_minimum_size = Vector2(360, 100)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("4_m6151")
+
+[node name="CreateCardButton" type="Button" parent="MarginContainer/VBoxContainer/BoardHBoxContainer/Column/MarginContainer/VBoxContainerOuter"]
+layout_mode = 2
+theme_override_styles/normal = ExtResource("4_m6151")
+text = "Create New Card"
