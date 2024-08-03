@@ -537,7 +537,7 @@ bone_angle = 0.0
 [node name="ArmUR" type="Bone2D" parent="Skeleton2D/Torso"]
 position = Vector2(353.146, 17.2387)
 rotation = 3.27481
-scale = Vector2(0.999998, 0.999998)
+scale = Vector2(0.999997, 0.999997)
 rest = Transform2D(-0.99114, -0.132819, 0.132819, -0.99114, 353.146, 17.2387)
 
 [node name="ArmLR" type="Bone2D" parent="Skeleton2D/Torso/ArmUR"]
@@ -613,5 +613,5 @@ parameters/0/current_length = 1.0
 parameters/0/current_position = 1.0
 parameters/0/current_delta = 0.0
 parameters/1/current_length = 1.6
-parameters/1/current_position = 0.115058
+parameters/1/current_position = 1.07787
 parameters/1/current_delta = 0.0166667

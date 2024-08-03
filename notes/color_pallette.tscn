@@ -1,0 +1,119 @@
+[gd_scene format=3 uid="uid://b1d4n2x4n38m5"]
+
+[node name="ColorPallette" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 5
+
+[node name="Sky" type="VBoxContainer" parent="MarginContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/GridContainer/Sky"]
+layout_mode = 2
+text = "Sky"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Sky" type="ColorRect" parent="MarginContainer/GridContainer/Sky"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+color = Color(0.500415, 0.811592, 0.871155, 1)
+
+[node name="WaterBase" type="VBoxContainer" parent="MarginContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/GridContainer/WaterBase"]
+layout_mode = 2
+text = "Water Base"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Water" type="ColorRect" parent="MarginContainer/GridContainer/WaterBase"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+color = Color(0.176471, 0.356863, 0.458824, 1)
+
+[node name="Scubagear1" type="VBoxContainer" parent="MarginContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/GridContainer/Scubagear1"]
+layout_mode = 2
+text = "Scubagear 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Scubagear1" type="GridContainer" parent="MarginContainer/GridContainer/Scubagear1"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+theme_override_constants/h_separation = 4
+theme_override_constants/v_separation = 4
+columns = 2
+
+[node name="MainSuit" type="ColorRect" parent="MarginContainer/GridContainer/Scubagear1/Scubagear1"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+color = Color(0.233925, 0.233925, 0.233925, 1)
+
+[node name="Goggles" type="ColorRect" parent="MarginContainer/GridContainer/Scubagear1/Scubagear1"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+color = Color(0.744406, 0.701358, 0, 1)
+
+[node name="GlovesFins" type="ColorRect" parent="MarginContainer/GridContainer/Scubagear1/Scubagear1"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+color = Color(0.0858141, 0.777597, 0.709908, 1)
+
+[node name="Tank" type="ColorRect" parent="MarginContainer/GridContainer/Scubagear1/Scubagear1"]
+custom_minimum_size = Vector2(48, 48)
+layout_mode = 2
+color = Color(0.629675, 0.629675, 0.629675, 1)
+
+[node name="Coral1" type="VBoxContainer" parent="MarginContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/GridContainer/Coral1"]
+layout_mode = 2
+text = "Coral 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Coral1" type="ColorRect" parent="MarginContainer/GridContainer/Coral1"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+color = Color(0.599269, 0.0291107, 0.593981, 1)
+
+[node name="Fish1" type="VBoxContainer" parent="MarginContainer/GridContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/GridContainer/Fish1"]
+layout_mode = 2
+text = "Fish 1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Fish1" type="ColorRect" parent="MarginContainer/GridContainer/Fish1"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+color = Color(0.545651, 0.509231, 0.868845, 1)

@@ -544,7 +544,7 @@ bone_angle = 0.0
 [node name="ArmUR" type="Bone2D" parent="Skeleton2D/Torso"]
 position = Vector2(48.9385, 3.16482)
 rotation = 3.27481
-scale = Vector2(0.999998, 0.999998)
+scale = Vector2(0.999997, 0.999997)
 rest = Transform2D(-0.991138, -0.132819, 0.132819, -0.991138, 48.9385, 3.16482)
 
 [node name="ArmLR" type="Bone2D" parent="Skeleton2D/Torso/ArmUR"]
@@ -613,12 +613,12 @@ position_smoothing_enabled = true
 tree_root = SubResource("AnimationNodeBlendSpace1D_8ds8d")
 anim_player = NodePath("../AnimationPlayer")
 parameters/current_length = 1.0
-parameters/current_position = 1.0
-parameters/current_delta = 0.0
+parameters/current_position = 0.830157
+parameters/current_delta = 0.0166667
 parameters/blend_position = 0
 parameters/0/current_length = 1.0
-parameters/0/current_position = 1.0
-parameters/0/current_delta = 0.0
+parameters/0/current_position = 0.830157
+parameters/0/current_delta = 0.0166667
 parameters/1/current_length = 1.6
-parameters/1/current_position = 1.25069
+parameters/1/current_position = 0.830157
 parameters/1/current_delta = 0.0166667

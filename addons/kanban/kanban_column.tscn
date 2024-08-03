@@ -1,0 +1,59 @@
+[gd_scene load_steps=5 format=3 uid="uid://bu6ynovcljhc4"]
+
+[ext_resource type="StyleBox" uid="uid://bi4h1ygdn3c1v" path="res://addons/kanban/styleboxes/kanban_column_stylebox.tres" id="1_jdc0c"]
+[ext_resource type="Script" path="res://addons/kanban/KanbanColumn.cs" id="2_65o1w"]
+[ext_resource type="PackedScene" uid="uid://dds7t4hnx1otl" path="res://addons/kanban/kanban_card.tscn" id="3_p2b7p"]
+[ext_resource type="StyleBox" uid="uid://bndhxhucc5g40" path="res://addons/kanban/styleboxes/kanban_card_stylebox.tres" id="4_pldnd"]
+
+[node name="Column" type="PanelContainer"]
+custom_minimum_size = Vector2(400, 0)
+offset_right = 410.0
+offset_bottom = 325.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("1_jdc0c")
+script = ExtResource("2_65o1w")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainerOuter" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 20
+
+[node name="ColumnTitleLabel" type="Label" parent="MarginContainer/VBoxContainerOuter"]
+custom_minimum_size = Vector2(250, 65)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Column Title"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Cards" type="VBoxContainer" parent="MarginContainer/VBoxContainerOuter"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_constants/separation = 20
+
+[node name="Card" parent="MarginContainer/VBoxContainerOuter/Cards" instance=ExtResource("3_p2b7p")]
+layout_mode = 2
+script = null
+
+[node name="Card2" parent="MarginContainer/VBoxContainerOuter/Cards" instance=ExtResource("3_p2b7p")]
+layout_mode = 2
+script = null
+
+[node name="CreateCardButton" type="Button" parent="MarginContainer/VBoxContainerOuter"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/normal = ExtResource("4_pldnd")
+text = "Create New Card"
