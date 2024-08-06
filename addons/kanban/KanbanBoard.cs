@@ -1,15 +1,15 @@
 using Godot;
 
 [GlobalClass]
-//[Tool]
-public partial class KanbanBoard : Control
+[Tool]
+public partial class KanbanBoard : PanelContainer
 {
 	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/kanban_column.tscn");
 	
 	//private List<KanbanColumn> KanbanColumns { get; } = new();
 	private CardPopup CardPopup { get; set; }
 	private Button CreateColumnButton { get; set; }
-	private HBoxContainer Columns { get; set; }
+	public HBoxContainer Columns { get; private set; }
 
 	public override void _EnterTree()
 	{
@@ -19,7 +19,7 @@ public partial class KanbanBoard : Control
 		CreateColumnButton = (Button)GetNode("%CreateColumnButton");
 		Columns = (HBoxContainer)GetNode("%Columns");
 
-		CreateColumnButton.Pressed += CreateNewColumn;
+		CreateColumnButton.Pressed += CreateNewBlankColumn;
 
 		CardPopup.ClosePopup();
 	}
@@ -28,13 +28,29 @@ public partial class KanbanBoard : Control
 	{
 		base._ExitTree();
 		
-		CreateColumnButton.Pressed -= CreateNewColumn;
+		CreateColumnButton.Pressed -= CreateNewBlankColumn;
+	}
+	
+	public void InitializeBoard(BoardData boardData)
+	{
+		foreach (ColumnData columnData in boardData.Columns)
+		{
+			CreateNewColumn(columnData);
+		}
+	}
+	
+	private void CreateNewBlankColumn()
+	{
+		ColumnData columnData = new ColumnData();
+		CreateNewColumn(columnData);
 	}
 
-	private void CreateNewColumn()
+	private void CreateNewColumn(ColumnData columnData)
 	{
 		KanbanColumn newColumn = (KanbanColumn)ColumnScene.Instantiate();
+		
 		Columns.AddChild(newColumn);
+		newColumn.InitializeColumn(columnData);
 		//KanbanColumns.Add(newColumn);
 		
 		newColumn.OnDestroyColumn += DestroyColumn;

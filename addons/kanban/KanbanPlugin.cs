@@ -1,22 +1,25 @@
 #if TOOLS
 using Godot;
 
-//[Tool]
+[Tool]
 public partial class KanbanPlugin : EditorPlugin
 {
 	private PackedScene KanbanPackedScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/kanban_board.tscn");
 	private KanbanBoard KanbanInstance { get; set; }
 	private EditorInterface EditorInterface { get; set; } = EditorInterface.Singleton;
+	private KanbanSaver KanbanSaver { get; set; } = new();
 	
 	
 	public override void _EnterTree()
 	{
-		//this.PrintDebug($"Packed scene null: {KanbanPackedScene == null}");
-		KanbanInstance = (KanbanBoard)KanbanPackedScene.Instantiate();
-		//this.PrintDebug($"Instance null: {KanbanInstance == null}");
+		BoardData boardData = KanbanSaver.LoadGame();
 		
+		KanbanInstance = (KanbanBoard)KanbanPackedScene.Instantiate();
+
 		// Add the main panel to the editor's main viewport.
 		EditorInterface.GetEditorMainScreen().AddChild(KanbanInstance);
+		
+		KanbanInstance.InitializeBoard(boardData);
 		
 		// Hide the main panel. Very much required.
 		_MakeVisible(false);
@@ -26,15 +29,9 @@ public partial class KanbanPlugin : EditorPlugin
 	{
 		if (KanbanInstance != null)
 		{
+			KanbanSaver.SaveBoard(KanbanInstance);
 			KanbanInstance.QueueFree();
 		}
-	}
-
-	public override void _Process(double delta)
-	{
-		base._Process(delta);
-		
-		
 	}
 
 	public override bool _HasMainScreen()
@@ -57,7 +54,7 @@ public partial class KanbanPlugin : EditorPlugin
 
 	public override Texture2D _GetPluginIcon()
 	{
-		return EditorInterface.GetEditorTheme().GetIcon("Node", "EditorIcons");
+		return EditorInterface.GetEditorTheme().GetIcon("VBoxContainer", "EditorIcons");
 	}
 }
 #endif

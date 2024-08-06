@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 [GlobalClass]
-//[Tool]
+[Tool]
 public partial class KanbanCard : PanelContainer
 {
 	public event Action<KanbanCard> OnOpenPopupButtonPressed;
@@ -10,8 +10,8 @@ public partial class KanbanCard : PanelContainer
 	
 	private Button OpenPopupButton { get; set; }
 	private Button DeleteButton { get; set; }
-	public Label TitleLabel { get; set; }
-	public Label DescriptionLabel { get; set; }
+	public Label Title { get; set; }
+	public Label Description { get; set; }
 
 	public override void _EnterTree()
 	{
@@ -19,8 +19,8 @@ public partial class KanbanCard : PanelContainer
 		
 		OpenPopupButton = (Button)GetNode("%OpenPopupButton");
 		DeleteButton = (Button)GetNode("%DeleteButton");
-		TitleLabel = (Label)GetNode("%Title");
-		DescriptionLabel = (Label)GetNode("%Description");
+		Title = (Label)GetNode("%Title");
+		Description = (Label)GetNode("%Description");
 		
 		OpenPopupButton.Pressed += OpenPopup;
 		DeleteButton.Pressed += Delete;
@@ -30,6 +30,12 @@ public partial class KanbanCard : PanelContainer
 	{
 		OpenPopupButton.Pressed -= OpenPopup;
 		DeleteButton.Pressed -= Delete;
+	}
+	
+	public void InitializeCard(CardData cardData)
+	{
+		Title.Text = cardData.Title;
+		Description.Text = cardData.Description;
 	}
 
 	private void OpenPopup()

@@ -1,7 +1,7 @@
 using Godot;
 
 [GlobalClass]
-//[Tool]
+[Tool]
 public partial class DeleteButton : Button
 {
 	public override void _Ready()

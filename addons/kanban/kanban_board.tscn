@@ -1,7 +1,6 @@
-[gd_scene load_steps=21 format=3 uid="uid://cdujdcexpd5e6"]
+[gd_scene load_steps=20 format=3 uid="uid://cdujdcexpd5e6"]
 
 [ext_resource type="Script" path="res://addons/kanban/KanbanBoard.cs" id="1_vm8vo"]
-[ext_resource type="PackedScene" uid="uid://bu6ynovcljhc4" path="res://addons/kanban/kanban_column.tscn" id="2_bfior"]
 [ext_resource type="StyleBox" uid="uid://bi4h1ygdn3c1v" path="res://addons/kanban/styleboxes/kanban_column_stylebox.tres" id="2_y3isf"]
 [ext_resource type="Script" path="res://addons/kanban/CardPopup.cs" id="3_3i1gv"]
 [ext_resource type="StyleBox" uid="uid://bndhxhucc5g40" path="res://addons/kanban/styleboxes/kanban_card_stylebox.tres" id="3_8m6xy"]
@@ -32,14 +31,13 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6m860"]
 
-[node name="KanbanBoard" type="Control"]
+[node name="KanbanBoard" type="PanelContainer"]
 clip_contents = true
-layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1920.0
-offset_bottom = -1080.0
+offset_right = -1470.0
+offset_bottom = -447.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -48,9 +46,7 @@ mouse_filter = 2
 script = ExtResource("1_vm8vo")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 1
-offset_right = 440.0
-offset_bottom = 1125.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
@@ -94,17 +90,10 @@ size_flags_vertical = 0
 mouse_filter = 2
 theme_override_constants/separation = 20
 
-[node name="Column" parent="MarginContainer/VBoxContainer/Columns" instance=ExtResource("2_bfior")]
-layout_mode = 2
-
 [node name="CardPopup" type="Button" parent="."]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+visible = false
+layout_mode = 2
 mouse_filter = 2
 theme_override_styles/focus = SubResource("StyleBoxEmpty_is3g4")
 theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_un3jc")
@@ -138,7 +127,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 0
+mouse_filter = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -146,12 +135,13 @@ theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CardPopup/Panel/MarginContainer"]
 layout_mode = 2
-mouse_filter = 0
+mouse_filter = 2
 
 [node name="Title" type="TextEdit" parent="CardPopup/Panel/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+mouse_filter = 2
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = ExtResource("5_bsa04")
 theme_override_styles/focus = ExtResource("4_do0tc")
@@ -163,6 +153,7 @@ wrap_mode = 1
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 2
 theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = ExtResource("4_do0tc")
 theme_override_styles/focus = ExtResource("4_do0tc")

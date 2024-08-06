@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using Godot;
 
 [GlobalClass]
-//[Tool]
+[Tool]
 public partial class CardPopup : Button
 {
 	private KanbanCard Card;
@@ -16,17 +17,24 @@ public partial class CardPopup : Button
 		
 		Title = (TextEdit)GetNode("%Title");
 		Description = (TextEdit)GetNode("%Description");
-		Controls = GetAllControlChildren(this);
 
 		Pressed += ClosePopup;
+	}
+
+	public override void _Ready()
+	{
+		base._Ready();
+		
+		Controls = GetAllControlChildren(this);
 
 		ClosePopup();
 	}
 
+	
 	private List<Control> GetAllControlChildren(Node node)
 	{
 		List<Control> controls = new();
-		Godot.Collections.Array<Node> children = GetChildren();
+		Godot.Collections.Array<Node> children = node.GetChildren();
 		foreach (Node child in children)
 		{
 			if (child is Control control)
@@ -52,9 +60,8 @@ public partial class CardPopup : Button
 	public void OpenPopup(KanbanCard card)
 	{
 		Card = card;
-		Title.Text = card.TitleLabel.Text;
-		Description.Text = card.DescriptionLabel.Text;
-		//MouseFilter = MouseFilterEnum.Stop;
+		Title.Text = card.Title.Text;
+		Description.Text = card.Description.Text;
 		SetAllMouseFilters(MouseFilterEnum.Stop);
 		Show();
 	}
@@ -70,9 +77,11 @@ public partial class CardPopup : Button
 	
 	public void ClosePopup()
 	{
-		Card.TitleLabel.Text = Title.Text;
-		Card.DescriptionLabel.Text = Description.Text;
-		//MouseFilter = MouseFilterEnum.Ignore;
+		if (Card != null)
+		{
+			Card.Title.Text = Title.Text;
+			Card.Description.Text = Description.Text;
+		}
 		SetAllMouseFilters(MouseFilterEnum.Ignore);
 		Hide();
 	}

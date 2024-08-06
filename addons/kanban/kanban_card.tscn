@@ -69,10 +69,13 @@ mouse_filter = 2
 
 [node name="Title" type="Label" parent="OpenPopupButton/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(310, 0)
+custom_minimum_size = Vector2(310, 30)
 layout_mode = 2
+theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxEmpty_le31h")
 text = "Card Title"
+autowrap_mode = 3
+text_overrun_behavior = 3
 
 [node name="DeleteButton" type="Button" parent="OpenPopupButton/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
@@ -102,6 +105,6 @@ custom_minimum_size = Vector2(1, 1)
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/normal = ExtResource("3_7fpa7")
-text = "Enter card description in here. lasd voasldv jas;djv asdiv asldv aslidnv isd valisne vksdnv alisd v;aisje vajsliejv sidljv ;alsd vilaesnisldkfja osvi daslenv ."
+text = "Enter card description in here. "
 autowrap_mode = 3
 clip_text = true
