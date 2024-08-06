@@ -16,6 +16,7 @@ public partial class KanbanColumn : PanelContainer
 	private PackedScene CardScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/kanban_card.tscn");
 	//private List<KanbadCard> Cards { get; set; } = new();
 	private Button CreateCardButton { get; set; }
+	private Button DeleteColumnButton { get; set; }
 
 	public override void _EnterTree()
 	{
@@ -24,8 +25,10 @@ public partial class KanbanColumn : PanelContainer
 		Title = (TextEdit)GetNode("%ColumnTitle");
 		Cards = (VBoxContainer)GetNode("%Cards");
 		CreateCardButton = (Button)GetNode("%CreateCardButton");
+		DeleteColumnButton = (Button)GetNode("%DeleteColumnButton");
 
 		CreateCardButton.Pressed += CreateNewBlankCard;
+		DeleteColumnButton.Pressed += DeleteColumn;
 	}
 
 	public override void _ExitTree()
@@ -33,6 +36,7 @@ public partial class KanbanColumn : PanelContainer
 		base._ExitTree();
 		
 		CreateCardButton.Pressed -= CreateNewBlankCard;
+		DeleteColumnButton.Pressed -= DeleteColumn;
 	}
 	
 	public void InitializeColumn(ColumnData columnData)
@@ -56,17 +60,17 @@ public partial class KanbanColumn : PanelContainer
 		Cards.AddChild(card);
 		card.InitializeCard(cardData);
 
-		card.OnDeleteButtonPressed += DestroyCard;
+		card.OnDeleteButtonPressed += DeleteCard;
 		card.OnOpenPopupButtonPressed += OpenPopup;
 		
 		//Cards.Add(card);
 	}
 	
-	private void DestroyCard(KanbanCard card)
+	private void DeleteCard(KanbanCard card)
 	{
 		//Cards.Remove(card);
 		
-		card.OnDeleteButtonPressed -= DestroyCard;
+		card.OnDeleteButtonPressed -= DeleteCard;
 		card.OnOpenPopupButtonPressed -= OpenPopup;
 
 		card.QueueFree();
@@ -77,7 +81,7 @@ public partial class KanbanColumn : PanelContainer
 		OnOpenPopup?.Invoke(card);
 	}
 	
-	private void DestroyColumn()
+	private void DeleteColumn()
 	{
 		OnDestroyColumn?.Invoke(this);
 	}

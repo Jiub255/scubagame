@@ -11,7 +11,8 @@ public partial class DeleteButton : Button
 		MouseEntered += OnMouseEntered;
 		MouseExited += OnMouseExited;
 		
-		Hide();
+		SetButtonAlpha(0f);
+		//Hide();
 	}
 
 	public override void _ExitTree()
@@ -24,11 +25,16 @@ public partial class DeleteButton : Button
 
 	private void OnMouseEntered()
 	{
-		Show();
+		SetButtonAlpha(1f);
 	}
 	
 	private void OnMouseExited()
 	{
-		Hide();
+		SetButtonAlpha(0f);
+	}
+	
+	private void SetButtonAlpha(float alpha)
+	{
+		Modulate = new Color(Modulate.R, Modulate.G, Modulate.B, alpha);
 	}
 }

@@ -1,14 +1,24 @@
-[gd_scene load_steps=7 format=3 uid="uid://bu6ynovcljhc4"]
+[gd_scene load_steps=14 format=3 uid="uid://bu6ynovcljhc4"]
 
 [ext_resource type="StyleBox" uid="uid://bi4h1ygdn3c1v" path="res://addons/kanban/styleboxes/kanban_column_stylebox.tres" id="1_jdc0c"]
 [ext_resource type="Script" path="res://addons/kanban/KanbanColumn.cs" id="2_65o1w"]
+[ext_resource type="StyleBox" uid="uid://b1lfyi00ioyfs" path="res://addons/kanban/styleboxes/button_pressed_stylebox.tres" id="3_iil85"]
 [ext_resource type="StyleBox" uid="uid://bndhxhucc5g40" path="res://addons/kanban/styleboxes/kanban_card_stylebox.tres" id="4_pldnd"]
+[ext_resource type="StyleBox" uid="uid://c3nbko2kjvn48" path="res://addons/kanban/styleboxes/button_hover_stylebox.tres" id="4_vrxgv"]
+[ext_resource type="Texture2D" uid="uid://eowbdfipf53l" path="res://assets/mine/close-button-white.png" id="5_5qw2v"]
+[ext_resource type="Script" path="res://addons/kanban/DeleteButton.cs" id="6_gc4w7"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_un7b1"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3dso2"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_djhin"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qcjhl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e51lr"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sefr1"]
 
 [node name="Column" type="PanelContainer"]
 custom_minimum_size = Vector2(400, 0)
@@ -34,16 +44,44 @@ size_flags_vertical = 0
 mouse_filter = 2
 theme_override_constants/separation = 20
 
-[node name="ColumnTitle" type="TextEdit" parent="MarginContainer/VBoxContainerOuter"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainerOuter"]
+layout_mode = 2
+
+[node name="ColumnTitle" type="TextEdit" parent="MarginContainer/VBoxContainerOuter/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 65)
 layout_mode = 2
+size_flags_horizontal = 2
+size_flags_vertical = 4
 theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxEmpty_un7b1")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_3dso2")
 theme_override_styles/read_only = SubResource("StyleBoxEmpty_djhin")
 text = "Column Title"
 wrap_mode = 1
+
+[node name="DeleteColumnButton" type="Button" parent="MarginContainer/VBoxContainerOuter/HBoxContainer"]
+unique_name_in_owner = true
+modulate = Color(0.498039, 0, 0.0588235, 0)
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qcjhl")
+theme_override_styles/disabled_mirrored = ExtResource("3_iil85")
+theme_override_styles/disabled = ExtResource("3_iil85")
+theme_override_styles/hover_pressed_mirrored = ExtResource("3_iil85")
+theme_override_styles/hover_pressed = ExtResource("3_iil85")
+theme_override_styles/hover_mirrored = ExtResource("4_vrxgv")
+theme_override_styles/hover = ExtResource("4_vrxgv")
+theme_override_styles/pressed_mirrored = ExtResource("3_iil85")
+theme_override_styles/pressed = ExtResource("3_iil85")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_e51lr")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_sefr1")
+icon = ExtResource("5_5qw2v")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("6_gc4w7")
 
 [node name="Cards" type="VBoxContainer" parent="MarginContainer/VBoxContainerOuter"]
 unique_name_in_owner = true

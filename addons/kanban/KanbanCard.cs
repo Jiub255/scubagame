@@ -23,13 +23,13 @@ public partial class KanbanCard : PanelContainer
 		Description = (Label)GetNode("%Description");
 		
 		OpenPopupButton.Pressed += OpenPopup;
-		DeleteButton.Pressed += Delete;
+		DeleteButton.Pressed += DeleteCard;
 	}
 	
 	public override void _ExitTree()
 	{
 		OpenPopupButton.Pressed -= OpenPopup;
-		DeleteButton.Pressed -= Delete;
+		DeleteButton.Pressed -= DeleteCard;
 	}
 	
 	public void InitializeCard(CardData cardData)
@@ -43,7 +43,7 @@ public partial class KanbanCard : PanelContainer
 		OnOpenPopupButtonPressed?.Invoke(this);
 	}
 	
-	private void Delete()
+	private void DeleteCard()
 	{
 		OnDeleteButtonPressed?.Invoke(this);
 	}

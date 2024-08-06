@@ -8,9 +8,13 @@ using System.Text.Json;
 [Tool]
 public class KanbanSaver
 {
-	private string SavePath { get; } = "kanban.json";
+	private string SavePath { get; }
 	
-	public KanbanSaver() {}
+	public KanbanSaver()
+	{
+		string localPath = "res://addons/kanban/kanban.json";
+		SavePath = ProjectSettings.GlobalizePath(localPath);
+	}
 	
 	public void SaveBoard(KanbanBoard kanbanBoard)
 	{		

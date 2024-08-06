@@ -53,15 +53,15 @@ public partial class KanbanBoard : PanelContainer
 		newColumn.InitializeColumn(columnData);
 		//KanbanColumns.Add(newColumn);
 		
-		newColumn.OnDestroyColumn += DestroyColumn;
+		newColumn.OnDestroyColumn += DeleteColumn;
 		newColumn.OnOpenPopup += OpenPopup;
 	}
 	
-	private void DestroyColumn(KanbanColumn column)
+	private void DeleteColumn(KanbanColumn column)
 	{
 		//KanbanColumns.Remove(column);
 		
-		column.OnDestroyColumn -= DestroyColumn;
+		column.OnDestroyColumn -= DeleteColumn;
 		column.OnOpenPopup -= OpenPopup;
 		
 		column.QueueFree();
