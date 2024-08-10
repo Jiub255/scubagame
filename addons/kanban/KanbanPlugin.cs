@@ -29,7 +29,7 @@ public partial class KanbanPlugin : EditorPlugin
 	{
 		if (KanbanInstance != null)
 		{
-			KanbanSaver.SaveBoard(KanbanInstance);
+			KanbanSaver.SaveBoard(KanbanInstance.GetBoardData());
 			KanbanInstance.QueueFree();
 		}
 	}
@@ -55,6 +55,21 @@ public partial class KanbanPlugin : EditorPlugin
 	public override Texture2D _GetPluginIcon()
 	{
 		return EditorInterface.GetEditorTheme().GetIcon("VBoxContainer", "EditorIcons");
+	}
+
+	public override void _Notification(int what)
+	{
+		base._Notification(what);
+		
+		if (what == NotificationWMCloseRequest)
+		{
+			if (KanbanInstance != null)
+			{
+				KanbanSaver.SaveBoard(KanbanInstance.GetBoardData());
+				KanbanInstance.QueueFree();
+				GetTree().Quit();
+			}
+		}
 	}
 }
 #endif

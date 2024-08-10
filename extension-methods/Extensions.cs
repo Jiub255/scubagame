@@ -43,4 +43,48 @@ public static class Extensions
 				+ $" |    {message}");
 		}
 	}
+	
+	public static bool HasAncestorOfType<T>(this Node node, bool checkSelf = true) where T : Node
+	{
+		if (checkSelf && node is T)
+		{
+			return true;
+		}
+		Node parent = node;
+		while (parent != null && parent is not T)
+		{
+			parent = parent.GetParent();
+		}
+		if (parent == null)
+		{
+			return false;
+		}
+		if (parent is T)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public static T GetAncestorOfType<T>(this Node node, bool checkSelf = true) where T : Node
+	{
+		if (checkSelf && node is T t)
+		{
+			return t;
+		}
+		Node parent = node;
+		while (parent != null && parent is not T)
+		{
+			parent = parent.GetParent();
+		}
+		if (parent == null)
+		{
+			return null;
+		}
+		if (parent is T t2)
+		{
+			return t2;
+		}
+		return null;
+	}
 }

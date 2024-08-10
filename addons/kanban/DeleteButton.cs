@@ -12,7 +12,6 @@ public partial class DeleteButton : Button
 		MouseExited += OnMouseExited;
 		
 		SetButtonAlpha(0f);
-		//Hide();
 	}
 
 	public override void _ExitTree()

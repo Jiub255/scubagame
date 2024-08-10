@@ -6,7 +6,6 @@ public partial class KanbanBoard : PanelContainer
 {
 	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/kanban_column.tscn");
 	
-	//private List<KanbanColumn> KanbanColumns { get; } = new();
 	private CardPopup CardPopup { get; set; }
 	private Button CreateColumnButton { get; set; }
 	public HBoxContainer Columns { get; private set; }
@@ -39,6 +38,17 @@ public partial class KanbanBoard : PanelContainer
 		}
 	}
 	
+	public BoardData GetBoardData()
+	{
+		BoardData boardData = new BoardData();
+		foreach (KanbanColumn column in Columns.GetChildren())
+		{
+			ColumnData columnData = column.GetColumnData();
+			boardData.Columns.Add(columnData);
+		}
+		return boardData;
+	}
+	
 	private void CreateNewBlankColumn()
 	{
 		ColumnData columnData = new ColumnData();
@@ -51,18 +61,21 @@ public partial class KanbanBoard : PanelContainer
 		
 		Columns.AddChild(newColumn);
 		newColumn.InitializeColumn(columnData);
-		//KanbanColumns.Add(newColumn);
 		
 		newColumn.OnDestroyColumn += DeleteColumn;
 		newColumn.OnOpenPopup += OpenPopup;
+		newColumn.OnMoveColumnToPosition += MoveColumnToPosition;
+		newColumn.OnDragStart += SetColumnsChildrenToIgnore;
+		newColumn.OnDragEnd += ResetColumnsChildrensMouseFilters;
 	}
 	
 	private void DeleteColumn(KanbanColumn column)
 	{
-		//KanbanColumns.Remove(column);
-		
 		column.OnDestroyColumn -= DeleteColumn;
 		column.OnOpenPopup -= OpenPopup;
+		column.OnMoveColumnToPosition -= MoveColumnToPosition;
+		column.OnDragStart -= SetColumnsChildrenToIgnore;
+		column.OnDragEnd -= ResetColumnsChildrensMouseFilters;
 		
 		column.QueueFree();
 	}
@@ -70,5 +83,47 @@ public partial class KanbanBoard : PanelContainer
 	private void OpenPopup(KanbanCard card)
 	{
 		CardPopup.OpenPopup(card);
+	}
+	
+	private void MoveColumnToPosition(KanbanColumn columnToMove, KanbanColumn columnWithIndex)
+	{
+		int index = GetColumnIndex(columnWithIndex);
+		if (index != -1)
+		{
+			Columns.MoveChild(columnToMove, index);
+		}
+		else
+		{
+			this.PrintDebug("Column index not found.");
+		}
+	}
+	
+	private int GetColumnIndex(KanbanColumn column)
+	{
+		for (int i = 0; i < Columns.GetChildren().Count; i++)
+		{
+			if (Columns.GetChildren()[i] == column)
+			{
+				return i;
+			}
+		}
+		
+		return -1;
+	}
+	
+	private void SetColumnsChildrenToIgnore()
+	{
+		foreach (KanbanColumn column in Columns.GetChildren())
+		{
+			column.SetChildrenToIgnore(column);
+		}
+	}
+	
+	private void ResetColumnsChildrensMouseFilters()
+	{
+		foreach (KanbanColumn column in Columns.GetChildren())
+		{
+			column.ResetChildrensMouseFilter(column);
+		}
 	}
 }
