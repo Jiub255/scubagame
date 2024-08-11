@@ -60,6 +60,7 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_un7b1")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_3dso2")
 theme_override_styles/read_only = SubResource("StyleBoxEmpty_djhin")
 text = "Column Title"
+placeholder_text = "Column Title"
 wrap_mode = 1
 
 [node name="DeleteColumnButton" type="Button" parent="MarginContainer/VBoxContainerOuter/HBoxContainer"]

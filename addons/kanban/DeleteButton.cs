@@ -4,9 +4,9 @@ using Godot;
 [Tool]
 public partial class DeleteButton : Button
 {
-	public override void _Ready()
+	public override void _EnterTree()
 	{
-		base._Ready();
+		base._EnterTree();
 
 		MouseEntered += OnMouseEntered;
 		MouseExited += OnMouseExited;

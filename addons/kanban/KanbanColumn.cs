@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.Collections.Generic;
 
 [GlobalClass]
 [Tool]
@@ -9,8 +8,8 @@ public partial class KanbanColumn : PanelContainer
 	public event Action<KanbanColumn> OnDestroyColumn;
 	public event Action<KanbanCard> OnOpenPopup;
 	public event Action<KanbanColumn, KanbanColumn> OnMoveColumnToPosition;
-	public event Action OnDragStart;
-	public event Action OnDragEnd;
+	public event Action OnColumnDragStart;
+	public event Action OnCardDragStart;
 	
 	public TextEdit Title { get; private set; }
 	public VBoxContainer Cards { get; private set; }
@@ -18,7 +17,6 @@ public partial class KanbanColumn : PanelContainer
 	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/kanban_column.tscn");
 	private Button CreateCardButton { get; set; }
 	private Button DeleteColumnButton { get; set; }
-	//private Dictionary<ulong, MouseFilterEnum> mouseFilterDict { get; set; } = new();
 
 	public override void _EnterTree()
 	{
@@ -52,7 +50,7 @@ public partial class KanbanColumn : PanelContainer
 	
 	public ColumnData GetColumnData()
 	{
-		ColumnData columnData = new ColumnData(Title.Text);
+		ColumnData columnData = new(Title.Text);
 		foreach (KanbanCard card in Cards.GetChildren())
 		{
 			CardData cardData = card.GetCardData();
@@ -73,20 +71,47 @@ public partial class KanbanColumn : PanelContainer
 		Cards.AddChild(card);
 		card.InitializeCard(cardData);
 
+		SubscribeToCardEvents(card);
+	}
+
+	private void SubscribeToCardEvents(KanbanCard card)
+	{
 		card.OnDeleteButtonPressed += DeleteCard;
 		card.OnOpenPopupButtonPressed += OpenPopup;
-		card.OnMoveColumnToPosition += MoveColumnToPosition;
+		card.OnMoveCardToPosition += MoveCardToPosition;
+		card.OnCardDragStart += CardDragStart;
+		card.OnRemoveCard += RemoveCard;
 	}
-	
+
+	public void AddCard(KanbanCard card, int index)
+	{
+		Cards.AddChild(card);
+		Cards.MoveChild(card, index);
+		SubscribeToCardEvents(card);
+	}
+
+	public void RemoveCard(KanbanCard card)
+	{
+		UnsubscribeFromCardEvents(card);
+		Cards.RemoveChild(card);
+	}
+
 	private void DeleteCard(KanbanCard card)
 	{
-		card.OnDeleteButtonPressed -= DeleteCard;
-		card.OnOpenPopupButtonPressed -= OpenPopup;
-		card.OnMoveColumnToPosition -= MoveColumnToPosition;
+		UnsubscribeFromCardEvents(card);
 
 		card.QueueFree();
 	}
-	
+
+	private void UnsubscribeFromCardEvents(KanbanCard card)
+	{
+		card.OnDeleteButtonPressed -= DeleteCard;
+		card.OnOpenPopupButtonPressed -= OpenPopup;
+		card.OnMoveCardToPosition -= MoveCardToPosition;
+		card.OnCardDragStart -= CardDragStart;
+		card.OnRemoveCard -= RemoveCard;
+	}
+
 	private void OpenPopup(KanbanCard card)
 	{
 		OnOpenPopup?.Invoke(card);
@@ -99,27 +124,11 @@ public partial class KanbanColumn : PanelContainer
 
 	public override Variant _GetDragData(Vector2 atPosition)
 	{
-		//this.PrintDebug("Get drag data called.");
-		// TODO: Send signal to board to set all children of columns (including card and its children)
-		// to mouse filter ignore. 
-		// Keep each control's original value in a dict? For resetting when drag ends. 
-		OnDragStart?.Invoke();
+		OnColumnDragStart?.Invoke();
 		
 		KanbanColumn previewColumn = MakePreview();
 		SetDragPreview(previewColumn);
 		return this;
-	}
-
-	public override void _Notification(int what)
-	{
-		base._Notification(what);
-		
-		if (what == NotificationDragEnd)
-		{
-			// TODO: Send signal to board to reset mouse filter on all children of columns. 
-			//this.PrintDebug("Drag end notification recieved.");
-			OnDragEnd?.Invoke();
-		}
 	}
 
 	private KanbanColumn MakePreview()
@@ -129,24 +138,16 @@ public partial class KanbanColumn : PanelContainer
 		return previewColumn;
 	}
 
-	// TODO: Check if data.As column or board or button or title or whatever else is over the column,
-	// so you can drop anywhere on a column. 
-	// But then, how do you handle drop? Same way, just handle each case.
-	// TODO: Need to put this and drop data on every child of the column? Or just change all children to 
-	// mouse ignore while in dragging? But then how to change back when drag is done? 
 	public override bool _CanDropData(Vector2 atPosition, Variant data)
 	{
-		Node ancestor = data.As<Node>().GetAncestorOfType<KanbanColumn>();
-		//this.PrintDebug($"ancestor: {ancestor.Name}");
-		Control control = data.As<Control>();
-		//this.PrintDebug($"control: {control.Name}");
-		if (control == null)
+		Node node = data.As<Node>();
+		if (node == null)
 		{
 			return false;
 		}
 		else
 		{
-			if (control.HasAncestorOfType<KanbanColumn>())
+			if (node is KanbanColumn || node is KanbanCard)
 			{
 				return true;
 			}
@@ -156,23 +157,23 @@ public partial class KanbanColumn : PanelContainer
 
 	public override void _DropData(Vector2 atPosition, Variant data)
 	{
-		//this.PrintDebug("Drop data called.");
-		Control control = data.As<Control>();
-		KanbanColumn column = control.GetAncestorOfType<KanbanColumn>();
-		if (column != null)
+		Node node = data.As<Node>();
+		if (node != null)
 		{
-			OnMoveColumnToPosition?.Invoke(column, this);
+			if (node is KanbanColumn column)
+			{
+				OnMoveColumnToPosition?.Invoke(column, this);
+			}
+			else if (node is KanbanCard card)
+			{
+				card.RemoveCard();
+				AddCard(card, Cards.GetChildren().Count - 1);
+			}
 		}
-	}
-	
-	private void MoveColumnToPosition(KanbanColumn column)
-	{
-		OnMoveColumnToPosition?.Invoke(column, this);
 	}
 	
 	public void SetChildrenToIgnore(Node parent)
 	{
-		//this.PrintDebug($"Set children to ignore called on {parent.Name}.");
 		foreach (Node child in parent.GetChildren())
 		{
 			if (child.GetChildren().Count > 0)
@@ -181,46 +182,72 @@ public partial class KanbanColumn : PanelContainer
 			}
 			if (child is Control control)
 			{
-/* 				this.PrintDebug($"{control.Name}'s mouse filter: {MouseFilter}");
-				if (mouseFilterDict.ContainsKey(control.GetInstanceId()))
-				{
-					mouseFilterDict[control.GetInstanceId()] = MouseFilter;
-				}
-				else
-				{
-					mouseFilterDict.Add(control.GetInstanceId(), MouseFilter);
-				} */
 				control.MouseFilter = MouseFilterEnum.Ignore;
 			}
 		}
 	}
 	
-	public void ResetChildrensMouseFilter(Node parent)
+	public void ResetMouseFilters(Node parent)
 	{
-		//this.PrintDebug($"Reset childrens mouse filter called on {parent.Name}.");
 		foreach (Node child in parent.GetChildren())
 		{
 			if (child.GetChildren().Count > 0)
 			{
-				ResetChildrensMouseFilter(child);
+				ResetMouseFilters(child);
 			}
-			if (child is Container container)
+			switch (child) 
 			{
-				container.MouseFilter = MouseFilterEnum.Ignore;
+				case Container container1:
+					container1.MouseFilter = container1 is KanbanCard ? MouseFilterEnum.Stop : MouseFilterEnum.Ignore;
+					break;
+				case Label label1:
+					label1.MouseFilter = MouseFilterEnum.Ignore;
+					break;
+				// This covers TextEdit (for column title) and Buttons.
+				case Control control1:
+					control1.MouseFilter = MouseFilterEnum.Stop;
+					break;
 			}
-			else if (child is Label label)
-			{
-				label.MouseFilter = MouseFilterEnum.Ignore;
-			}
-			else if (child is Control control)
-			{
-				control.MouseFilter = MouseFilterEnum.Stop;
-			}
-/* 			if (child is Control control)
-			{
-				this.PrintDebug($"{control.Name}'s mouse filter dict value: {mouseFilterDict[control.GetInstanceId()]}");
-				control.MouseFilter = mouseFilterDict[control.GetInstanceId()];
-			} */
 		}
+	}
+	
+	private void CardDragStart()
+	{
+		OnCardDragStart?.Invoke();
+	}
+	
+	private void MoveCardToPosition(KanbanCard cardToMove, KanbanCard cardWithIndex)
+	{
+		int index = GetCardIndex(cardWithIndex);
+		if (index != -1)
+		{
+			if (Cards.GetChildren().Contains(cardToMove))
+			{
+				Cards.MoveChild(cardToMove, index);
+			}
+			else
+			{
+				cardToMove.RemoveCard();
+				AddCard(cardToMove, index);
+			}
+		}
+		else
+		{
+			this.PrintDebug("Card index not found.");
+		}
+	}
+	
+	private int GetCardIndex(KanbanCard card)
+	{
+		Godot.Collections.Array<Node> children = Cards.GetChildren();
+		for (int i = 0; i < children.Count; i++)
+		{
+			if (children[i] == card)
+			{
+				return i;
+			}
+		}
+		
+		return -1;
 	}
 }

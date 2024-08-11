@@ -1,8 +1,6 @@
-using Godot;
-using System;
 using System.Collections.Generic;
 
-public class BoardData
+public struct BoardData
 {
 	public List<ColumnData> Columns { get; set; }
 	

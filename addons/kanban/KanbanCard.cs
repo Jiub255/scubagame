@@ -7,12 +7,15 @@ public partial class KanbanCard : PanelContainer
 {
 	public event Action<KanbanCard> OnOpenPopupButtonPressed;
 	public event Action<KanbanCard> OnDeleteButtonPressed;
-	public event Action<KanbanColumn> OnMoveColumnToPosition;
+	public event Action<KanbanCard, KanbanCard> OnMoveCardToPosition;
+	public event Action OnCardDragStart;
+	public event Action<KanbanCard> OnRemoveCard;
 	
 	private Button OpenPopupButton { get; set; }
 	private Button DeleteButton { get; set; }
 	public Label Title { get; set; }
 	public Label Description { get; set; }
+	private PackedScene CardScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/kanban_card.tscn");
 
 	public override void _EnterTree()
 	{
@@ -20,12 +23,22 @@ public partial class KanbanCard : PanelContainer
 		
 		OpenPopupButton = (Button)GetNode("%OpenPopupButton");
 		DeleteButton = (Button)GetNode("%DeleteButton");
-		
+
+		ConnectEvents();
+	}
+	
+	public override void _ExitTree()
+	{
+		DisconnectEvents();
+	}
+	
+	public void ConnectEvents()
+	{
 		OpenPopupButton.Pressed += OpenPopup;
 		DeleteButton.Pressed += DeleteCard;
 	}
 	
-	public override void _ExitTree()
+	public void DisconnectEvents()
 	{
 		OpenPopupButton.Pressed -= OpenPopup;
 		DeleteButton.Pressed -= DeleteCard;
@@ -41,7 +54,7 @@ public partial class KanbanCard : PanelContainer
 	
 	public CardData GetCardData()
 	{
-		CardData cardData = new CardData(Title.Text, Description.Text);
+		CardData cardData = new(Title.Text, Description.Text);
 		return cardData;
 	}
 
@@ -50,41 +63,64 @@ public partial class KanbanCard : PanelContainer
 		OnOpenPopupButtonPressed?.Invoke(this);
 	}
 	
-	private void DeleteCard()
+	public void RemoveCard()
+	{
+		OnRemoveCard?.Invoke(this);
+	}
+	
+	public void DeleteCard()
 	{
 		OnDeleteButtonPressed?.Invoke(this);
 	}
 
-	// TODO: Check if data.As column or board or button or title or whatever else is over the column,
-	// so you can drop anywhere on a column. 
-	// But then, how do you handle drop? Same way, just handle each case.
+	public override Variant _GetDragData(Vector2 atPosition)
+	{
+		OnCardDragStart?.Invoke();
+		
+		KanbanCard previewCard = MakePreview();
+		SetDragPreview(previewCard);
+		return this;
+	}
+
+	private KanbanCard MakePreview()
+	{
+		KanbanCard previewCard = (KanbanCard)CardScene.Instantiate();
+		previewCard.InitializeCard(GetCardData());
+		return previewCard;
+	}
+
 	public override bool _CanDropData(Vector2 atPosition, Variant data)
 	{
-		Node ancestor = data.As<Node>().GetAncestorOfType<KanbanColumn>();
-		this.PrintDebug($"ancestor: {ancestor.Name}");
-		Control control = data.As<Control>();
-		this.PrintDebug($"control: {control.Name}");
-		if (control == null)
+		KanbanCard card = data.As<KanbanCard>();
+		if (card == null)
 		{
 			return false;
 		}
-		else
-		{
-			if (control.HasAncestorOfType<KanbanColumn>())
-			{
-				return true;
-			}
-			return false;
-		}
+		return true;
 	}
 
 	public override void _DropData(Vector2 atPosition, Variant data)
 	{
-		Control control = data.As<Control>();
-		KanbanColumn column = control.GetAncestorOfType<KanbanColumn>();
-		if (column != null)
+		KanbanCard card = data.As<KanbanCard>();
+		if (card != null)
 		{
-			OnMoveColumnToPosition?.Invoke(column);
+			OnMoveCardToPosition?.Invoke(card, this);
+		}
+	}
+	
+	
+	public void SetChildrenToIgnore(Node parent)
+	{
+		foreach (Node child in parent.GetChildren())
+		{
+			if (child.GetChildren().Count > 0)
+			{
+				SetChildrenToIgnore(child);
+			}
+			if (child is Control control)
+			{
+				control.MouseFilter = MouseFilterEnum.Ignore;
+			}
 		}
 	}
 }

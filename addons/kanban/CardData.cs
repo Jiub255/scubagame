@@ -1,12 +1,15 @@
-using Godot;
-using System;
-
-public class CardData
+public struct CardData
 {
 	public string Title { get; set; }
 	public string Description { get; set; }
 	
-	public CardData(string title = "Enter Card Title", string description = "Enter Card Description")
+	public CardData()
+	{
+		Title = "Card Title";
+		Description = "Card Description";
+	}
+	
+	public CardData(string title, string description)
 	{
 		Title = title;
 		Description = description;

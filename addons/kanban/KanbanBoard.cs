@@ -51,7 +51,7 @@ public partial class KanbanBoard : PanelContainer
 	
 	private void CreateNewBlankColumn()
 	{
-		ColumnData columnData = new ColumnData();
+		ColumnData columnData = new();
 		CreateNewColumn(columnData);
 	}
 
@@ -65,8 +65,8 @@ public partial class KanbanBoard : PanelContainer
 		newColumn.OnDestroyColumn += DeleteColumn;
 		newColumn.OnOpenPopup += OpenPopup;
 		newColumn.OnMoveColumnToPosition += MoveColumnToPosition;
-		newColumn.OnDragStart += SetColumnsChildrenToIgnore;
-		newColumn.OnDragEnd += ResetColumnsChildrensMouseFilters;
+		newColumn.OnColumnDragStart += SetColumnsFiltersToIgnore;
+		newColumn.OnCardDragStart += SetCardsFiltersToIgnore;
 	}
 	
 	private void DeleteColumn(KanbanColumn column)
@@ -74,8 +74,8 @@ public partial class KanbanBoard : PanelContainer
 		column.OnDestroyColumn -= DeleteColumn;
 		column.OnOpenPopup -= OpenPopup;
 		column.OnMoveColumnToPosition -= MoveColumnToPosition;
-		column.OnDragStart -= SetColumnsChildrenToIgnore;
-		column.OnDragEnd -= ResetColumnsChildrensMouseFilters;
+		column.OnColumnDragStart -= SetColumnsFiltersToIgnore;
+		column.OnCardDragStart -= SetCardsFiltersToIgnore;
 		
 		column.QueueFree();
 	}
@@ -100,9 +100,10 @@ public partial class KanbanBoard : PanelContainer
 	
 	private int GetColumnIndex(KanbanColumn column)
 	{
-		for (int i = 0; i < Columns.GetChildren().Count; i++)
+		Godot.Collections.Array<Node> children = Columns.GetChildren();
+		for (int i = 0; i < children.Count; i++)
 		{
-			if (Columns.GetChildren()[i] == column)
+			if (children[i] == column)
 			{
 				return i;
 			}
@@ -111,7 +112,17 @@ public partial class KanbanBoard : PanelContainer
 		return -1;
 	}
 	
-	private void SetColumnsChildrenToIgnore()
+	public override void _Notification(int what)
+	{
+		base._Notification(what);
+		
+		if (what == NotificationDragEnd)
+		{
+			ResetMouseFilters();
+		}
+	}
+	
+	private void SetColumnsFiltersToIgnore()
 	{
 		foreach (KanbanColumn column in Columns.GetChildren())
 		{
@@ -119,11 +130,22 @@ public partial class KanbanBoard : PanelContainer
 		}
 	}
 	
-	private void ResetColumnsChildrensMouseFilters()
+	private void ResetMouseFilters()
 	{
 		foreach (KanbanColumn column in Columns.GetChildren())
 		{
-			column.ResetChildrensMouseFilter(column);
+			column.ResetMouseFilters(column);
+		}
+	}
+	
+	private void SetCardsFiltersToIgnore()
+	{
+		foreach (KanbanColumn column in Columns.GetChildren())
+		{
+			foreach (KanbanCard card in column.Cards.GetChildren())
+			{
+				card.SetChildrenToIgnore(card);
+			}
 		}
 	}
 }
