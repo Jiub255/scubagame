@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 [Tool]
-public partial class KanbanCard : PanelContainer
+public partial class KanbanCard : Button
 {
 	public event Action<KanbanCard> OnOpenPopupButtonPressed;
 	public event Action<KanbanCard> OnDeleteButtonPressed;
@@ -10,7 +10,7 @@ public partial class KanbanCard : PanelContainer
 	public event Action OnCardDragStart;
 	public event Action<KanbanCard> OnRemoveCard;
 	
-	private Button OpenPopupButton { get; set; }
+	//private Button OpenPopupButton { get; set; }
 	private Button DeleteButton { get; set; }
 	public Label Title { get; set; }
 	public Label Description { get; set; }
@@ -20,7 +20,7 @@ public partial class KanbanCard : PanelContainer
 	{
 		base._EnterTree();
 		
-		OpenPopupButton = (Button)GetNode("%OpenPopupButton");
+		//OpenPopupButton = (Button)GetNode("%OpenPopupButton");
 		DeleteButton = (Button)GetNode("%DeleteButton");
 
 		ConnectEvents();
@@ -33,13 +33,13 @@ public partial class KanbanCard : PanelContainer
 	
 	public void ConnectEvents()
 	{
-		OpenPopupButton.Pressed += OpenPopup;
+		Pressed += OpenPopup;
 		DeleteButton.Pressed += DeleteCard;
 	}
 	
 	public void DisconnectEvents()
 	{
-		OpenPopupButton.Pressed -= OpenPopup;
+		Pressed -= OpenPopup;
 		DeleteButton.Pressed -= DeleteCard;
 	}
 	

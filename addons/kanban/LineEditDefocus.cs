@@ -43,10 +43,6 @@ public partial class LineEditDefocus : LineEdit
 			{
 				ReleaseFocus();
 			}
-			else if (@event.IsActionPressed("ui_text_submit"))
-			{
-				ReleaseFocus();
-			}
 		}
 	}
 	
