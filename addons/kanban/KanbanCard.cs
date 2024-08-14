@@ -1,7 +1,6 @@
 using Godot;
 using System;
 
-[GlobalClass]
 [Tool]
 public partial class KanbanCard : PanelContainer
 {
@@ -109,13 +108,13 @@ public partial class KanbanCard : PanelContainer
 	}
 	
 	
-	public void SetChildrenToIgnore(Node parent)
+	public void SetFiltersToIgnore(Node parent)
 	{
 		foreach (Node child in parent.GetChildren())
 		{
 			if (child.GetChildren().Count > 0)
 			{
-				SetChildrenToIgnore(child);
+				SetFiltersToIgnore(child);
 			}
 			if (child is Control control)
 			{

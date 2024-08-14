@@ -20,6 +20,7 @@ public partial class KanbanPlugin : EditorPlugin
 		EditorInterface.GetEditorMainScreen().AddChild(KanbanInstance);
 		
 		KanbanInstance.InitializeBoard(boardData);
+		KanbanInstance.OnBoardChanged += SaveBoard;
 		
 		// Hide the main panel. Very much required.
 		_MakeVisible(false);
@@ -29,9 +30,14 @@ public partial class KanbanPlugin : EditorPlugin
 	{
 		if (KanbanInstance != null)
 		{
-			KanbanSaver.SaveBoard(KanbanInstance.GetBoardData());
+			SaveBoard();
 			KanbanInstance.QueueFree();
 		}
+	}
+
+	private void SaveBoard()
+	{
+		KanbanSaver.SaveBoard(KanbanInstance.GetBoardData());
 	}
 
 	public override bool _HasMainScreen()

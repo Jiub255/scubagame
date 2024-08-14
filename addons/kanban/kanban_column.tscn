@@ -1,20 +1,22 @@
-[gd_scene load_steps=16 format=3 uid="uid://bu6ynovcljhc4"]
+[gd_scene load_steps=18 format=3 uid="uid://bu6ynovcljhc4"]
 
 [ext_resource type="StyleBox" uid="uid://bi4h1ygdn3c1v" path="res://addons/kanban/styleboxes/kanban_column_stylebox.tres" id="1_jdc0c"]
 [ext_resource type="Script" path="res://addons/kanban/KanbanColumn.cs" id="2_65o1w"]
+[ext_resource type="Script" path="res://addons/kanban/LineEditDefocus.cs" id="3_ccoye"]
 [ext_resource type="StyleBox" uid="uid://b1lfyi00ioyfs" path="res://addons/kanban/styleboxes/button_pressed_stylebox.tres" id="3_iil85"]
 [ext_resource type="StyleBox" uid="uid://bndhxhucc5g40" path="res://addons/kanban/styleboxes/kanban_card_stylebox.tres" id="4_pldnd"]
 [ext_resource type="StyleBox" uid="uid://c3nbko2kjvn48" path="res://addons/kanban/styleboxes/button_hover_stylebox.tres" id="4_vrxgv"]
 [ext_resource type="Texture2D" uid="uid://eowbdfipf53l" path="res://assets/mine/close-button-white.png" id="5_5qw2v"]
-[ext_resource type="Script" path="res://addons/kanban/DeleteButton.cs" id="6_gc4w7"]
+[ext_resource type="Script" path="res://addons/kanban/HiddenButton.cs" id="6_gc4w7"]
+[ext_resource type="Script" path="res://addons/kanban/WheelScrollBar.cs" id="8_mwi2f"]
 [ext_resource type="StyleBox" uid="uid://yvkef50xqyci" path="res://addons/kanban/styleboxes/new_column_pressed_stylebox.tres" id="8_og5bk"]
 [ext_resource type="StyleBox" uid="uid://d0l0jnfa111hx" path="res://addons/kanban/styleboxes/new_column_hover_stylebox.tres" id="9_kpsvw"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_un7b1"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q36cx"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3dso2"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oeu3s"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_djhin"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gwhto"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qcjhl"]
 
@@ -23,7 +25,7 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sefr1"]
 
 [node name="Column" type="PanelContainer"]
-custom_minimum_size = Vector2(400, 0)
+custom_minimum_size = Vector2(442, 0)
 offset_right = 400.0
 offset_bottom = 188.0
 size_flags_horizontal = 4
@@ -49,19 +51,21 @@ theme_override_constants/separation = 20
 layout_mode = 2
 mouse_filter = 2
 
-[node name="ColumnTitle" type="TextEdit" parent="MarginContainer/VBoxContainerOuter/HBoxContainer"]
+[node name="ColumnTitle" type="LineEdit" parent="MarginContainer/VBoxContainerOuter/HBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 65)
 layout_mode = 2
 size_flags_horizontal = 2
 size_flags_vertical = 4
-theme_override_font_sizes/font_size = 28
-theme_override_styles/normal = SubResource("StyleBoxEmpty_un7b1")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_3dso2")
-theme_override_styles/read_only = SubResource("StyleBoxEmpty_djhin")
+focus_mode = 1
+mouse_filter = 1
+theme_override_font_sizes/font_size = 32
+theme_override_styles/focus = SubResource("StyleBoxEmpty_q36cx")
+theme_override_styles/read_only = SubResource("StyleBoxEmpty_oeu3s")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_gwhto")
 text = "Column Title"
 placeholder_text = "Column Title"
-wrap_mode = 1
+script = ExtResource("3_ccoye")
 
 [node name="DeleteColumnButton" type="Button" parent="MarginContainer/VBoxContainerOuter/HBoxContainer"]
 unique_name_in_owner = true
@@ -70,6 +74,7 @@ custom_minimum_size = Vector2(22, 22)
 layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
+mouse_filter = 1
 theme_override_styles/focus = SubResource("StyleBoxEmpty_qcjhl")
 theme_override_styles/disabled_mirrored = ExtResource("3_iil85")
 theme_override_styles/disabled = ExtResource("3_iil85")
@@ -86,7 +91,13 @@ icon_alignment = 1
 expand_icon = true
 script = ExtResource("6_gc4w7")
 
-[node name="Cards" type="VBoxContainer" parent="MarginContainer/VBoxContainerOuter"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainerOuter"]
+custom_minimum_size = Vector2(360, 830)
+layout_mode = 2
+horizontal_scroll_mode = 3
+script = ExtResource("8_mwi2f")
+
+[node name="Cards" type="VBoxContainer" parent="MarginContainer/VBoxContainerOuter/ScrollContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
@@ -96,6 +107,7 @@ theme_override_constants/separation = 20
 [node name="CreateCardButton" type="Button" parent="MarginContainer/VBoxContainerOuter"]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/focus = ExtResource("4_pldnd")
 theme_override_styles/disabled_mirrored = ExtResource("8_og5bk")
 theme_override_styles/disabled = ExtResource("8_og5bk")

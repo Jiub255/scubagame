@@ -1,10 +1,10 @@
 using Godot;
 using System.IO;
+// TODO: Using this library might be causing .NET failure to unload assembly errors
+// on every rebuild. Requires editor restart every time. 
+// Maybe use another method to save? Or find another way to make it work. 
 using System.Text.Json;
 
-// TODO: Separate out data from column/card/board and only save the raw data.
-// Then put it all back together on load. 
-// Is Tool necessary? 
 [Tool]
 public class KanbanSaver
 {
@@ -20,6 +20,7 @@ public class KanbanSaver
 	{
 		string jsonString = JsonSerializer.Serialize(boardData);
 		File.WriteAllText(SavePath, jsonString);
+		//this.PrintDebug($"Saved {jsonString}");
 	}
 	
 	public BoardData LoadGame()

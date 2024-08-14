@@ -1,9 +1,11 @@
+using System;
 using Godot;
 
-[GlobalClass]
 [Tool]
 public partial class KanbanBoard : PanelContainer
 {
+	public event Action OnBoardChanged;
+	
 	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/kanban_column.tscn");
 	
 	private CardPopup CardPopup { get; set; }
@@ -18,9 +20,10 @@ public partial class KanbanBoard : PanelContainer
 		CreateColumnButton = (Button)GetNode("%CreateColumnButton");
 		Columns = (HBoxContainer)GetNode("%Columns");
 
+		CardPopup.OnClosePopup += SaveBoard;
 		CreateColumnButton.Pressed += CreateNewBlankColumn;
 
-		CardPopup.ClosePopup();
+		//CardPopup.ClosePopup();
 	}
 
 	public override void _ExitTree()
@@ -36,6 +39,11 @@ public partial class KanbanBoard : PanelContainer
 		{
 			CreateNewColumn(columnData);
 		}
+	}
+	
+	private void SaveBoard()
+	{
+		OnBoardChanged?.Invoke();
 	}
 	
 	public BoardData GetBoardData()
@@ -67,6 +75,7 @@ public partial class KanbanBoard : PanelContainer
 		newColumn.OnMoveColumnToPosition += MoveColumnToPosition;
 		newColumn.OnColumnDragStart += SetColumnsFiltersToIgnore;
 		newColumn.OnCardDragStart += SetCardsFiltersToIgnore;
+		newColumn.OnColumnChanged += SaveBoard;
 	}
 	
 	private void DeleteColumn(KanbanColumn column)
@@ -76,8 +85,11 @@ public partial class KanbanBoard : PanelContainer
 		column.OnMoveColumnToPosition -= MoveColumnToPosition;
 		column.OnColumnDragStart -= SetColumnsFiltersToIgnore;
 		column.OnCardDragStart -= SetCardsFiltersToIgnore;
+		column.OnColumnChanged -= SaveBoard;
 		
 		column.QueueFree();
+
+		SaveBoard();
 	}
 	
 	private void OpenPopup(KanbanCard card)
@@ -119,6 +131,11 @@ public partial class KanbanBoard : PanelContainer
 		if (what == NotificationDragEnd)
 		{
 			ResetMouseFilters();
+			
+			if (GetViewport().GuiIsDragSuccessful())
+			{
+				SaveBoard();
+			}
 		}
 	}
 	
@@ -126,15 +143,7 @@ public partial class KanbanBoard : PanelContainer
 	{
 		foreach (KanbanColumn column in Columns.GetChildren())
 		{
-			column.SetChildrenToIgnore(column);
-		}
-	}
-	
-	private void ResetMouseFilters()
-	{
-		foreach (KanbanColumn column in Columns.GetChildren())
-		{
-			column.ResetMouseFilters(column);
+			column.SetFiltersToIgnore(column);
 		}
 	}
 	
@@ -144,8 +153,16 @@ public partial class KanbanBoard : PanelContainer
 		{
 			foreach (KanbanCard card in column.Cards.GetChildren())
 			{
-				card.SetChildrenToIgnore(card);
+				card.SetFiltersToIgnore(card);
 			}
+		}
+	}
+	
+	private void ResetMouseFilters()
+	{
+		foreach (KanbanColumn column in Columns.GetChildren())
+		{
+			column.ResetMouseFilters(column);
 		}
 	}
 }

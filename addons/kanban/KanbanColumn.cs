@@ -1,7 +1,6 @@
 using Godot;
 using System;
 
-[GlobalClass]
 [Tool]
 public partial class KanbanColumn : PanelContainer
 {
@@ -10,13 +9,16 @@ public partial class KanbanColumn : PanelContainer
 	public event Action<KanbanColumn, KanbanColumn> OnMoveColumnToPosition;
 	public event Action OnColumnDragStart;
 	public event Action OnCardDragStart;
+	public event Action OnColumnChanged;
 	
-	public TextEdit Title { get; private set; }
+	public LineEdit Title { get; private set; }
 	public VBoxContainer Cards { get; private set; }
 	private PackedScene CardScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/kanban_card.tscn");
 	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/kanban_column.tscn");
 	private Button CreateCardButton { get; set; }
 	private Button DeleteColumnButton { get; set; }
+
+#region COLUMN
 
 	public override void _EnterTree()
 	{
@@ -24,9 +26,11 @@ public partial class KanbanColumn : PanelContainer
 		
 		CreateCardButton = (Button)GetNode("%CreateCardButton");
 		DeleteColumnButton = (Button)GetNode("%DeleteColumnButton");
+		Title = (LineEdit)GetNode("%ColumnTitle");
 
 		CreateCardButton.Pressed += CreateNewBlankCard;
 		DeleteColumnButton.Pressed += DeleteColumn;
+		Title.TextChanged += OnTitleChanged;
 	}
 
 	public override void _ExitTree()
@@ -35,11 +39,12 @@ public partial class KanbanColumn : PanelContainer
 		
 		CreateCardButton.Pressed -= CreateNewBlankCard;
 		DeleteColumnButton.Pressed -= DeleteColumn;
+		Title.TextChanged -= OnTitleChanged;
 	}
 	
 	public void InitializeColumn(ColumnData columnData)
 	{
-		Title = (TextEdit)GetNode("%ColumnTitle");
+		Title = (LineEdit)GetNode("%ColumnTitle");
 		Cards = (VBoxContainer)GetNode("%Cards");
 		Title.Text = columnData.Title;
 		foreach (CardData cardData in columnData.Cards)
@@ -58,6 +63,38 @@ public partial class KanbanColumn : PanelContainer
 		}
 		return columnData;
 	}
+	
+	private void DeleteColumn()
+	{
+		OnDestroyColumn?.Invoke(this);
+	}
+	
+	private void OnTitleChanged(string _)
+	{
+		OnColumnChanged?.Invoke();
+	}
+
+	#endregion
+
+	#region CARD
+
+	private void SubscribeToCardEvents(KanbanCard card)
+	{
+		card.OnDeleteButtonPressed += DeleteCard;
+		card.OnRemoveCard += RemoveCard;
+		card.OnCardDragStart += CardDragStart;
+		card.OnMoveCardToPosition += MoveCardToPosition;
+		card.OnOpenPopupButtonPressed += OpenPopup;
+	}
+
+	private void UnsubscribeFromCardEvents(KanbanCard card)
+	{
+		card.OnDeleteButtonPressed -= DeleteCard;
+		card.OnRemoveCard -= RemoveCard;
+		card.OnCardDragStart -= CardDragStart;
+		card.OnMoveCardToPosition -= MoveCardToPosition;
+		card.OnOpenPopupButtonPressed -= OpenPopup;
+	}
 
 	private void CreateNewBlankCard()
 	{
@@ -74,13 +111,12 @@ public partial class KanbanColumn : PanelContainer
 		SubscribeToCardEvents(card);
 	}
 
-	private void SubscribeToCardEvents(KanbanCard card)
+	private void DeleteCard(KanbanCard card)
 	{
-		card.OnDeleteButtonPressed += DeleteCard;
-		card.OnOpenPopupButtonPressed += OpenPopup;
-		card.OnMoveCardToPosition += MoveCardToPosition;
-		card.OnCardDragStart += CardDragStart;
-		card.OnRemoveCard += RemoveCard;
+		UnsubscribeFromCardEvents(card);
+
+		card.QueueFree();
+		OnColumnChanged?.Invoke();
 	}
 
 	public void AddCard(KanbanCard card, int index)
@@ -94,22 +130,47 @@ public partial class KanbanColumn : PanelContainer
 	{
 		UnsubscribeFromCardEvents(card);
 		Cards.RemoveChild(card);
+		OnColumnChanged?.Invoke();
 	}
-
-	private void DeleteCard(KanbanCard card)
+	
+	private void CardDragStart()
 	{
-		UnsubscribeFromCardEvents(card);
-
-		card.QueueFree();
+		OnCardDragStart?.Invoke();
 	}
-
-	private void UnsubscribeFromCardEvents(KanbanCard card)
+	
+	private void MoveCardToPosition(KanbanCard cardToMove, KanbanCard cardWithIndex)
 	{
-		card.OnDeleteButtonPressed -= DeleteCard;
-		card.OnOpenPopupButtonPressed -= OpenPopup;
-		card.OnMoveCardToPosition -= MoveCardToPosition;
-		card.OnCardDragStart -= CardDragStart;
-		card.OnRemoveCard -= RemoveCard;
+		int index = GetCardIndex(cardWithIndex);
+		if (index != -1)
+		{
+			if (Cards.GetChildren().Contains(cardToMove))
+			{
+				Cards.MoveChild(cardToMove, index);
+			}
+			else
+			{
+				cardToMove.RemoveCard();
+				AddCard(cardToMove, index);
+			}
+		}
+		else
+		{
+			this.PrintDebug("Card index not found.");
+		}
+	}
+	
+	private int GetCardIndex(KanbanCard card)
+	{
+		Godot.Collections.Array<Node> children = Cards.GetChildren();
+		for (int i = 0; i < children.Count; i++)
+		{
+			if (children[i] == card)
+			{
+				return i;
+			}
+		}
+		
+		return -1;
 	}
 
 	private void OpenPopup(KanbanCard card)
@@ -117,10 +178,9 @@ public partial class KanbanColumn : PanelContainer
 		OnOpenPopup?.Invoke(card);
 	}
 	
-	private void DeleteColumn()
-	{
-		OnDestroyColumn?.Invoke(this);
-	}
+#endregion
+
+#region DRAG AND DROP
 
 	public override Variant _GetDragData(Vector2 atPosition)
 	{
@@ -167,21 +227,22 @@ public partial class KanbanColumn : PanelContainer
 			else if (node is KanbanCard card)
 			{
 				card.RemoveCard();
-				AddCard(card, Cards.GetChildren().Count - 1);
+				AddCard(card, Cards.GetChildren().Count);
 			}
 		}
 	}
 	
-	public void SetChildrenToIgnore(Node parent)
+	public void SetFiltersToIgnore(Node parent)
 	{
 		foreach (Node child in parent.GetChildren())
 		{
 			if (child.GetChildren().Count > 0)
 			{
-				SetChildrenToIgnore(child);
+				SetFiltersToIgnore(child);
 			}
 			if (child is Control control)
 			{
+				//control.PrintDebug($"Type: {control.GetType()}");
 				control.MouseFilter = MouseFilterEnum.Ignore;
 			}
 		}
@@ -195,59 +256,15 @@ public partial class KanbanColumn : PanelContainer
 			{
 				ResetMouseFilters(child);
 			}
-			switch (child) 
+			if (child is Control control && 
+					(child is KanbanCard ||
+					child is LineEdit ||
+					child is Button ||
+					child is ScrollContainer))
 			{
-				case Container container1:
-					container1.MouseFilter = container1 is KanbanCard ? MouseFilterEnum.Stop : MouseFilterEnum.Ignore;
-					break;
-				case Label label1:
-					label1.MouseFilter = MouseFilterEnum.Ignore;
-					break;
-				// This covers TextEdit (for column title) and Buttons.
-				case Control control1:
-					control1.MouseFilter = MouseFilterEnum.Stop;
-					break;
+				control.MouseFilter = MouseFilterEnum.Pass;
 			}
 		}
 	}
-	
-	private void CardDragStart()
-	{
-		OnCardDragStart?.Invoke();
-	}
-	
-	private void MoveCardToPosition(KanbanCard cardToMove, KanbanCard cardWithIndex)
-	{
-		int index = GetCardIndex(cardWithIndex);
-		if (index != -1)
-		{
-			if (Cards.GetChildren().Contains(cardToMove))
-			{
-				Cards.MoveChild(cardToMove, index);
-			}
-			else
-			{
-				cardToMove.RemoveCard();
-				AddCard(cardToMove, index);
-			}
-		}
-		else
-		{
-			this.PrintDebug("Card index not found.");
-		}
-	}
-	
-	private int GetCardIndex(KanbanCard card)
-	{
-		Godot.Collections.Array<Node> children = Cards.GetChildren();
-		for (int i = 0; i < children.Count; i++)
-		{
-			if (children[i] == card)
-			{
-				return i;
-			}
-		}
-		
-		return -1;
-	}
+#endregion
 }

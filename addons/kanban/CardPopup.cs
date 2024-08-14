@@ -1,13 +1,14 @@
+using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using Godot;
 
-[GlobalClass]
 [Tool]
 public partial class CardPopup : Button
 {
+	public event Action OnClosePopup;
+	
 	private KanbanCard Card;
-	private TextEdit Title { get; set; }
+	private LineEdit Title { get; set; }
 	private TextEdit Description { get; set; }
 	private List<Control> Controls { get; set; } = new();
 
@@ -15,7 +16,7 @@ public partial class CardPopup : Button
 	{
 		base._EnterTree();
 		
-		Title = (TextEdit)GetNode("%Title");
+		Title = (LineEdit)GetNode("%Title");
 		Description = (TextEdit)GetNode("%Description");
 
 		Pressed += ClosePopup;
@@ -84,5 +85,6 @@ public partial class CardPopup : Button
 		}
 		SetAllMouseFilters(MouseFilterEnum.Ignore);
 		Hide();
+		OnClosePopup?.Invoke();
 	}
 }

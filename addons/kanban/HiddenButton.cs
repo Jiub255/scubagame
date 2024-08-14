@@ -1,8 +1,7 @@
 using Godot;
 
-[GlobalClass]
 [Tool]
-public partial class DeleteButton : Button
+public partial class HiddenButton : Button
 {
 	public override void _EnterTree()
 	{

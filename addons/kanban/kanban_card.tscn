@@ -7,7 +7,7 @@
 [ext_resource type="StyleBox" uid="uid://b1lfyi00ioyfs" path="res://addons/kanban/styleboxes/button_pressed_stylebox.tres" id="3_bl5tw"]
 [ext_resource type="Texture2D" uid="uid://eowbdfipf53l" path="res://assets/mine/close-button-white.png" id="5_d8se2"]
 [ext_resource type="Texture2D" uid="uid://cqn8ck2kaegp" path="res://assets/mine/edit-button-shaded-white.png" id="5_d13cw"]
-[ext_resource type="Script" path="res://addons/kanban/DeleteButton.cs" id="6_qry6k"]
+[ext_resource type="Script" path="res://addons/kanban/HiddenButton.cs" id="6_qry6k"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_le31h"]
 content_margin_left = 2.0
@@ -28,6 +28,7 @@ content_margin_left = 2.0
 custom_minimum_size = Vector2(360, 150)
 offset_right = 360.0
 offset_bottom = 137.0
+mouse_filter = 1
 theme_override_styles/panel = ExtResource("1_ysr66")
 script = ExtResource("2_84l8d")
 
@@ -62,6 +63,7 @@ unique_name_in_owner = true
 modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(22, 22)
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/focus = SubResource("StyleBoxEmpty_01edj")
 theme_override_styles/disabled_mirrored = ExtResource("3_bl5tw")
 theme_override_styles/disabled = ExtResource("3_bl5tw")
@@ -83,6 +85,7 @@ unique_name_in_owner = true
 modulate = Color(0.498039, 0, 0.0588235, 0)
 custom_minimum_size = Vector2(22, 22)
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/focus = SubResource("StyleBoxEmpty_1n1s6")
 theme_override_styles/disabled_mirrored = ExtResource("3_bl5tw")
 theme_override_styles/disabled = ExtResource("3_bl5tw")

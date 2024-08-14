@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cdujdcexpd5e6"]
+[gd_scene load_steps=22 format=3 uid="uid://cdujdcexpd5e6"]
 
 [ext_resource type="Script" path="res://addons/kanban/KanbanBoard.cs" id="1_vm8vo"]
 [ext_resource type="StyleBox" uid="uid://bi4h1ygdn3c1v" path="res://addons/kanban/styleboxes/kanban_column_stylebox.tres" id="2_y3isf"]
@@ -8,6 +8,10 @@
 [ext_resource type="StyleBox" uid="uid://d0l0jnfa111hx" path="res://addons/kanban/styleboxes/new_column_hover_stylebox.tres" id="4_3evpx"]
 [ext_resource type="StyleBox" uid="uid://dnnmhpy7x7ucf" path="res://addons/kanban/styleboxes/card_text_stylebox.tres" id="4_do0tc"]
 [ext_resource type="StyleBox" uid="uid://qyeebvyaqdf8" path="res://addons/kanban/styleboxes/popup_title_stylebox.tres" id="5_bsa04"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pecwn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p76kq"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_is3g4"]
 
@@ -32,20 +36,25 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6m860"]
 
 [node name="KanbanBoard" type="PanelContainer"]
-clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1470.0
-offset_bottom = -447.0
+offset_right = -1912.0
+offset_bottom = -1072.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_pecwn")
 script = ExtResource("1_vm8vo")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_p76kq")
+
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -55,16 +64,16 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer/MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 20
 
-[node name="TitleHBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="TitleHBoxContainer" type="HBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 2
 
-[node name="CreateColumnButton" type="Button" parent="MarginContainer/VBoxContainer/TitleHBoxContainer"]
+[node name="CreateColumnButton" type="Button" parent="ScrollContainer/MarginContainer/VBoxContainer/TitleHBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 65)
 layout_mode = 2
@@ -83,7 +92,7 @@ theme_override_styles/normal_mirrored = ExtResource("2_y3isf")
 theme_override_styles/normal = ExtResource("2_y3isf")
 text = "Create New Column"
 
-[node name="Columns" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="Columns" type="HBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
@@ -94,6 +103,8 @@ theme_override_constants/separation = 20
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 mouse_filter = 2
 theme_override_styles/focus = SubResource("StyleBoxEmpty_is3g4")
 theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_un3jc")
@@ -137,17 +148,21 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 mouse_filter = 2
 
-[node name="Title" type="TextEdit" parent="CardPopup/Panel/MarginContainer/VBoxContainer"]
+[node name="Title" type="LineEdit" parent="CardPopup/Panel/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+focus_neighbor_left = NodePath("../Description")
+focus_neighbor_top = NodePath("../Description")
+focus_neighbor_right = NodePath("../Description")
+focus_neighbor_bottom = NodePath("../Description")
+focus_next = NodePath("../Description")
+focus_previous = NodePath("../Description")
 mouse_filter = 2
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = ExtResource("5_bsa04")
+theme_override_font_sizes/font_size = 28
 theme_override_styles/focus = ExtResource("4_do0tc")
 theme_override_styles/read_only = ExtResource("4_do0tc")
-placeholder_text = "Card Title"
-wrap_mode = 1
+theme_override_styles/normal = ExtResource("5_bsa04")
 
 [node name="Description" type="TextEdit" parent="CardPopup/Panel/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
