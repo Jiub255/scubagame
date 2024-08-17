@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bu6ynovcljhc4"]
+[gd_scene load_steps=18 format=3 uid="uid://bu6ynovcljhc4"]
 
 [ext_resource type="StyleBox" uid="uid://bi4h1ygdn3c1v" path="res://addons/kanban/styleboxes/kanban_column_stylebox.tres" id="1_jdc0c"]
 [ext_resource type="Script" path="res://addons/kanban/KanbanColumn.cs" id="2_65o1w"]
@@ -8,6 +8,7 @@
 [ext_resource type="StyleBox" uid="uid://c3nbko2kjvn48" path="res://addons/kanban/styleboxes/button_hover_stylebox.tres" id="4_vrxgv"]
 [ext_resource type="Texture2D" uid="uid://eowbdfipf53l" path="res://assets/mine/close-button-white.png" id="5_5qw2v"]
 [ext_resource type="Script" path="res://addons/kanban/HiddenButton.cs" id="6_gc4w7"]
+[ext_resource type="Script" path="res://addons/kanban/Cards.cs" id="8_hfv0s"]
 [ext_resource type="StyleBox" uid="uid://yvkef50xqyci" path="res://addons/kanban/styleboxes/new_column_pressed_stylebox.tres" id="8_og5bk"]
 [ext_resource type="StyleBox" uid="uid://d0l0jnfa111hx" path="res://addons/kanban/styleboxes/new_column_hover_stylebox.tres" id="9_kpsvw"]
 
@@ -62,7 +63,6 @@ theme_override_font_sizes/font_size = 32
 theme_override_styles/focus = SubResource("StyleBoxEmpty_q36cx")
 theme_override_styles/read_only = SubResource("StyleBoxEmpty_oeu3s")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_gwhto")
-text = "Column Title"
 placeholder_text = "Column Title"
 script = ExtResource("3_ccoye")
 
@@ -102,6 +102,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
 theme_override_constants/separation = 20
+script = ExtResource("8_hfv0s")
 
 [node name="CreateCardButton" type="Button" parent="MarginContainer/VBoxContainerOuter"]
 unique_name_in_owner = true

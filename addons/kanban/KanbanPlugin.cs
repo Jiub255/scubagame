@@ -6,18 +6,21 @@ public partial class KanbanPlugin : EditorPlugin
 {
 	private PackedScene KanbanPackedScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/kanban_board.tscn");
 	private KanbanBoard KanbanInstance { get; set; }
-	private EditorInterface EditorInterface { get; set; } = EditorInterface.Singleton;
-	private KanbanSaver KanbanSaver { get; set; } = new();
+	private EditorInterface EditorInterfaceSingleton { get; set; } = EditorInterface.Singleton;
+	private KanbanSaver KanbanSaverInstance { get; set; } = new();
 	
 	
 	public override void _EnterTree()
 	{
-		BoardData boardData = KanbanSaver.LoadGame();
+		// TODO: Set stylebox colors based on editor theme here? Before instantiation?
+		//SetThemeColors();
+		
+		BoardData boardData = KanbanSaverInstance.LoadBoard();
 		
 		KanbanInstance = (KanbanBoard)KanbanPackedScene.Instantiate();
 
 		// Add the main panel to the editor's main viewport.
-		EditorInterface.GetEditorMainScreen().AddChild(KanbanInstance);
+		EditorInterfaceSingleton.GetEditorMainScreen().AddChild(KanbanInstance);
 		
 		KanbanInstance.InitializeBoard(boardData);
 		KanbanInstance.OnBoardChanged += SaveBoard;
@@ -34,10 +37,17 @@ public partial class KanbanPlugin : EditorPlugin
 			KanbanInstance.QueueFree();
 		}
 	}
+	
+/* 	private void SetThemeColors()
+	{
+		EditorSettings editorSettings = EditorInterfaceSingleton.GetEditorSettings();
+		Color baseColor = (Color)editorSettings.GetSetting("interface/theme/base_color");
+		Color accentColor = (Color)editorSettings.GetSetting("interface/theme/accent_color");
+	} */
 
 	private void SaveBoard()
 	{
-		KanbanSaver.SaveBoard(KanbanInstance.GetBoardData());
+		KanbanSaverInstance.SaveBoard(KanbanInstance.GetBoardData());
 	}
 
 	public override bool _HasMainScreen()
@@ -60,7 +70,7 @@ public partial class KanbanPlugin : EditorPlugin
 
 	public override Texture2D _GetPluginIcon()
 	{
-		return EditorInterface.GetEditorTheme().GetIcon("VBoxContainer", "EditorIcons");
+		return EditorInterfaceSingleton.GetEditorTheme().GetIcon("VBoxContainer", "EditorIcons");
 	}
 
 	public override void _Notification(int what)
@@ -71,7 +81,7 @@ public partial class KanbanPlugin : EditorPlugin
 		{
 			if (KanbanInstance != null)
 			{
-				KanbanSaver.SaveBoard(KanbanInstance.GetBoardData());
+				KanbanSaverInstance.SaveBoard(KanbanInstance.GetBoardData());
 				KanbanInstance.QueueFree();
 				GetTree().Quit();
 			}

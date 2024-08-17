@@ -10,17 +10,17 @@ public partial class KanbanCard : Button
 	public event Action OnCardDragStart;
 	public event Action<KanbanCard> OnRemoveCard;
 	
-	//private Button OpenPopupButton { get; set; }
 	private Button DeleteButton { get; set; }
-	public Label Title { get; set; }
-	public Label Description { get; set; }
+	public LabelPlaceholderText Title { get; set; }
+	public LabelPlaceholderText Description { get; set; }
 	private PackedScene CardScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/kanban_card.tscn");
+
+#region CARD
 
 	public override void _EnterTree()
 	{
 		base._EnterTree();
 		
-		//OpenPopupButton = (Button)GetNode("%OpenPopupButton");
 		DeleteButton = (Button)GetNode("%DeleteButton");
 
 		ConnectEvents();
@@ -45,15 +45,15 @@ public partial class KanbanCard : Button
 	
 	public void InitializeCard(CardData cardData)
 	{
-		Title = (Label)GetNode("%Title");
-		Description = (Label)GetNode("%Description");
-		Title.Text = cardData.Title;
-		Description.Text = cardData.Description;
+		Title = (LabelPlaceholderText)GetNode("%Title");
+		Description = (LabelPlaceholderText)GetNode("%Description");
+		Title.StoredText = cardData.Title;
+		Description.StoredText = cardData.Description;
 	}
 	
 	public CardData GetCardData()
 	{
-		CardData cardData = new(Title.Text, Description.Text);
+		CardData cardData = new(Title.StoredText, Description.StoredText);
 		return cardData;
 	}
 
@@ -72,30 +72,34 @@ public partial class KanbanCard : Button
 		OnDeleteButtonPressed?.Invoke(this);
 	}
 
+#endregion
+
+#region DRAG AND DROP
+
 	public override Variant _GetDragData(Vector2 atPosition)
 	{
 		OnCardDragStart?.Invoke();
 		
-		KanbanCard previewCard = MakePreview();
-		SetDragPreview(previewCard);
+		Control preview = MakePreview(atPosition);
+		SetDragPreview(preview);
 		return this;
 	}
 
-	private KanbanCard MakePreview()
+	private Control MakePreview(Vector2 relativeMousePosition)
 	{
 		KanbanCard previewCard = (KanbanCard)CardScene.Instantiate();
 		previewCard.InitializeCard(GetCardData());
-		return previewCard;
+		Control preview = new Control();
+		preview.AddChild(previewCard);
+		previewCard.Position = -1 * relativeMousePosition;
+		//previewCard.Position = previewCard.Size * -0.5f;
+		return preview;
 	}
 
 	public override bool _CanDropData(Vector2 atPosition, Variant data)
 	{
 		KanbanCard card = data.As<KanbanCard>();
-		if (card == null)
-		{
-			return false;
-		}
-		return true;
+		return card != null;
 	}
 
 	public override void _DropData(Vector2 atPosition, Variant data)
@@ -122,4 +126,6 @@ public partial class KanbanCard : Button
 			}
 		}
 	}
+#endregion
+
 }

@@ -61,8 +61,8 @@ public partial class CardPopup : Button
 	public void OpenPopup(KanbanCard card)
 	{
 		Card = card;
-		Title.Text = card.Title.Text;
-		Description.Text = card.Description.Text;
+		Title.Text = card.Title.StoredText;
+		Description.Text = card.Description.StoredText;
 		SetAllMouseFilters(MouseFilterEnum.Stop);
 		Show();
 	}
@@ -80,8 +80,8 @@ public partial class CardPopup : Button
 	{
 		if (Card != null)
 		{
-			Card.Title.Text = Title.Text;
-			Card.Description.Text = Description.Text;
+			Card.Title.StoredText = Title.Text;
+			Card.Description.StoredText = Description.Text;
 		}
 		SetAllMouseFilters(MouseFilterEnum.Ignore);
 		Hide();

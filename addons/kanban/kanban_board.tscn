@@ -163,6 +163,7 @@ theme_override_font_sizes/font_size = 28
 theme_override_styles/focus = ExtResource("4_do0tc")
 theme_override_styles/read_only = ExtResource("4_do0tc")
 theme_override_styles/normal = ExtResource("5_bsa04")
+placeholder_text = "Enter Card Title"
 
 [node name="Description" type="TextEdit" parent="CardPopup/Panel/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -173,5 +174,5 @@ theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = ExtResource("4_do0tc")
 theme_override_styles/focus = ExtResource("4_do0tc")
 theme_override_styles/read_only = ExtResource("4_do0tc")
-placeholder_text = "Enter card description in here. lasd voasldv jas;djv asdiv asldv aslidnv isd valisne vksdnv alisd v;aisje vajsliejv sidljv ;alsd vilaesnisldkfja osvi daslenv ."
+placeholder_text = "Enter card description."
 wrap_mode = 1

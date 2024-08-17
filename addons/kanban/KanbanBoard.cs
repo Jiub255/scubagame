@@ -22,8 +22,6 @@ public partial class KanbanBoard : PanelContainer
 
 		CardPopup.OnClosePopup += SaveBoard;
 		CreateColumnButton.Pressed += CreateNewBlankColumn;
-
-		//CardPopup.ClosePopup();
 	}
 
 	public override void _ExitTree()
@@ -71,20 +69,22 @@ public partial class KanbanBoard : PanelContainer
 		newColumn.InitializeColumn(columnData);
 		
 		newColumn.OnDestroyColumn += DeleteColumn;
-		newColumn.OnOpenPopup += OpenPopup;
+		newColumn.Cards.OnOpenPopup += OpenPopup;
 		newColumn.OnMoveColumnToPosition += MoveColumnToPosition;
 		newColumn.OnColumnDragStart += SetColumnsFiltersToIgnore;
-		newColumn.OnCardDragStart += SetCardsFiltersToIgnore;
+		newColumn.Cards.OnCardDragStart += SetCardsFiltersToIgnore;
 		newColumn.OnColumnChanged += SaveBoard;
+
+		SaveBoard();
 	}
 	
 	private void DeleteColumn(KanbanColumn column)
 	{
 		column.OnDestroyColumn -= DeleteColumn;
-		column.OnOpenPopup -= OpenPopup;
+		column.Cards.OnOpenPopup -= OpenPopup;
 		column.OnMoveColumnToPosition -= MoveColumnToPosition;
 		column.OnColumnDragStart -= SetColumnsFiltersToIgnore;
-		column.OnCardDragStart -= SetCardsFiltersToIgnore;
+		column.Cards.OnCardDragStart -= SetCardsFiltersToIgnore;
 		column.OnColumnChanged -= SaveBoard;
 		
 		column.QueueFree();

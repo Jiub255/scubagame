@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://dds7t4hnx1otl"]
+[gd_scene load_steps=13 format=3 uid="uid://dds7t4hnx1otl"]
 
 [ext_resource type="StyleBox" uid="uid://bndhxhucc5g40" path="res://addons/kanban/styleboxes/kanban_card_stylebox.tres" id="1_ysr66"]
 [ext_resource type="Script" path="res://addons/kanban/KanbanCard.cs" id="2_84l8d"]
 [ext_resource type="StyleBox" uid="uid://dnnmhpy7x7ucf" path="res://addons/kanban/styleboxes/card_text_stylebox.tres" id="3_7fpa7"]
 [ext_resource type="StyleBox" uid="uid://c3nbko2kjvn48" path="res://addons/kanban/styleboxes/button_hover_stylebox.tres" id="3_80me5"]
 [ext_resource type="StyleBox" uid="uid://b1lfyi00ioyfs" path="res://addons/kanban/styleboxes/button_pressed_stylebox.tres" id="3_bl5tw"]
+[ext_resource type="Script" path="res://addons/kanban/LabelPlaceholderText.cs" id="3_qf5mg"]
 [ext_resource type="Texture2D" uid="uid://eowbdfipf53l" path="res://assets/mine/close-button-white.png" id="5_d8se2"]
 [ext_resource type="Script" path="res://addons/kanban/HiddenButton.cs" id="6_qry6k"]
 
@@ -67,6 +68,8 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_le31h")
 text = "Card Title"
 autowrap_mode = 3
 text_overrun_behavior = 3
+script = ExtResource("3_qf5mg")
+PlaceholderText = "Card Title"
 
 [node name="DeleteButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
@@ -98,5 +101,5 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/normal = ExtResource("3_7fpa7")
 text = "Card Description"
-autowrap_mode = 3
-clip_text = true
+script = ExtResource("3_qf5mg")
+PlaceholderText = "Card Description"

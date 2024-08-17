@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://b7bexix74o5rv"]
+
+[ext_resource type="Script" path="res://addons/kanban/AutoBulletTextEdit.cs" id="1_uaywp"]
+
+[node name="AutoBulletTextEdit" type="TextEdit"]
+custom_minimum_size = Vector2(400, 400)
+offset_right = 8.0
+offset_bottom = 8.0
+text = "adsfasdf asdf as
+fdgasdfv
+fgns"
+placeholder_text = "xcvbxcvbxcvbxcwwe
+5675"
+wrap_mode = 1
+indent_wrapped_lines = true
+script = ExtResource("1_uaywp")
