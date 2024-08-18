@@ -1,7 +1,7 @@
 using Godot;
 
 [Tool]
-public partial class HiddenButton : Button
+public partial class ButtonHidden : Button
 {
 	public override void _EnterTree()
 	{
@@ -10,7 +10,8 @@ public partial class HiddenButton : Button
 		MouseEntered += OnMouseEntered;
 		MouseExited += OnMouseExited;
 		
-		SetButtonAlpha(0f);
+		Modulate = Modulate.ChangeAlpha(0f);
+		//SetButtonAlpha(0f);
 	}
 
 	public override void _ExitTree()
@@ -23,16 +24,18 @@ public partial class HiddenButton : Button
 
 	private void OnMouseEntered()
 	{
-		SetButtonAlpha(1f);
+		Modulate = Modulate.ChangeAlpha(1f);
+		//SetButtonAlpha(1f);
 	}
 	
 	private void OnMouseExited()
 	{
-		SetButtonAlpha(0f);
+		Modulate = Modulate.ChangeAlpha(0f);
+		//SetButtonAlpha(0f);
 	}
 	
-	private void SetButtonAlpha(float alpha)
+/* 	private void SetButtonAlpha(float alpha)
 	{
 		Modulate = new Color(Modulate.R, Modulate.G, Modulate.B, alpha);
-	}
+	} */
 }

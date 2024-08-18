@@ -1,0 +1,16 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://bh53l1rbiufca"]
+
+[ext_resource type="StyleBox" uid="uid://pa5jilw4q8qe" path="res://addons/kanban/styleboxes/bg_popup.tres" id="1_1d5jt"]
+
+[resource]
+Button/styles/disabled = ExtResource("1_1d5jt")
+Button/styles/disabled_mirrored = ExtResource("1_1d5jt")
+Button/styles/focus = ExtResource("1_1d5jt")
+Button/styles/hover = ExtResource("1_1d5jt")
+Button/styles/hover_mirrored = ExtResource("1_1d5jt")
+Button/styles/hover_pressed = ExtResource("1_1d5jt")
+Button/styles/hover_pressed_mirrored = ExtResource("1_1d5jt")
+Button/styles/normal = ExtResource("1_1d5jt")
+Button/styles/normal_mirrored = ExtResource("1_1d5jt")
+Button/styles/pressed = ExtResource("1_1d5jt")
+Button/styles/pressed_mirrored = ExtResource("1_1d5jt")

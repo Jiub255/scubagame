@@ -1,0 +1,19 @@
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://rhrct2q83vjd"]
+
+[ext_resource type="StyleBox" uid="uid://kf62dmld57ks" path="res://addons/kanban/styleboxes/big_accent_dark.tres" id="1_pwj43"]
+[ext_resource type="StyleBox" uid="uid://d4fwkbme83ltk" path="res://addons/kanban/styleboxes/big_accent.tres" id="2_gyibb"]
+[ext_resource type="StyleBox" uid="uid://bjag00onclaf6" path="res://addons/kanban/styleboxes/big_accent_darker.tres" id="2_lmv6r"]
+
+[resource]
+Button/font_sizes/font_size = 22
+Button/styles/disabled = ExtResource("2_lmv6r")
+Button/styles/disabled_mirrored = ExtResource("2_lmv6r")
+Button/styles/focus = ExtResource("2_lmv6r")
+Button/styles/hover = ExtResource("2_gyibb")
+Button/styles/hover_mirrored = ExtResource("2_gyibb")
+Button/styles/hover_pressed = ExtResource("1_pwj43")
+Button/styles/hover_pressed_mirrored = ExtResource("1_pwj43")
+Button/styles/normal = ExtResource("1_pwj43")
+Button/styles/normal_mirrored = ExtResource("1_pwj43")
+Button/styles/pressed = ExtResource("2_lmv6r")
+Button/styles/pressed_mirrored = ExtResource("2_lmv6r")

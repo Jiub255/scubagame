@@ -1,7 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 
-public partial class AutoBulletTextEdit : TextEdit
+public partial class TextEditAutoBullet : TextEdit
 {
 	private char BulletChar  { get; } = '*';
 	private string BulletPointString { get { return BulletChar + " "; } }

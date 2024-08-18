@@ -1,0 +1,6 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://b0sch1bairuyd"]
+
+[ext_resource type="StyleBox" uid="uid://bjag00onclaf6" path="res://addons/kanban/styleboxes/big_accent_darker.tres" id="1_2w8e7"]
+
+[resource]
+PanelContainer/styles/panel = ExtResource("1_2w8e7")

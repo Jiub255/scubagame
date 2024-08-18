@@ -1,0 +1,111 @@
+[gd_scene load_steps=10 format=3 uid="uid://dds7t4hnx1otl"]
+
+[ext_resource type="Theme" uid="uid://ud8v83b1fwi2" path="res://addons/kanban/themes/card_theme.tres" id="1_tu0ty"]
+[ext_resource type="Script" path="res://addons/kanban/cards/KanbanCard.cs" id="2_84l8d"]
+[ext_resource type="Script" path="res://addons/kanban/ui-extensions/LabelPlaceholderText.cs" id="3_qf5mg"]
+[ext_resource type="Theme" uid="uid://b0djty4nf6fjk" path="res://addons/kanban/themes/card_title_theme.tres" id="4_rkx2e"]
+[ext_resource type="Texture2D" uid="uid://eowbdfipf53l" path="res://assets/mine/close-button-white.png" id="5_d8se2"]
+[ext_resource type="Theme" uid="uid://qivnjttvwkb1" path="res://addons/kanban/themes/delete_button_theme.tres" id="6_lnkt1"]
+[ext_resource type="Script" path="res://addons/kanban/ui-extensions/ButtonHidden.cs" id="6_qry6k"]
+[ext_resource type="Theme" uid="uid://bxtga2yidc5xc" path="res://addons/kanban/themes/card_description_theme.tres" id="9_b0y2n"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yhepd"]
+
+[node name="Card" type="Button"]
+custom_minimum_size = Vector2(360, 150)
+offset_right = 360.0
+offset_bottom = 150.0
+size_flags_horizontal = 3
+focus_mode = 0
+mouse_filter = 1
+theme = ExtResource("1_tu0ty")
+script = ExtResource("2_84l8d")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TitleSpacer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(306, 30)
+layout_mode = 2
+size_flags_horizontal = 2
+theme = ExtResource("4_rkx2e")
+text = "Card Title"
+autowrap_mode = 3
+text_overrun_behavior = 3
+script = ExtResource("3_qf5mg")
+PlaceholderText = "Card Title"
+
+[node name="DeleteButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+modulate = Color(0.5, 0, 0.0583334, 0)
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+size_flags_horizontal = 8
+focus_mode = 0
+mouse_filter = 1
+theme = ExtResource("6_lnkt1")
+icon = ExtResource("5_d8se2")
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("6_qry6k")
+
+[node name="TitleSpacer2" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+theme = ExtResource("9_b0y2n")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 7
+theme_override_constants/margin_top = 3
+theme_override_constants/margin_right = 7
+theme_override_constants/margin_bottom = 3
+
+[node name="Description" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1, 1)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_yhepd")
+text = "Card Description"
+clip_text = true
+script = ExtResource("3_qf5mg")
+PlaceholderText = "Card Description"

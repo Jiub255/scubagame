@@ -13,7 +13,7 @@ public partial class KanbanCard : Button
 	private Button DeleteButton { get; set; }
 	public LabelPlaceholderText Title { get; set; }
 	public LabelPlaceholderText Description { get; set; }
-	private PackedScene CardScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/kanban_card.tscn");
+	private PackedScene CardScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/cards/kanban_card.tscn");
 
 #region CARD
 

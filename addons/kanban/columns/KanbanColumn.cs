@@ -11,7 +11,7 @@ public partial class KanbanColumn : PanelContainer
 	
 	public LineEdit Title { get; private set; }
 	public Cards Cards { get; private set; }
-	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/kanban_column.tscn");
+	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/columns/kanban_column.tscn");
 	private Button CreateCardButton { get; set; }
 	private Button DeleteColumnButton { get; set; }
 

@@ -8,7 +8,7 @@ public partial class Cards : VBoxContainer
 	public event Action OnCardsChanged;
 	public event Action<KanbanCard> OnOpenPopup;
 	
-	private PackedScene CardScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/kanban_card.tscn");
+	private PackedScene CardScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/cards/kanban_card.tscn");
 	
 	public void CreateNewBlankCard()
 	{

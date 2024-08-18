@@ -6,7 +6,7 @@ public partial class KanbanBoard : PanelContainer
 {
 	public event Action OnBoardChanged;
 	
-	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/kanban_column.tscn");
+	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/columns/kanban_column.tscn");
 	
 	private CardPopup CardPopup { get; set; }
 	private Button CreateColumnButton { get; set; }

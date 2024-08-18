@@ -1,0 +1,9 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://cb2y553ca3nhm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fpqfk"]
+
+[resource]
+LineEdit/font_sizes/font_size = 32
+LineEdit/styles/focus = SubResource("StyleBoxEmpty_fpqfk")
+LineEdit/styles/normal = SubResource("StyleBoxEmpty_fpqfk")
+LineEdit/styles/read_only = SubResource("StyleBoxEmpty_fpqfk")

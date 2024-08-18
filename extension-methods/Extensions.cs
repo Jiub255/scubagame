@@ -43,4 +43,25 @@ public static class Extensions
 				+ $" |    {message}");
 		}
 	}
+
+	public static Color Brighten(this Color color, float saturationDelta, float brightnessDelta)
+	{
+		float h = color.H;
+		float s = Mathf.Max(0f, color.S - saturationDelta);
+		float v = Mathf.Min(1f, color.V + brightnessDelta);
+		return Color.FromHsv(h, s, v);
+	}
+	
+	public static Color Darken(this Color color, float saturationDelta, float brightnessDelta)
+	{
+		float h = color.H;
+		float s = Mathf.Min(1f, color.S + saturationDelta);
+		float v = Mathf.Max(0f, color.V - brightnessDelta);
+		return Color.FromHsv(h, s, v);
+	}
+	
+	public static Color ChangeAlpha(this Color color, float newAlpha)
+	{
+		return new Color(color.R, color.G, color.B, newAlpha);
+	}
 }
