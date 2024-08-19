@@ -1,15 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://dds7t4hnx1otl"]
+[gd_scene load_steps=7 format=3 uid="uid://dds7t4hnx1otl"]
 
-[ext_resource type="Theme" uid="uid://ud8v83b1fwi2" path="res://addons/kanban/themes/card_theme.tres" id="1_tu0ty"]
 [ext_resource type="Script" path="res://addons/kanban/cards/KanbanCard.cs" id="2_84l8d"]
 [ext_resource type="Script" path="res://addons/kanban/ui-extensions/LabelPlaceholderText.cs" id="3_qf5mg"]
-[ext_resource type="Theme" uid="uid://b0djty4nf6fjk" path="res://addons/kanban/themes/card_title_theme.tres" id="4_rkx2e"]
 [ext_resource type="Texture2D" uid="uid://eowbdfipf53l" path="res://assets/mine/close-button-white.png" id="5_d8se2"]
 [ext_resource type="Theme" uid="uid://qivnjttvwkb1" path="res://addons/kanban/themes/delete_button_theme.tres" id="6_lnkt1"]
 [ext_resource type="Script" path="res://addons/kanban/ui-extensions/ButtonHidden.cs" id="6_qry6k"]
-[ext_resource type="Theme" uid="uid://bxtga2yidc5xc" path="res://addons/kanban/themes/card_description_theme.tres" id="9_b0y2n"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yhepd"]
+[ext_resource type="Script" path="res://addons/kanban/ui-extensions/TextEditAutoBullet.cs" id="6_y6dgl"]
 
 [node name="Card" type="Button"]
 custom_minimum_size = Vector2(360, 150)
@@ -18,7 +14,6 @@ offset_bottom = 150.0
 size_flags_horizontal = 3
 focus_mode = 0
 mouse_filter = 1
-theme = ExtResource("1_tu0ty")
 script = ExtResource("2_84l8d")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -53,10 +48,10 @@ theme_override_constants/margin_bottom = 0
 
 [node name="Title" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(306, 30)
+custom_minimum_size = Vector2(306, 34)
 layout_mode = 2
 size_flags_horizontal = 2
-theme = ExtResource("4_rkx2e")
+theme_override_font_sizes/font_size = 20
 text = "Card Title"
 autowrap_mode = 3
 text_overrun_behavior = 3
@@ -69,6 +64,7 @@ modulate = Color(0.5, 0, 0.0583334, 0)
 custom_minimum_size = Vector2(22, 22)
 layout_mode = 2
 size_flags_horizontal = 8
+size_flags_vertical = 4
 focus_mode = 0
 mouse_filter = 1
 theme = ExtResource("6_lnkt1")
@@ -89,7 +85,6 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
-theme = ExtResource("9_b0y2n")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
@@ -99,13 +94,19 @@ theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 7
 theme_override_constants/margin_bottom = 3
 
-[node name="Description" type="Label" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer"]
+[node name="Description" type="TextEdit" parent="MarginContainer/VBoxContainer/PanelContainer/MarginContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(1, 1)
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_styles/normal = SubResource("StyleBoxEmpty_yhepd")
-text = "Card Description"
-clip_text = true
-script = ExtResource("3_qf5mg")
-PlaceholderText = "Card Description"
+mouse_filter = 1
+placeholder_text = "Card Description"
+editable = false
+context_menu_enabled = false
+shortcut_keys_enabled = false
+selecting_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
+middle_mouse_paste_enabled = false
+wrap_mode = 1
+indent_wrapped_lines = true
+script = ExtResource("6_y6dgl")

@@ -1,7 +1,0 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://b0djty4nf6fjk"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ff13i"]
-
-[resource]
-Label/font_sizes/font_size = 20
-Label/styles/normal = SubResource("StyleBoxEmpty_ff13i")

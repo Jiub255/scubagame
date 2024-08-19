@@ -152,6 +152,7 @@ public partial class KanbanColumn : PanelContainer
 			if (child is Control control and
 					(KanbanCard or
 					LineEdit or
+					TextEdit or
 					Button or
 					ScrollContainer))
 			{

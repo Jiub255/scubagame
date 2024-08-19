@@ -1,13 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://cdujdcexpd5e6"]
+[gd_scene load_steps=12 format=3 uid="uid://cdujdcexpd5e6"]
 
-[ext_resource type="Theme" uid="uid://d2j4oaelq7vik" path="res://addons/kanban/themes/board_theme.tres" id="1_6riv7"]
 [ext_resource type="Script" path="res://addons/kanban/board/KanbanBoard.cs" id="1_vm8vo"]
 [ext_resource type="Script" path="res://addons/kanban/board/CardPopup.cs" id="3_3i1gv"]
-[ext_resource type="Theme" uid="uid://rhrct2q83vjd" path="res://addons/kanban/themes/create_column_theme.tres" id="3_vio2i"]
-[ext_resource type="Theme" uid="uid://bh53l1rbiufca" path="res://addons/kanban/themes/popup_background_button_theme.tres" id="4_awv5f"]
-[ext_resource type="Theme" uid="uid://c7pbgt0bh56fl" path="res://addons/kanban/themes/popup_panel_theme.tres" id="6_aynl4"]
-[ext_resource type="Theme" uid="uid://30t7vxg1ioij" path="res://addons/kanban/themes/popup_title_theme.tres" id="7_qkwcf"]
-[ext_resource type="Theme" uid="uid://c3aqhyp13ts62" path="res://addons/kanban/themes/popup_description_theme.tres" id="8_8kp03"]
+[ext_resource type="Script" path="res://addons/kanban/ui-extensions/TextEditAutoBullet.cs" id="3_efn50"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3xclc"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p76kq"]
 
@@ -24,6 +21,7 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5f5n2"]
 
 [node name="KanbanBoard" type="PanelContainer"]
+clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -34,7 +32,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
-theme = ExtResource("1_6riv7")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_3xclc")
 script = ExtResource("1_vm8vo")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
@@ -67,7 +65,6 @@ custom_minimum_size = Vector2(250, 65)
 layout_mode = 2
 size_flags_horizontal = 4
 focus_mode = 0
-theme = ExtResource("3_vio2i")
 text = "Create New Column"
 
 [node name="Columns" type="HBoxContainer" parent="ScrollContainer/MarginContainer/VBoxContainer"]
@@ -80,26 +77,17 @@ theme_override_constants/separation = 20
 [node name="CardPopup" type="Button" parent="."]
 unique_name_in_owner = true
 visible = false
+self_modulate = Color(1, 1, 1, 0)
+clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
-theme = ExtResource("4_awv5f")
 script = ExtResource("3_3i1gv")
 
-[node name="Panel" type="Panel" parent="CardPopup"]
-custom_minimum_size = Vector2(1200, 800)
-layout_mode = 2
-offset_left = 360.0
-offset_top = 140.0
-offset_right = 1560.0
-offset_bottom = 940.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-mouse_filter = 2
-theme = ExtResource("6_aynl4")
-
-[node name="MarginContainer" type="MarginContainer" parent="CardPopup/Panel"]
+[node name="BackgroundPanelContainer" type="PanelContainer" parent="CardPopup"]
+self_modulate = Color(1, 1, 1, 0.705882)
+clip_contents = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -107,27 +95,37 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+
+[node name="PopupPanelContainer" type="PanelContainer" parent="CardPopup/BackgroundPanelContainer"]
+custom_minimum_size = Vector2(1200, 800)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CardPopup/BackgroundPanelContainer/PopupPanelContainer"]
+layout_mode = 2
+mouse_filter = 2
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CardPopup/Panel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CardPopup/BackgroundPanelContainer/PopupPanelContainer/MarginContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 20
 
-[node name="TitlePanelContainer" type="PanelContainer" parent="CardPopup/Panel/MarginContainer/VBoxContainer"]
+[node name="TitlePanelContainer" type="PanelContainer" parent="CardPopup/BackgroundPanelContainer/PopupPanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 2
-theme = ExtResource("7_qkwcf")
 
-[node name="MarginContainer" type="MarginContainer" parent="CardPopup/Panel/MarginContainer/VBoxContainer/TitlePanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CardPopup/BackgroundPanelContainer/PopupPanelContainer/MarginContainer/VBoxContainer/TitlePanelContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 14
 
-[node name="Title" type="LineEdit" parent="CardPopup/Panel/MarginContainer/VBoxContainer/TitlePanelContainer/MarginContainer"]
+[node name="Title" type="LineEdit" parent="CardPopup/BackgroundPanelContainer/PopupPanelContainer/MarginContainer/VBoxContainer/TitlePanelContainer/MarginContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
@@ -138,18 +136,18 @@ focus_neighbor_bottom = NodePath("../../../DescriptionPanelContainer/MarginConta
 focus_next = NodePath("../../../DescriptionPanelContainer/MarginContainer/Description")
 focus_previous = NodePath("../../../DescriptionPanelContainer/MarginContainer/Description")
 mouse_filter = 2
+theme_override_font_sizes/font_size = 24
 theme_override_styles/focus = SubResource("StyleBoxEmpty_s6cyu")
 theme_override_styles/read_only = SubResource("StyleBoxEmpty_qklrd")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_3aerl")
 placeholder_text = "Enter Card Title"
 
-[node name="DescriptionPanelContainer" type="PanelContainer" parent="CardPopup/Panel/MarginContainer/VBoxContainer"]
+[node name="DescriptionPanelContainer" type="PanelContainer" parent="CardPopup/BackgroundPanelContainer/PopupPanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
-theme = ExtResource("8_8kp03")
 
-[node name="MarginContainer" type="MarginContainer" parent="CardPopup/Panel/MarginContainer/VBoxContainer/DescriptionPanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CardPopup/BackgroundPanelContainer/PopupPanelContainer/MarginContainer/VBoxContainer/DescriptionPanelContainer"]
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/margin_left = 14
@@ -157,13 +155,16 @@ theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 14
 theme_override_constants/margin_bottom = 4
 
-[node name="Description" type="TextEdit" parent="CardPopup/Panel/MarginContainer/VBoxContainer/DescriptionPanelContainer/MarginContainer"]
+[node name="Description" type="TextEdit" parent="CardPopup/BackgroundPanelContainer/PopupPanelContainer/MarginContainer/VBoxContainer/DescriptionPanelContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
+theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = SubResource("StyleBoxEmpty_nyjnf")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_ab1cj")
 theme_override_styles/read_only = SubResource("StyleBoxEmpty_5f5n2")
 placeholder_text = "Enter card description."
 wrap_mode = 1
+scroll_smooth = true
+script = ExtResource("3_efn50")

@@ -4,6 +4,9 @@ public static class Extensions
 {
 	private static readonly int PADDING = 70;
 	
+	/// <summary>
+	/// Prints the type and name of the object that sent message.
+	/// </summary>
 	public static void PrintDebug(this object obj, string message)
 	{
 		if (obj is Resource resource)
@@ -44,6 +47,12 @@ public static class Extensions
 		}
 	}
 
+	/// <summary>
+	/// Brightens colors in a more realistic way by decreasing saturation as well as increasing brightness.
+	/// </summary>
+	/// <param name="saturationDelta">Amount to decrease saturation by (clamped between 0 and 1).</param>
+	/// <param name="brightnessDelta">Amount to increase brightness by (clamped between 0 and 1).</param>
+	/// <returns>The brightened color</returns>
 	public static Color Brighten(this Color color, float saturationDelta, float brightnessDelta)
 	{
 		float h = color.H;
@@ -52,6 +61,12 @@ public static class Extensions
 		return Color.FromHsv(h, s, v);
 	}
 	
+	/// <summary>
+	/// Darkens colors in a more realistic way by increasing saturation as well as decreasing brightness.
+	/// </summary>
+	/// <param name="saturationDelta">Amount to increase saturation by (clamped between 0 and 1).</param>
+	/// <param name="brightnessDelta">Amount to decrease brightness by (clamped between 0 and 1).</param>
+	/// <returns>The darkened color</returns>
 	public static Color Darken(this Color color, float saturationDelta, float brightnessDelta)
 	{
 		float h = color.H;
@@ -60,6 +75,7 @@ public static class Extensions
 		return Color.FromHsv(h, s, v);
 	}
 	
+	/// <returns>Same color but with newAlpha</returns>
 	public static Color ChangeAlpha(this Color color, float newAlpha)
 	{
 		return new Color(color.R, color.G, color.B, newAlpha);

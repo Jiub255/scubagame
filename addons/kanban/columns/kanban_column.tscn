@@ -1,15 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://bu6ynovcljhc4"]
+[gd_scene load_steps=8 format=3 uid="uid://bu6ynovcljhc4"]
 
-[ext_resource type="Theme" uid="uid://b0sch1bairuyd" path="res://addons/kanban/themes/column_theme.tres" id="1_frqbx"]
 [ext_resource type="Script" path="res://addons/kanban/columns/KanbanColumn.cs" id="2_65o1w"]
 [ext_resource type="Script" path="res://addons/kanban/ui-extensions/LineEditDefocus.cs" id="3_ccoye"]
 [ext_resource type="Texture2D" uid="uid://eowbdfipf53l" path="res://assets/mine/close-button-white.png" id="5_5qw2v"]
-[ext_resource type="Theme" uid="uid://bbsxqku1r6rqv" path="res://addons/kanban/themes/column_vbox_theme.tres" id="5_lwh27"]
 [ext_resource type="Script" path="res://addons/kanban/ui-extensions/ButtonHidden.cs" id="6_gc4w7"]
 [ext_resource type="Theme" uid="uid://cb2y553ca3nhm" path="res://addons/kanban/themes/column_title_theme.tres" id="6_u55da"]
 [ext_resource type="Script" path="res://addons/kanban/columns/Cards.cs" id="8_hfv0s"]
 [ext_resource type="Theme" uid="uid://qivnjttvwkb1" path="res://addons/kanban/themes/delete_button_theme.tres" id="8_saw6g"]
-[ext_resource type="Theme" uid="uid://c034vuw4tuh65" path="res://addons/kanban/themes/create_card_theme.tres" id="12_r0jgr"]
 
 [node name="Column" type="PanelContainer"]
 custom_minimum_size = Vector2(442, 0)
@@ -17,7 +14,6 @@ offset_right = 400.0
 offset_bottom = 188.0
 size_flags_horizontal = 4
 size_flags_vertical = 0
-theme = ExtResource("1_frqbx")
 script = ExtResource("2_65o1w")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -32,7 +28,7 @@ theme_override_constants/margin_bottom = 20
 layout_mode = 2
 size_flags_vertical = 0
 mouse_filter = 2
-theme = ExtResource("5_lwh27")
+theme_override_constants/separation = 20
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainerOuter"]
 layout_mode = 2
@@ -77,7 +73,7 @@ expand_icon = true
 script = ExtResource("6_gc4w7")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainerOuter"]
-custom_minimum_size = Vector2(360, 830)
+custom_minimum_size = Vector2(360, 660)
 layout_mode = 2
 horizontal_scroll_mode = 3
 
@@ -87,7 +83,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
-theme = ExtResource("5_lwh27")
+theme_override_constants/separation = 20
 script = ExtResource("8_hfv0s")
 
 [node name="CreateCardButton" type="Button" parent="MarginContainer/VBoxContainerOuter"]
@@ -95,5 +91,4 @@ unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
 mouse_filter = 1
-theme = ExtResource("12_r0jgr")
 text = "Create New Card"

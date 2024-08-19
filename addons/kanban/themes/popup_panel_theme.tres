@@ -1,6 +1,0 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://c7pbgt0bh56fl"]
-
-[ext_resource type="StyleBox" uid="uid://dcpirlbw3cfbo" path="res://addons/kanban/styleboxes/big_base_dark.tres" id="1_not7c"]
-
-[resource]
-Panel/styles/panel = ExtResource("1_not7c")

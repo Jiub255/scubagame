@@ -1,6 +1,0 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://d2j4oaelq7vik"]
-
-[ext_resource type="StyleBox" uid="uid://dsklau8fnlo51" path="res://addons/kanban/styleboxes/bg_board.tres" id="1_oyanl"]
-
-[resource]
-PanelContainer/styles/panel = ExtResource("1_oyanl")

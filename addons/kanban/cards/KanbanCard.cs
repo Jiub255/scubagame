@@ -12,7 +12,7 @@ public partial class KanbanCard : Button
 	
 	private Button DeleteButton { get; set; }
 	public LabelPlaceholderText Title { get; set; }
-	public LabelPlaceholderText Description { get; set; }
+	public TextEditAutoBullet Description { get; set; }
 	private PackedScene CardScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/cards/kanban_card.tscn");
 
 #region CARD
@@ -46,14 +46,15 @@ public partial class KanbanCard : Button
 	public void InitializeCard(CardData cardData)
 	{
 		Title = (LabelPlaceholderText)GetNode("%Title");
-		Description = (LabelPlaceholderText)GetNode("%Description");
+		Description = (TextEditAutoBullet)GetNode("%Description");
 		Title.StoredText = cardData.Title;
-		Description.StoredText = cardData.Description;
+		Description.Text = cardData.Description;
+		Description.SetBulletPoints();
 	}
 	
 	public CardData GetCardData()
 	{
-		CardData cardData = new(Title.StoredText, Description.StoredText);
+		CardData cardData = new(Title.StoredText, Description.Text);
 		return cardData;
 	}
 

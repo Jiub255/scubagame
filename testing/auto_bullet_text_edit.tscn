@@ -6,9 +6,9 @@
 custom_minimum_size = Vector2(400, 400)
 offset_right = 8.0
 offset_bottom = 8.0
-text = "adsfasdf asdf as
-fdgasdfv
-fgns"
+text = "- adsfasdf asdf as
+- fdgasdfv
+- fgns"
 placeholder_text = "xcvbxcvbxcvbxcwwe
 5675"
 wrap_mode = 1

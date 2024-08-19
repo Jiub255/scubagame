@@ -9,7 +9,7 @@ public partial class CardPopup : Button
 	
 	private KanbanCard Card;
 	private LineEdit Title { get; set; }
-	private TextEdit Description { get; set; }
+	private TextEditAutoBullet Description { get; set; }
 	private List<Control> Controls { get; set; } = new();
 
 	public override void _EnterTree()
@@ -17,7 +17,7 @@ public partial class CardPopup : Button
 		base._EnterTree();
 		
 		Title = (LineEdit)GetNode("%Title");
-		Description = (TextEdit)GetNode("%Description");
+		Description = (TextEditAutoBullet)GetNode("%Description");
 
 		Pressed += ClosePopup;
 	}
@@ -26,11 +26,10 @@ public partial class CardPopup : Button
 	{
 		base._Ready();
 		
-		Controls = GetAllControlChildren(this);
+		Controls = GetAllControlChildren(GetChild(0));
 
 		ClosePopup();
 	}
-
 	
 	private List<Control> GetAllControlChildren(Node node)
 	{
@@ -62,7 +61,8 @@ public partial class CardPopup : Button
 	{
 		Card = card;
 		Title.Text = card.Title.StoredText;
-		Description.Text = card.Description.StoredText;
+		Description.Text = card.Description.Text;
+		Description.SetBulletPoints();
 		SetAllMouseFilters(MouseFilterEnum.Stop);
 		Show();
 	}
@@ -81,7 +81,7 @@ public partial class CardPopup : Button
 		if (Card != null)
 		{
 			Card.Title.StoredText = Title.Text;
-			Card.Description.StoredText = Description.Text;
+			Card.Description.Text = Description.Text;
 		}
 		SetAllMouseFilters(MouseFilterEnum.Ignore);
 		Hide();
