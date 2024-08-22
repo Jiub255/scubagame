@@ -9,6 +9,7 @@ public partial class KanbanCard : Button
 	public event Action<KanbanCard, KanbanCard> OnMoveCardToPosition;
 	public event Action OnCardDragStart;
 	public event Action<KanbanCard> OnRemoveCard;
+	public event Action<KanbanCard> OnDeleteCard;
 	
 	private Button DeleteButton { get; set; }
 	public LabelPlaceholderText Title { get; set; }
@@ -34,13 +35,13 @@ public partial class KanbanCard : Button
 	public void ConnectEvents()
 	{
 		Pressed += OpenPopup;
-		DeleteButton.Pressed += DeleteCard;
+		DeleteButton.Pressed += ConfirmDeleteCard;
 	}
 	
 	public void DisconnectEvents()
 	{
 		Pressed -= OpenPopup;
-		DeleteButton.Pressed -= DeleteCard;
+		DeleteButton.Pressed -= ConfirmDeleteCard;
 	}
 	
 	public void InitializeCard(CardData cardData)
@@ -68,9 +69,21 @@ public partial class KanbanCard : Button
 		OnRemoveCard?.Invoke(this);
 	}
 	
+	public void ConfirmDeleteCard()
+	{
+		if (Title.Text == Title.PlaceholderText && Description.Text == "")
+		{
+			OnDeleteCard?.Invoke(this);
+		}
+		else
+		{
+			OnDeleteButtonPressed?.Invoke(this);
+		}
+	}
+	
 	public void DeleteCard()
 	{
-		OnDeleteButtonPressed?.Invoke(this);
+		OnDeleteCard?.Invoke(this);
 	}
 
 #endregion

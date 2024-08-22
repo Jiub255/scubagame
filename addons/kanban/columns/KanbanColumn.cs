@@ -4,7 +4,8 @@ using System;
 [Tool]
 public partial class KanbanColumn : PanelContainer
 {
-	public event Action<KanbanColumn> OnDestroyColumn;
+	public event Action<KanbanColumn> OnDeleteColumnPressed;
+	public event Action<KanbanColumn> OnDeleteColumn;
 	public event Action<KanbanColumn, KanbanColumn> OnMoveColumnToPosition;
 	public event Action OnColumnDragStart;
 	public event Action OnColumnChanged;
@@ -27,7 +28,7 @@ public partial class KanbanColumn : PanelContainer
 		Cards = (Cards)GetNode("%Cards");
 
 		CreateCardButton.Pressed += Cards.CreateNewBlankCard;
-		DeleteColumnButton.Pressed += DeleteColumn;
+		DeleteColumnButton.Pressed += ConfirmDeleteColumn;
 		Title.TextChanged += OnTitleChanged;
 		Cards.OnCardsChanged += OnCardsChanged;
 	}
@@ -37,7 +38,7 @@ public partial class KanbanColumn : PanelContainer
 		base._ExitTree();
 		
 		CreateCardButton.Pressed -= Cards.CreateNewBlankCard;
-		DeleteColumnButton.Pressed -= DeleteColumn;
+		DeleteColumnButton.Pressed -= ConfirmDeleteColumn;
 		Title.TextChanged -= OnTitleChanged;
 		Cards.OnCardsChanged -= OnCardsChanged;
 	}
@@ -64,9 +65,21 @@ public partial class KanbanColumn : PanelContainer
 		return columnData;
 	}
 	
-	private void DeleteColumn()
+	private void ConfirmDeleteColumn()
 	{
-		OnDestroyColumn?.Invoke(this);
+		if (Title.Text == "" && Cards.GetChildren().Count == 0)
+		{
+			OnDeleteColumn?.Invoke(this);
+		}
+		else
+		{
+			OnDeleteColumnPressed?.Invoke(this);
+		}
+	}
+	
+	public void DeleteColumn()
+	{
+		OnDeleteColumn?.Invoke(this);
 	}
 	
 	private void OnTitleChanged(string _)
@@ -153,10 +166,15 @@ public partial class KanbanColumn : PanelContainer
 					(KanbanCard or
 					LineEdit or
 					TextEdit or
-					Button or
+					HBoxContainer or
+					//Button or
 					ScrollContainer))
 			{
 				control.MouseFilter = MouseFilterEnum.Pass;
+			}
+			else if (child is Button button)
+			{
+				button.MouseFilter = MouseFilterEnum.Stop;
 			}
 		}
 	}

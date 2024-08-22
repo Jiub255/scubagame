@@ -18,6 +18,7 @@ public partial class TextEditAutoBullet : TextEdit
 
 	/* [Export]
 	private char BulletPoint { get; set; } = '-'; */
+	// TODO: Or just let the bullet point be any string, then add a space after it. 
 	[Export(PropertyHint.Enum, "-,*,>,~,+,^")]
 	private string _bulletPoint = "-";
 	private char BulletPoint
@@ -260,9 +261,10 @@ public partial class TextEditAutoBullet : TextEdit
 		}
 	}
 
+	// TODO: Handle deleting while caret at end of line similar to backspace (letter and word/all).
+	// Only matters if deleting last letter/word/all.
 	private void HandleInput(InputEventKey keyEvent)
 	{
-		// TODO: Handle deleting while caret at end of line similar to backspace (letter and word/all).
 		//this.PrintDebug($"{keyEvent.AsTextKeyLabel()} HandleInput");
 		if (CaretDirectlyAfterBulletPointString)
 		{

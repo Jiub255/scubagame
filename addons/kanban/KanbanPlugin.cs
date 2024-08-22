@@ -97,76 +97,6 @@ public partial class KanbanPlugin : EditorPlugin
 		return copy;
 	}
 	
-	private void LoadAndChangeStylebox(StyleBoxFlat variation, Color bgColor, string path)
-	{
-		StyleBoxFlat loadedStylebox = ResourceLoader.Load<StyleBoxFlat>(path);
-		if (loadedStylebox == null)
-		{
-			GD.PushError($"Failed to load resource from {path}");
-		}
-		else
-		{
-			loadedStylebox.BgColor = bgColor;
-			loadedStylebox.DrawCenter = true;
-			loadedStylebox.BorderWidthTop = variation.BorderWidthTop;
-			loadedStylebox.BorderWidthBottom = variation.BorderWidthBottom;
-			loadedStylebox.BorderWidthLeft = variation.BorderWidthLeft;
-			loadedStylebox.BorderWidthRight = variation.BorderWidthRight;
-			loadedStylebox.BorderColor = variation.BorderColor;
-
-			Error error = ResourceSaver.Save(loadedStylebox, path);
-			if (error == Error.Ok)
-			{
-				this.PrintDebug($"Successfully updated and saved resource at {path}");
-			}
-			else
-			{
-				GD.PushError(error);
-			}
-		}
-	}
-	
-/* 	private void OverwriteStyleboxVariationResource(StyleBoxFlat baseStyleBox, Color color, string path)
-	{
-		StyleBoxFlat variation = (StyleBoxFlat)baseStyleBox.Duplicate(true);
-		this.PrintDebug($"{variation.BgColor} before");
-		variation.BgColor = color;
-		SaveResource(variation, path);
-	}
-
-	private void SaveResource(Resource resource, string path)
-	{
-		path = ProjectSettings.GlobalizePath(path);
-		if (System.IO.File.Exists(path))
-		{
-			this.PrintDebug($"File at {path} exists. Deleting.");
-			System.IO.File.Delete(path);
-		}
-		Error error = ResourceSaver.Save(resource, path);
-		if (error != Error.Ok)
-		{
-			GD.PushError(error);
-		}
-		else
-		{
-			Resource importedResource = ResourceLoader.Load<Resource>(path);
-			if (importedResource == null)
-			{
-				GD.PrintErr($"Failed to load resource at {path}");
-			}
-			else
-			{				
-				resource.EmitChanged();
-				//importedResource.EmitChanged();
-				
-				// Force a rescan?
-				ProjectSettings.Save();
-				
-				this.PrintDebug($"Successfully saved and imported {resource.ResourceName}");
-			}
-		}
-	} */
-
 	private void CopyThemeType(Theme sourceTheme, Theme targetTheme, string themeType)
 	{
 		// Copy styleboxes
@@ -205,19 +135,34 @@ public partial class KanbanPlugin : EditorPlugin
 		}
 	}
 	
-/* 	private void PermanentlyCopyEditorThemeIntoResource()
+	private void LoadAndChangeStylebox(StyleBoxFlat variation, Color bgColor, string path)
 	{
-		/////////////////////////////////////////////////////////////////////////////
-		//       TEMPORARY! JUST NEED TO RUN ONCE THEN COMMENT OUT OR DELETE!      //
-		/////////////////////////////////////////////////////////////////////////////
-		// Permanently copies the current editor theme into editor_theme_copy.tres //
-		/////////////////////////////////////////////////////////////////////////////
-		Theme editorTheme = EditorInterfaceSingleton.GetEditorTheme();
-		//SaveResource(editorTheme, "res://addons/kanban/themes/editor_theme_copy3.tres");
-		Theme editorThemeCopyResource = GD.Load<Theme>("res://addons/kanban/themes/editor_theme_copy.tres");
-		editorThemeCopyResource.MergeWith(editorTheme);
-		/////////////////////////////////////////////////////////////////////////////
-	} */
+		StyleBoxFlat loadedStylebox = ResourceLoader.Load<StyleBoxFlat>(path);
+		if (loadedStylebox == null)
+		{
+			GD.PushError($"Failed to load resource from {path}");
+		}
+		else
+		{
+			loadedStylebox.BgColor = bgColor;
+			loadedStylebox.DrawCenter = true;
+			loadedStylebox.BorderWidthTop = variation.BorderWidthTop;
+			loadedStylebox.BorderWidthBottom = variation.BorderWidthBottom;
+			loadedStylebox.BorderWidthLeft = variation.BorderWidthLeft;
+			loadedStylebox.BorderWidthRight = variation.BorderWidthRight;
+			loadedStylebox.BorderColor = variation.BorderColor;
+
+			Error error = ResourceSaver.Save(loadedStylebox, path);
+			if (error == Error.Ok)
+			{
+				this.PrintDebug($"Successfully updated and saved resource at {path}");
+			}
+			else
+			{
+				GD.PushError(error);
+			}
+		}
+	}
 	
 	private void SaveBoard()
 	{
@@ -261,5 +206,19 @@ public partial class KanbanPlugin : EditorPlugin
 			}
 		}
 	}
+	
+/* 	private void PermanentlyCopyEditorThemeIntoResource()
+	{
+		/////////////////////////////////////////////////////////////////////////////
+		//       TEMPORARY! JUST NEED TO RUN ONCE THEN COMMENT OUT OR DELETE!      //
+		/////////////////////////////////////////////////////////////////////////////
+		// Permanently copies the current editor theme into editor_theme_copy.tres //
+		/////////////////////////////////////////////////////////////////////////////
+		Theme editorTheme = EditorInterfaceSingleton.GetEditorTheme();
+		//SaveResource(editorTheme, "res://addons/kanban/themes/editor_theme_copy3.tres");
+		Theme editorThemeCopyResource = GD.Load<Theme>("res://addons/kanban/themes/editor_theme_copy.tres");
+		editorThemeCopyResource.MergeWith(editorTheme);
+		/////////////////////////////////////////////////////////////////////////////
+	} */
 }
 #endif

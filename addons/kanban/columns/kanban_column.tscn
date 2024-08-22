@@ -35,7 +35,6 @@ theme_override_constants/separation = 20
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainerOuter"]
 layout_mode = 2
-mouse_filter = 2
 
 [node name="TitleSpacer" type="MarginContainer" parent="MarginContainer/VBoxContainerOuter/HBoxContainer"]
 layout_mode = 2
@@ -49,6 +48,7 @@ theme_override_constants/margin_bottom = 0
 
 [node name="ColumnTitle" type="LineEdit" parent="MarginContainer/VBoxContainerOuter/HBoxContainer"]
 unique_name_in_owner = true
+clip_contents = true
 custom_minimum_size = Vector2(330, 65)
 layout_mode = 2
 size_flags_horizontal = 2
@@ -71,7 +71,6 @@ layout_mode = 2
 size_flags_horizontal = 8
 size_flags_vertical = 4
 focus_mode = 0
-mouse_filter = 1
 theme = ExtResource("8_saw6g")
 icon = ExtResource("5_5qw2v")
 icon_alignment = 1
@@ -96,5 +95,4 @@ script = ExtResource("8_hfv0s")
 unique_name_in_owner = true
 layout_mode = 2
 focus_mode = 0
-mouse_filter = 1
 text = "Create New Card"

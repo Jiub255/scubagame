@@ -1,10 +1,13 @@
+using System;
 using Godot;
 
 [Tool]
 public partial class LabelPlaceholderText : Label
 {
+	public event Action OnTextChanged;
+	
 	[Export]
-	private string PlaceholderText { get; set; }
+	public string PlaceholderText { get; private set; }
 	
 	public string StoredText
 	{
@@ -29,6 +32,16 @@ public partial class LabelPlaceholderText : Label
 			{
 				Text = value;
 			}
+		}
+	}
+	
+	public new string Text
+	{
+		get => base.Text;
+		set
+		{
+			base.Text = value;
+			OnTextChanged?.Invoke();
 		}
 	}
 }

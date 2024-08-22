@@ -9,6 +9,7 @@ public partial class KanbanBoard : PanelContainer
 	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/columns/kanban_column.tscn");
 	
 	private CardPopup CardPopup { get; set; }
+	private DeleteConfirmation DeleteConfirmation { get; set; }
 	private Button CreateColumnButton { get; set; }
 	public HBoxContainer Columns { get; private set; }
 
@@ -17,6 +18,9 @@ public partial class KanbanBoard : PanelContainer
 		base._EnterTree();
 		
 		CardPopup = (CardPopup)GetNode("%CardPopup");
+		DeleteConfirmation = (DeleteConfirmation)GetNode("%DeleteConfirmation");
+		DeleteConfirmation.GetChild<Label>(1, true).HorizontalAlignment = HorizontalAlignment.Center;
+		//this.PrintDebug($"Confirmation child type {DeleteConfirmation.GetChild(1, true).GetType()}");
 		CreateColumnButton = (Button)GetNode("%CreateColumnButton");
 		Columns = (HBoxContainer)GetNode("%Columns");
 
@@ -68,28 +72,72 @@ public partial class KanbanBoard : PanelContainer
 		Columns.AddChild(newColumn);
 		newColumn.InitializeColumn(columnData);
 		
-		newColumn.OnDestroyColumn += DeleteColumn;
-		newColumn.Cards.OnOpenPopup += OpenPopup;
+		newColumn.OnDeleteColumnPressed += OpenConfirmationColumn;
+		newColumn.Cards.OnOpenPopupPressed += OpenPopup;
 		newColumn.OnMoveColumnToPosition += MoveColumnToPosition;
 		newColumn.OnColumnDragStart += SetColumnsFiltersToIgnore;
 		newColumn.Cards.OnCardDragStart += SetCardsFiltersToIgnore;
 		newColumn.OnColumnChanged += SaveBoard;
+		newColumn.Cards.OnDeleteCardPressed += OpenConfirmationCard;
+		newColumn.OnDeleteColumn += DeleteColumn;
 
 		SaveBoard();
 	}
 	
 	private void DeleteColumn(KanbanColumn column)
 	{
-		column.OnDestroyColumn -= DeleteColumn;
-		column.Cards.OnOpenPopup -= OpenPopup;
+		column.OnDeleteColumnPressed -= OpenConfirmationColumn;
+		column.Cards.OnOpenPopupPressed -= OpenPopup;
 		column.OnMoveColumnToPosition -= MoveColumnToPosition;
 		column.OnColumnDragStart -= SetColumnsFiltersToIgnore;
 		column.Cards.OnCardDragStart -= SetCardsFiltersToIgnore;
 		column.OnColumnChanged -= SaveBoard;
+		column.Cards.OnDeleteCardPressed -= OpenConfirmationCard;
+		column.OnDeleteColumn -= DeleteColumn;
 		
 		column.QueueFree();
 
 		SaveBoard();
+	}
+	
+	private void OpenConfirmationCard(KanbanCard card)
+	{
+		OpenConfirmationDialog(card);
+	}
+	
+	private void OpenConfirmationColumn(KanbanColumn column)
+	{
+		OpenConfirmationDialog(null, column);
+	}
+	
+	private void OpenConfirmationDialog(KanbanCard card, KanbanColumn column = null)
+	{
+		string question = "Are you sure you want to delete ";
+		string title;
+		if (card == null)
+		{
+			if (column == null)
+			{
+				GD.PushError("Must pass in either card or column to this method.");
+				return;
+			}
+			question += "column:";
+			title = column.Title.Text;
+		}
+		else
+		{
+			question += "card:";
+			title = card.Title.Text;
+		}
+		string warning = "This process cannot be undone.";
+		
+		int length = Math.Max(question.Length, warning.Length);
+		title = title.TruncateQuoteQuestion(length);
+
+		DeleteConfirmation.DialogText = $"{question}\n{title}\n{warning}";
+		DeleteConfirmation.Column = column;
+		DeleteConfirmation.Card = card;
+		DeleteConfirmation.Show();
 	}
 	
 	private void OpenPopup(KanbanCard card)
