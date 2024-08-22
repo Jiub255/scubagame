@@ -1,11 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://dds7t4hnx1otl"]
+[gd_scene load_steps=10 format=3 uid="uid://dds7t4hnx1otl"]
 
 [ext_resource type="Script" path="res://addons/kanban/cards/KanbanCard.cs" id="2_84l8d"]
+[ext_resource type="StyleBox" uid="uid://u0tslysbfijs" path="res://addons/kanban/styleboxes/card_text_stylebox.tres" id="3_mb1yy"]
 [ext_resource type="Script" path="res://addons/kanban/ui-extensions/LabelPlaceholderText.cs" id="3_qf5mg"]
 [ext_resource type="Texture2D" uid="uid://eowbdfipf53l" path="res://assets/mine/close-button-white.png" id="5_d8se2"]
 [ext_resource type="Theme" uid="uid://qivnjttvwkb1" path="res://addons/kanban/themes/delete_button_theme.tres" id="6_lnkt1"]
 [ext_resource type="Script" path="res://addons/kanban/ui-extensions/ButtonHidden.cs" id="6_qry6k"]
 [ext_resource type="Script" path="res://addons/kanban/ui-extensions/TextEditAutoBullet.cs" id="6_y6dgl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_uwe1u"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_411wp"]
 
 [node name="Card" type="Button"]
 custom_minimum_size = Vector2(360, 150)
@@ -52,6 +57,7 @@ custom_minimum_size = Vector2(306, 34)
 layout_mode = 2
 size_flags_horizontal = 2
 theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxEmpty_uwe1u")
 text = "Card Title"
 autowrap_mode = 3
 text_overrun_behavior = 3
@@ -85,6 +91,7 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
+theme_override_styles/panel = ExtResource("3_mb1yy")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
@@ -98,6 +105,9 @@ theme_override_constants/margin_bottom = 3
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
+theme_override_styles/normal = SubResource("StyleBoxEmpty_411wp")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_411wp")
+theme_override_styles/read_only = SubResource("StyleBoxEmpty_411wp")
 placeholder_text = "Card Description"
 editable = false
 context_menu_enabled = false

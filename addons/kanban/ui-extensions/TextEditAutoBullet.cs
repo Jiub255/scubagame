@@ -224,9 +224,9 @@ public partial class TextEditAutoBullet : TextEdit
 
 	// TODO: Some keyboard ghosting(?) issues when typing fast with 3 or more keys held down together. 
 	// Can't find the exact cause and it's not too bad, just need to push undo an extra time once in a while. 
-	public override void _Input(InputEvent @event)
+	public override void _GuiInput(InputEvent @event)
 	{
-		base._Input(@event);
+		//base._Input(@event);
 		if (@event is InputEventKey keyEvent)
 		{
 			if (keyEvent.IsReleased())
@@ -273,6 +273,12 @@ public partial class TextEditAutoBullet : TextEdit
 			{
 				HandleNewlines();
 			}
+			// Backspace - Delete preceding whitespace chars if there are any, otherwise delete BulletPointString
+			// and preceding newline so your line is at the end of the old one above you.
+			else if (keyEvent.IsActionPressed("ui_text_backspace"))
+			{
+				HandleBackspace();
+			}
 			// Backspace word or all - Handle separately. Have them just delete all preceding whitespace and BulletPointString.
 			else if(keyEvent.IsActionPressed("ui_text_backspace_word") ||
 				//keyEvent.IsActionPressed("ui_text_backspace_word.macos") ||
@@ -280,12 +286,6 @@ public partial class TextEditAutoBullet : TextEdit
 				//keyEvent.IsActionPressed("ui_text_backspace_all_to_left.macos"))
 			{
 				HandleBackspaceWordOrAll();
-			}
-			// Backspace - Delete preceding whitespace chars if there are any, otherwise delete BulletPointString
-			// and preceding newline so your line is at the end of the old one above you.
-			else if (keyEvent.IsActionPressed("ui_text_backspace"))
-			{
-				HandleBackspace();
 			}
 			// Space and Tab - Put the space/tab before the bullet point instead of at the caret position. 
 			else if (keyEvent.IsActionPressed("space") || keyEvent.IsActionPressed("ui_text_indent"))

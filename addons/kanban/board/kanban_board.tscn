@@ -1,12 +1,15 @@
-[gd_scene load_steps=12 format=3 uid="uid://cdujdcexpd5e6"]
+[gd_scene load_steps=15 format=3 uid="uid://cdujdcexpd5e6"]
 
+[ext_resource type="StyleBox" uid="uid://dtvhixy15rklc" path="res://addons/kanban/styleboxes/board_stylebox.tres" id="1_iej1v"]
 [ext_resource type="Script" path="res://addons/kanban/board/KanbanBoard.cs" id="1_vm8vo"]
 [ext_resource type="Script" path="res://addons/kanban/board/CardPopup.cs" id="3_3i1gv"]
 [ext_resource type="Script" path="res://addons/kanban/ui-extensions/TextEditAutoBullet.cs" id="3_efn50"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3xclc"]
+[ext_resource type="StyleBox" uid="uid://dpqxmkxhs0gym" path="res://addons/kanban/styleboxes/card_stylebox.tres" id="4_442gc"]
+[ext_resource type="StyleBox" uid="uid://u0tslysbfijs" path="res://addons/kanban/styleboxes/card_text_stylebox.tres" id="5_vltql"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p76kq"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gtoav"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s6cyu"]
 
@@ -25,14 +28,14 @@ clip_contents = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -1912.0
-offset_bottom = -1072.0
+offset_right = -1900.0
+offset_bottom = -1062.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_3xclc")
+theme_override_styles/panel = ExtResource("1_iej1v")
 script = ExtResource("1_vm8vo")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
@@ -102,6 +105,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
+theme_override_styles/panel = ExtResource("4_442gc")
 
 [node name="MarginContainer" type="MarginContainer" parent="CardPopup/BackgroundPanelContainer/PopupPanelContainer"]
 layout_mode = 2
@@ -119,6 +123,7 @@ theme_override_constants/separation = 20
 [node name="TitlePanelContainer" type="PanelContainer" parent="CardPopup/BackgroundPanelContainer/PopupPanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_gtoav")
 
 [node name="MarginContainer" type="MarginContainer" parent="CardPopup/BackgroundPanelContainer/PopupPanelContainer/MarginContainer/VBoxContainer/TitlePanelContainer"]
 layout_mode = 2
@@ -146,6 +151,7 @@ placeholder_text = "Enter Card Title"
 layout_mode = 2
 size_flags_vertical = 3
 mouse_filter = 2
+theme_override_styles/panel = ExtResource("5_vltql")
 
 [node name="MarginContainer" type="MarginContainer" parent="CardPopup/BackgroundPanelContainer/PopupPanelContainer/MarginContainer/VBoxContainer/DescriptionPanelContainer"]
 layout_mode = 2
