@@ -1,7 +1,5 @@
 using Godot;
 
-// TODO: Add Collapsed bool and save/load logic.
-// Add to GetCardData method in KanbanCard too.
 [System.Serializable]
 public struct CardData
 {

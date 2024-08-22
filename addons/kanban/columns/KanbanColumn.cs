@@ -13,7 +13,6 @@ public partial class KanbanColumn : PanelContainer
 	public LineEditDefocus Title { get; private set; }
 	public Cards Cards { get; private set; }
 	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/columns/kanban_column.tscn");
-	private Button CreateCardButton { get; set; }
 	private ColumnMenuButton MenuButton { get; set; }
 
 #region COLUMN
@@ -24,12 +23,10 @@ public partial class KanbanColumn : PanelContainer
 		
 		Title = (LineEditDefocus)GetNode("%ColumnTitle");
 		Cards = (Cards)GetNode("%Cards");
-		CreateCardButton = (Button)GetNode("%CreateCardButton");
 		MenuButton = (ColumnMenuButton)GetNode("%MenuButton");
 
 		Title.TextChanged += OnTitleChanged;
 		Cards.OnCardsChanged += OnCardsChanged;
-		//CreateCardButton.Pressed += Cards.CreateNewBlankCard;
 		MenuButton.OnCreateCardPressed += Cards.CreateNewBlankCard;
 		MenuButton.OnDeletePressed += ConfirmDeleteColumn;
 		MenuButton.OnExpandPressed += Cards.ExpandAllCards;
@@ -42,7 +39,6 @@ public partial class KanbanColumn : PanelContainer
 		
 		Title.TextChanged -= OnTitleChanged;
 		Cards.OnCardsChanged -= OnCardsChanged;
-		//CreateCardButton.Pressed -= Cards.CreateNewBlankCard;
 		MenuButton.OnCreateCardPressed -= Cards.CreateNewBlankCard;
 		MenuButton.OnDeletePressed -= ConfirmDeleteColumn;
 		MenuButton.OnExpandPressed -= Cards.ExpandAllCards;
@@ -119,7 +115,6 @@ public partial class KanbanColumn : PanelContainer
 		Control preview = new Control();
 		preview.AddChild(previewColumn);
 		previewColumn.Position = -1 * relativeMousePosition;
-		//previewColumn.Position = previewColumn.Size * -0.5f;
 		return preview;
 	}
 
@@ -174,7 +169,6 @@ public partial class KanbanColumn : PanelContainer
 					LineEditDefocus or
 					TextEdit or
 					HBoxContainer or
-					//Button or
 					ScrollContainer))
 			{
 				control.MouseFilter = MouseFilterEnum.Pass;

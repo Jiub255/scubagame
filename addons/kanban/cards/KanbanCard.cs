@@ -11,10 +11,11 @@ public partial class KanbanCard : Button
 	public event Action<KanbanCard> OnRemoveCard;
 	public event Action<KanbanCard> OnDeleteCard;
 	
-	private CardMenuButton MenuButton { get; set; }
 	public LabelPlaceholderText Title { get; set; }
 	public TextEditAutoBullet Description { get; set; }
+	public bool Collapsed { get; set; }
 	public PanelContainer DescriptionPanelContainer { get; set; }
+	private CardMenuButton MenuButton { get; set; }
 	private int CollapsedHeight { get; set; } = 50;
 	private int ExpandedHeight { get; set; } = 150;
 	private PackedScene CardScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/cards/kanban_card.tscn");
@@ -65,7 +66,7 @@ public partial class KanbanCard : Button
 	
 	public CardData GetCardData()
 	{
-		CardData cardData = new(Title.StoredText, Description.Text, MenuButton.Collapsed);
+		CardData cardData = new(Title.StoredText, Description.Text, Collapsed);
 		return cardData;
 	}
 
@@ -91,25 +92,27 @@ public partial class KanbanCard : Button
 		}
 	}
 	
+	public void Expand()
+	{
+		CustomMinimumSize = new Vector2(CustomMinimumSize.X, ExpandedHeight);
+		DescriptionPanelContainer.Show();
+		MenuButton.SetExpandMenu();
+		Collapsed = false;
+	}
+	
+	public void Collapse()
+	{
+		CustomMinimumSize = new Vector2(CustomMinimumSize.X, CollapsedHeight);
+		DescriptionPanelContainer.Hide();
+		MenuButton.SetCollapseMenu();
+		Collapsed = true;
+	}
+
 	public void DeleteCard()
 	{
 		OnDeleteCard?.Invoke(this);
 	}
 	
-	public void Collapse()
-	{
-		this.PrintDebug($"Collapse");
-		CustomMinimumSize = new Vector2(CustomMinimumSize.X, CollapsedHeight);
-		DescriptionPanelContainer.Hide();
-	}
-	
-	public void Expand()
-	{
-		this.PrintDebug($"Expand");
-		CustomMinimumSize = new Vector2(CustomMinimumSize.X, ExpandedHeight);
-		DescriptionPanelContainer.Show();
-	}
-
 #endregion
 
 #region DRAG AND DROP
@@ -130,7 +133,6 @@ public partial class KanbanCard : Button
 		Control preview = new Control();
 		preview.AddChild(previewCard);
 		previewCard.Position = -1 * relativeMousePosition;
-		//previewCard.Position = previewCard.Size * -0.5f;
 		return preview;
 	}
 

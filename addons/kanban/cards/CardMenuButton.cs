@@ -9,7 +9,6 @@ public partial class CardMenuButton : MenuButton
 	public event Action OnDeletePressed;
 	
 	private PopupMenu PopupMenu { get; set; }
-	public bool Collapsed { get; private set; } = false;
 	
 	private const string EXPAND_LABEL_TEXT = "Expand";
 	private const string COLLAPSE_LABEL_TEXT = "Collapse";
@@ -66,20 +65,26 @@ public partial class CardMenuButton : MenuButton
 	
 	private void ExpandCard()
 	{
-		Collapsed = false;
+		OnExpandPressed?.Invoke();
+	}
+	
+	public void SetExpandMenu()
+	{
 		PopupMenu.Clear();
 		PopupMenu.AddItem(COLLAPSE_LABEL_TEXT, 0);
 		PopupMenu.AddItem(DELETE_LABEL_TEXT, 1);
-		OnExpandPressed?.Invoke();
 	}
 	
 	private void CollapseCard()
 	{
-		Collapsed = true;
+		OnCollapsePressed?.Invoke();
+	}
+	
+	public void SetCollapseMenu()
+	{
 		PopupMenu.Clear();
 		PopupMenu.AddItem(EXPAND_LABEL_TEXT, 0);
 		PopupMenu.AddItem(DELETE_LABEL_TEXT, 1);
-		OnCollapsePressed?.Invoke();
 	}
 	
 	private void DeleteCard()

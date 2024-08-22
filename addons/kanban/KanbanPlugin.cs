@@ -12,8 +12,22 @@ public partial class KanbanPlugin : EditorPlugin
 	public override void _EnterTree()
 	{
 		SetupBoard();
-
 		//PermanentlyCopyEditorThemeIntoResource()
+	}
+
+	private void SetupBoard()
+	{
+		BoardData boardData = KanbanSaverInstance.LoadBoard();
+		KanbanInstance = (KanbanBoard)KanbanPackedScene.Instantiate();
+		IntegrateEditorTheme();
+		// Add the main panel to the editor's main viewport.
+		EditorInterfaceSingleton.GetEditorMainScreen().AddChild(KanbanInstance);
+		KanbanInstance.InitializeBoard(boardData);
+		KanbanInstance.OnBoardChanged += SaveBoard;
+		EditorInterfaceSingleton.GetEditorSettings().SettingsChanged += IntegrateEditorTheme;
+		
+		// Hide the main panel. Very much required.
+		_MakeVisible(false);
 	}
 
 	public override void _ExitTree()
@@ -22,53 +36,19 @@ public partial class KanbanPlugin : EditorPlugin
 		{
 			SaveBoard();
 			KanbanInstance.OnBoardChanged -= SaveBoard;
-			//EditorInterfaceSingleton.GetEditorSettings().SettingsChanged -= RefreshBoard;
+			EditorInterfaceSingleton.GetEditorSettings().SettingsChanged -= IntegrateEditorTheme;
 			KanbanInstance.QueueFree();
 		}
 	}
 
-	private void SetupBoard()
-	{
-		BoardData boardData = KanbanSaverInstance.LoadBoard();
-		KanbanInstance = (KanbanBoard)KanbanPackedScene.Instantiate();
-		KanbanInstance.Theme = IntegrateEditorTheme();
-		// Add the main panel to the editor's main viewport.
-		EditorInterfaceSingleton.GetEditorMainScreen().AddChild(KanbanInstance);
-		KanbanInstance.InitializeBoard(boardData);
-		KanbanInstance.OnBoardChanged += SaveBoard;
-		//EditorInterfaceSingleton.GetEditorSettings().SettingsChanged += RefreshBoard;
-		
-		// Hide the main panel. Very much required.
-		_MakeVisible(false);
-	}
-
-	// TODO: This froze the editor for like a minute then crashed it after the color actually set from the settings theme main color change. 
-/* 	private void RefreshBoard()
-	{
-		_ExitTree();
-		SetupBoard();
-	} */
-	
-	// This method is really slow I think. Why?
-	// Try running it in the background somehow? Another thread? Won't help with first load, but maybe with RefreshBoard.
-	// OR, would it be faster to just assign the editor theme directly to the board theme? Can still keep the stylebox variants part.
-	// Then, could just run this method onSettingsChanged. Might be less crashy and slow.
-	private Theme IntegrateEditorTheme()
+	private void IntegrateEditorTheme()
 	{
 		// Copy needed types' styleboxes from editor theme into copy
 		Theme copy = new Theme();
 		Theme editorTheme = EditorInterfaceSingleton.GetEditorTheme();
-		string[] themeTypes = { "PanelContainer", "MarginContainer", "VBoxContainer", "HBoxContainer",
-			"Button", "LineEdit", "TextEdit", "Label"};
-		foreach (string themeType in themeTypes)
-		{
-			CopyThemeType(editorTheme, copy, themeType);
-		}
 		
-		// TODO: Try using Theme variations? Then have whatever individual controls set them on themselves
-		// (or have a parent with a script do it)? 
-		// Probably easier to manually override the necessary ui elements' themes with saved .tres files,
-		// then just copy the data to them from here. 
+		CopyThemeTypeStylebox(editorTheme, copy, "PanelContaner");
+		CopyThemeTypeStylebox(editorTheme, copy, "Button");
 
 		// Alterations for Kanban Board theme
 		StyleBoxFlat panelContainerStylebox = (StyleBoxFlat)copy.GetStylebox("panel", "PanelContainer");
@@ -76,18 +56,8 @@ public partial class KanbanPlugin : EditorPlugin
 		StyleBoxFlat buttonNormalStylebox = (StyleBoxFlat)copy.GetStylebox("normal", "Button");
 
 		// Get editor color variations
-		//string[] editorColors = editorTheme.GetColorList("Editor");
-		//this.PrintDebug($"Editor colors: {editorColors.Join(", ")}");
 		Color backgroundColor = editorTheme.GetColor("background", "Editor");
 		Color baseColor = editorTheme.GetColor("base_color", "Editor");
-		Color darkColor = editorTheme.GetColor("dark_color_1", "Editor");
-		Color darkerColor = editorTheme.GetColor("dark_color_2", "Editor");
-		Color darkestColor = editorTheme.GetColor("dark_color_3", "Editor");
-		Color contrast_low = editorTheme.GetColor("contrast_color_1", "Editor");
-		Color contrast_high = editorTheme.GetColor("contrast_color_2", "Editor");
-		Color accentColor = editorTheme.GetColor("accent_color", "Editor");
-		// Mellower version of accent color.
-		Color fontHoverPressedColor = editorTheme.GetColor("font_hover_pressed_color", "Editor");
 		Color selectionColor = editorTheme.GetColor("selection_color", "Editor");
 		
 		// Set board variation stylebox (do before adding borders)
@@ -109,11 +79,10 @@ public partial class KanbanPlugin : EditorPlugin
 		// Set card text panels variation stylebox
 		LoadAndChangeStylebox(panelContainerStylebox, selectionColor, "res://addons/kanban/styleboxes/card_text_stylebox.tres");
 		
-		return copy;
+		KanbanInstance.Theme = editorTheme;
 	}
 	
-	// IntegrateEditorTheme probably slow from calling this 8 times.
-	private void CopyThemeType(Theme sourceTheme, Theme targetTheme, string themeType)
+	private void CopyThemeTypeStylebox(Theme sourceTheme, Theme targetTheme, string themeType)
 	{
 		// Copy styleboxes
 		foreach (string styleboxName in sourceTheme.GetStyleboxList(themeType))
@@ -121,7 +90,7 @@ public partial class KanbanPlugin : EditorPlugin
 			StyleBox stylebox = sourceTheme.GetStylebox(styleboxName, themeType);
 			targetTheme.SetStylebox(styleboxName, themeType, stylebox);
 		}
-
+/* 
 		// Copy fonts
 		foreach (string fontName in sourceTheme.GetFontList(themeType))
 		{
@@ -148,7 +117,7 @@ public partial class KanbanPlugin : EditorPlugin
 		{
 			Texture2D icon = sourceTheme.GetIcon(iconName, themeType);
 			targetTheme.SetIcon(iconName, themeType, icon);
-		}
+		} */
 	}
 	
 	private void LoadAndChangeStylebox(StyleBoxFlat variation, Color bgColor, string path)
