@@ -11,9 +11,12 @@ public partial class KanbanCard : Button
 	public event Action<KanbanCard> OnRemoveCard;
 	public event Action<KanbanCard> OnDeleteCard;
 	
-	private Button DeleteButton { get; set; }
+	private CardMenuButton MenuButton { get; set; }
 	public LabelPlaceholderText Title { get; set; }
 	public TextEditAutoBullet Description { get; set; }
+	public PanelContainer DescriptionPanelContainer { get; set; }
+	private int CollapsedHeight { get; set; } = 50;
+	private int ExpandedHeight { get; set; } = 150;
 	private PackedScene CardScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/cards/kanban_card.tscn");
 
 #region CARD
@@ -22,7 +25,7 @@ public partial class KanbanCard : Button
 	{
 		base._EnterTree();
 		
-		DeleteButton = (Button)GetNode("%DeleteButton");
+		MenuButton = (CardMenuButton)GetNode("%MenuButton");
 
 		ConnectEvents();
 	}
@@ -35,27 +38,34 @@ public partial class KanbanCard : Button
 	public void ConnectEvents()
 	{
 		Pressed += OpenPopup;
-		DeleteButton.Pressed += ConfirmDeleteCard;
+		MenuButton.OnCollapsePressed += Collapse;
+		MenuButton.OnExpandPressed += Expand;
+		MenuButton.OnDeletePressed += ConfirmDeleteCard;
 	}
 	
 	public void DisconnectEvents()
 	{
 		Pressed -= OpenPopup;
-		DeleteButton.Pressed -= ConfirmDeleteCard;
+		MenuButton.OnCollapsePressed -= Collapse;
+		MenuButton.OnExpandPressed -= Expand;
+		MenuButton.OnDeletePressed -= ConfirmDeleteCard;
 	}
 	
 	public void InitializeCard(CardData cardData)
 	{
 		Title = (LabelPlaceholderText)GetNode("%Title");
 		Description = (TextEditAutoBullet)GetNode("%Description");
+		MenuButton ??= (CardMenuButton)GetNode("%MenuButton");
+		DescriptionPanelContainer = (PanelContainer)GetNode("%DescriptionPanelContainer");
 		Title.StoredText = cardData.Title;
 		Description.Text = cardData.Description;
 		Description.SetBulletPoints();
+		MenuButton.Initialize(cardData.Collapsed);
 	}
 	
 	public CardData GetCardData()
 	{
-		CardData cardData = new(Title.StoredText, Description.Text);
+		CardData cardData = new(Title.StoredText, Description.Text, MenuButton.Collapsed);
 		return cardData;
 	}
 
@@ -84,6 +94,20 @@ public partial class KanbanCard : Button
 	public void DeleteCard()
 	{
 		OnDeleteCard?.Invoke(this);
+	}
+	
+	public void Collapse()
+	{
+		this.PrintDebug($"Collapse");
+		CustomMinimumSize = new Vector2(CustomMinimumSize.X, CollapsedHeight);
+		DescriptionPanelContainer.Hide();
+	}
+	
+	public void Expand()
+	{
+		this.PrintDebug($"Expand");
+		CustomMinimumSize = new Vector2(CustomMinimumSize.X, ExpandedHeight);
+		DescriptionPanelContainer.Show();
 	}
 
 #endregion

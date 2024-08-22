@@ -10,11 +10,11 @@ public partial class KanbanColumn : PanelContainer
 	public event Action OnColumnDragStart;
 	public event Action OnColumnChanged;
 	
-	public LineEdit Title { get; private set; }
+	public LineEditDefocus Title { get; private set; }
 	public Cards Cards { get; private set; }
 	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/columns/kanban_column.tscn");
 	private Button CreateCardButton { get; set; }
-	private Button DeleteColumnButton { get; set; }
+	private ColumnMenuButton MenuButton { get; set; }
 
 #region COLUMN
 
@@ -22,32 +22,39 @@ public partial class KanbanColumn : PanelContainer
 	{
 		base._EnterTree();
 		
-		CreateCardButton = (Button)GetNode("%CreateCardButton");
-		DeleteColumnButton = (Button)GetNode("%DeleteColumnButton");
-		Title = (LineEdit)GetNode("%ColumnTitle");
+		Title = (LineEditDefocus)GetNode("%ColumnTitle");
 		Cards = (Cards)GetNode("%Cards");
+		CreateCardButton = (Button)GetNode("%CreateCardButton");
+		MenuButton = (ColumnMenuButton)GetNode("%MenuButton");
 
-		CreateCardButton.Pressed += Cards.CreateNewBlankCard;
-		DeleteColumnButton.Pressed += ConfirmDeleteColumn;
 		Title.TextChanged += OnTitleChanged;
 		Cards.OnCardsChanged += OnCardsChanged;
+		//CreateCardButton.Pressed += Cards.CreateNewBlankCard;
+		MenuButton.OnCreateCardPressed += Cards.CreateNewBlankCard;
+		MenuButton.OnDeletePressed += ConfirmDeleteColumn;
+		MenuButton.OnExpandPressed += Cards.ExpandAllCards;
+		MenuButton.OnCollapsePressed += Cards.CollapseAllCards;
 	}
 
 	public override void _ExitTree()
 	{
 		base._ExitTree();
 		
-		CreateCardButton.Pressed -= Cards.CreateNewBlankCard;
-		DeleteColumnButton.Pressed -= ConfirmDeleteColumn;
 		Title.TextChanged -= OnTitleChanged;
 		Cards.OnCardsChanged -= OnCardsChanged;
+		//CreateCardButton.Pressed -= Cards.CreateNewBlankCard;
+		MenuButton.OnCreateCardPressed -= Cards.CreateNewBlankCard;
+		MenuButton.OnDeletePressed -= ConfirmDeleteColumn;
+		MenuButton.OnExpandPressed -= Cards.ExpandAllCards;
+		MenuButton.OnCollapsePressed -= Cards.CollapseAllCards;
 	}
 	
 	public void InitializeColumn(ColumnData columnData)
 	{
-		Title ??= (LineEdit)GetNode("%ColumnTitle");
+		Title ??= (LineEditDefocus)GetNode("%ColumnTitle");
 		Cards ??= (Cards)GetNode("%Cards");
 		Title.Text = columnData.Title;
+		Title.TooltipText = Title.Text;
 		foreach (CardData cardData in columnData.Cards)
 		{
 			Cards.CreateNewCard(cardData);
@@ -164,7 +171,7 @@ public partial class KanbanColumn : PanelContainer
 			}
 			if (child is Control control and
 					(KanbanCard or
-					LineEdit or
+					LineEditDefocus or
 					TextEdit or
 					HBoxContainer or
 					//Button or

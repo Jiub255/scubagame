@@ -1,0 +1,89 @@
+using Godot;
+using System;
+
+[Tool]
+public partial class CardMenuButton : MenuButton
+{
+	public event Action OnExpandPressed;
+	public event Action OnCollapsePressed;
+	public event Action OnDeletePressed;
+	
+	private PopupMenu PopupMenu { get; set; }
+	public bool Collapsed { get; private set; } = false;
+	
+	private const string EXPAND_LABEL_TEXT = "Expand";
+	private const string COLLAPSE_LABEL_TEXT = "Collapse";
+	private const string DELETE_LABEL_TEXT = "Delete";
+	
+	public override void _EnterTree()
+	{
+		base._EnterTree();
+
+		Icon = EditorInterface.Singleton.GetEditorTheme().GetIcon("GuiTabMenu", "EditorIcons");
+	}
+
+	public override void _ExitTree()
+	{
+		base._ExitTree();
+		
+		PopupMenu.IdPressed -= HandlePressId;
+	}
+
+	public void Initialize(bool collapsed)
+	{
+		PopupMenu = GetPopup();
+
+		PopupMenu.IdPressed += HandlePressId;
+
+		if (collapsed)
+		{
+			CollapseCard();
+		}
+		else
+		{
+			ExpandCard();
+		}
+	}
+
+	private void HandlePressId(long id)
+	{
+		switch (PopupMenu.GetItemText((int)id))
+		{
+			case EXPAND_LABEL_TEXT:
+				ExpandCard();
+				break;
+			case COLLAPSE_LABEL_TEXT:
+				CollapseCard();
+				break;
+			case DELETE_LABEL_TEXT:
+				DeleteCard();
+				break;
+			default:
+				GD.PushError($"Popup menu option {PopupMenu.GetItemText((int)id)} doesn't match any options.");
+				break;
+		}
+	}
+	
+	private void ExpandCard()
+	{
+		Collapsed = false;
+		PopupMenu.Clear();
+		PopupMenu.AddItem(COLLAPSE_LABEL_TEXT, 0);
+		PopupMenu.AddItem(DELETE_LABEL_TEXT, 1);
+		OnExpandPressed?.Invoke();
+	}
+	
+	private void CollapseCard()
+	{
+		Collapsed = true;
+		PopupMenu.Clear();
+		PopupMenu.AddItem(EXPAND_LABEL_TEXT, 0);
+		PopupMenu.AddItem(DELETE_LABEL_TEXT, 1);
+		OnCollapsePressed?.Invoke();
+	}
+	
+	private void DeleteCard()
+	{
+		OnDeletePressed?.Invoke();
+	}
+}

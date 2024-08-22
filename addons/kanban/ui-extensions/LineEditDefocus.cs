@@ -3,6 +3,8 @@ using Godot;
 [Tool]
 public partial class LineEditDefocus : LineEdit
 {
+	[Export]
+	private bool ShowTooltip = true;
 	private bool MouseOverText { get; set; }
 
 	public override void _EnterTree()
@@ -33,6 +35,7 @@ public partial class LineEditDefocus : LineEdit
 		MouseOverText = false;
 	}
 
+	// TODO: Should this be _GuiInput instead?
 	public override void _Input(InputEvent @event)
 	{
 		base._Input(@event);
@@ -41,6 +44,11 @@ public partial class LineEditDefocus : LineEdit
 		{
 			if (@event is InputEventMouseButton && !MouseOverText)
 			{
+				CaretColumn = 0;
+				if (ShowTooltip)
+				{
+					TooltipText = Text;
+				}
 				ReleaseFocus();
 			}
 		}
@@ -48,6 +56,11 @@ public partial class LineEditDefocus : LineEdit
 	
 	private void Defocus(string _)
 	{
+		CaretColumn = 0;
+		if (ShowTooltip)
+		{
+			TooltipText = Text;
+		}
 		ReleaseFocus();
 	}
 }

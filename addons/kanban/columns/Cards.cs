@@ -74,6 +74,11 @@ public partial class Cards : VBoxContainer
 		card.OnOpenPopupButtonPressed -= OpenPopup;
 		card.OnDeleteCard -= DeleteCard;
 	}
+
+	private void OpenPopup(KanbanCard card)
+	{
+		OnOpenPopupPressed?.Invoke(card);
+	}
 	
 	private void CardDragStart()
 	{
@@ -114,9 +119,26 @@ public partial class Cards : VBoxContainer
 		
 		return -1;
 	}
-
-	private void OpenPopup(KanbanCard card)
+	
+	public void ExpandAllCards()
 	{
-		OnOpenPopupPressed?.Invoke(card);
+		foreach (Node node in GetChildren())
+		{
+			if (node is KanbanCard card)
+			{
+				card.Expand();
+			}
+		}
+	}
+	
+	public void CollapseAllCards()
+	{
+		foreach (Node node in GetChildren())
+		{
+			if (node is KanbanCard card)
+			{
+				card.Collapse();
+			}
+		}
 	}
 }

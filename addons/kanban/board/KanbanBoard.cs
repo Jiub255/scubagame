@@ -7,10 +7,10 @@ public partial class KanbanBoard : PanelContainer
 	public event Action OnBoardChanged;
 	
 	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/columns/kanban_column.tscn");
-	
 	private CardPopup CardPopup { get; set; }
 	private DeleteConfirmation DeleteConfirmation { get; set; }
-	private Button CreateColumnButton { get; set; }
+	private LineEdit Title { get; set; }
+	private BoardMenuButton MenuButton { get; set; }
 	public HBoxContainer Columns { get; private set; }
 
 	public override void _EnterTree()
@@ -20,23 +20,51 @@ public partial class KanbanBoard : PanelContainer
 		CardPopup = (CardPopup)GetNode("%CardPopup");
 		DeleteConfirmation = (DeleteConfirmation)GetNode("%DeleteConfirmation");
 		DeleteConfirmation.GetChild<Label>(1, true).HorizontalAlignment = HorizontalAlignment.Center;
-		//this.PrintDebug($"Confirmation child type {DeleteConfirmation.GetChild(1, true).GetType()}");
-		CreateColumnButton = (Button)GetNode("%CreateColumnButton");
+		Title = (LineEdit)GetNode("%TitleLineEdit");
+		MenuButton = (BoardMenuButton)GetNode("%MenuButton");
 		Columns = (HBoxContainer)GetNode("%Columns");
 
 		CardPopup.OnClosePopup += SaveBoard;
-		CreateColumnButton.Pressed += CreateNewBlankColumn;
+		MenuButton.OnCreateColumnPressed += CreateNewBlankColumn;
+		MenuButton.OnExpandPressed += ExpandAll;
+		MenuButton.OnCollapsePressed += CollapseAll;
 	}
 
 	public override void _ExitTree()
 	{
 		base._ExitTree();
 		
-		CreateColumnButton.Pressed -= CreateNewBlankColumn;
+		CardPopup.OnClosePopup -= SaveBoard;
+		MenuButton.OnCreateColumnPressed -= CreateNewBlankColumn;
+		MenuButton.OnExpandPressed -= ExpandAll;
+		MenuButton.OnCollapsePressed -= CollapseAll;
+	}
+	
+	private void ExpandAll()
+	{
+		foreach (Node node in Columns.GetChildren())
+		{
+			if (node is KanbanColumn column)
+			{
+				column.Cards.ExpandAllCards();
+			}
+		}
+	}
+	
+	private void CollapseAll()
+	{
+		foreach (Node node in Columns.GetChildren())
+		{
+			if (node is KanbanColumn column)
+			{
+				column.Cards.CollapseAllCards();
+			}
+		}
 	}
 	
 	public void InitializeBoard(BoardData boardData)
 	{
+		Title.Text = boardData.Title;
 		foreach (ColumnData columnData in boardData.Columns)
 		{
 			CreateNewColumn(columnData);
@@ -50,7 +78,10 @@ public partial class KanbanBoard : PanelContainer
 	
 	public BoardData GetBoardData()
 	{
-		BoardData boardData = new BoardData();
+		BoardData boardData = new BoardData
+		{
+			Title = Title.Text
+		};
 		foreach (KanbanColumn column in Columns.GetChildren())
 		{
 			ColumnData columnData = column.GetColumnData();

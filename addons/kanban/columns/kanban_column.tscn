@@ -1,17 +1,27 @@
-[gd_scene load_steps=9 format=3 uid="uid://bu6ynovcljhc4"]
+[gd_scene load_steps=9 format=3 uid="uid://dq8tvfb5aaodw"]
 
 [ext_resource type="StyleBox" uid="uid://6imadl8shxw" path="res://addons/kanban/styleboxes/column_stylebox.tres" id="1_4fu46"]
 [ext_resource type="Script" path="res://addons/kanban/columns/KanbanColumn.cs" id="2_65o1w"]
 [ext_resource type="Script" path="res://addons/kanban/ui-extensions/LineEditDefocus.cs" id="3_ccoye"]
-[ext_resource type="Texture2D" uid="uid://eowbdfipf53l" path="res://assets/mine/close-button-white.png" id="5_5qw2v"]
-[ext_resource type="Script" path="res://addons/kanban/ui-extensions/ButtonHidden.cs" id="6_gc4w7"]
+[ext_resource type="Script" path="res://addons/kanban/columns/ColumnMenuButton.cs" id="8_hext2"]
 [ext_resource type="Script" path="res://addons/kanban/columns/Cards.cs" id="8_hfv0s"]
-[ext_resource type="Theme" uid="uid://qivnjttvwkb1" path="res://addons/kanban/themes/delete_button_theme.tres" id="8_saw6g"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x64vi"]
 
+[sub_resource type="Image" id="Image_53cyv"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 228, 228, 228, 28, 227, 227, 227, 89, 224, 224, 224, 89, 219, 219, 219, 28, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 227, 227, 227, 89, 225, 225, 225, 102, 225, 225, 225, 102, 224, 224, 224, 88, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 227, 227, 227, 89, 225, 225, 225, 102, 225, 225, 225, 102, 226, 226, 226, 87, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 219, 219, 219, 28, 226, 226, 226, 88, 226, 226, 226, 88, 226, 226, 226, 26, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 228, 228, 228, 28, 227, 227, 227, 89, 224, 224, 224, 89, 219, 219, 219, 28, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 227, 227, 227, 89, 225, 225, 225, 102, 225, 225, 225, 102, 224, 224, 224, 88, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 227, 227, 227, 89, 225, 225, 225, 102, 225, 225, 225, 102, 226, 226, 226, 87, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 219, 219, 219, 28, 226, 226, 226, 88, 226, 226, 226, 88, 226, 226, 226, 26, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 228, 228, 228, 28, 227, 227, 227, 89, 226, 226, 226, 88, 227, 227, 227, 27, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 227, 227, 227, 89, 225, 225, 225, 102, 225, 225, 225, 102, 226, 226, 226, 87, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 227, 227, 227, 89, 225, 225, 225, 102, 225, 225, 225, 102, 226, 226, 226, 87, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 219, 219, 219, 28, 226, 226, 226, 88, 226, 226, 226, 88, 226, 226, 226, 26, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_8gk5u"]
+image = SubResource("Image_53cyv")
+
 [node name="Column" type="PanelContainer"]
-custom_minimum_size = Vector2(442, 0)
+custom_minimum_size = Vector2(411, 0)
 offset_right = 400.0
 offset_bottom = 188.0
 size_flags_horizontal = 4
@@ -35,16 +45,14 @@ theme_override_constants/separation = 20
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainerOuter"]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="TitleSpacer" type="MarginContainer" parent="MarginContainer/VBoxContainerOuter/HBoxContainer"]
+custom_minimum_size = Vector2(12, 0)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 mouse_filter = 2
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = 0
 
 [node name="ColumnTitle" type="LineEdit" parent="MarginContainer/VBoxContainerOuter/HBoxContainer"]
 unique_name_in_owner = true
@@ -63,19 +71,22 @@ theme_override_styles/normal = SubResource("StyleBoxEmpty_x64vi")
 placeholder_text = "Column Title"
 script = ExtResource("3_ccoye")
 
-[node name="DeleteColumnButton" type="Button" parent="MarginContainer/VBoxContainerOuter/HBoxContainer"]
+[node name="MenuButton" type="MenuButton" parent="MarginContainer/VBoxContainerOuter/HBoxContainer"]
 unique_name_in_owner = true
-modulate = Color(0.498039, 0, 0.0588235, 0)
-custom_minimum_size = Vector2(32, 32)
+custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 size_flags_horizontal = 8
-size_flags_vertical = 4
-focus_mode = 0
-theme = ExtResource("8_saw6g")
-icon = ExtResource("5_5qw2v")
-icon_alignment = 1
+icon = SubResource("ImageTexture_8gk5u")
 expand_icon = true
-script = ExtResource("6_gc4w7")
+item_count = 4
+popup/item_0/text = "Create New Card"
+popup/item_1/text = "Expand All"
+popup/item_1/id = 1
+popup/item_2/text = "Collapse All"
+popup/item_2/id = 2
+popup/item_3/text = "Delete Column"
+popup/item_3/id = 3
+script = ExtResource("8_hext2")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainerOuter"]
 custom_minimum_size = Vector2(360, 660)
@@ -90,9 +101,3 @@ size_flags_vertical = 3
 mouse_filter = 2
 theme_override_constants/separation = 20
 script = ExtResource("8_hfv0s")
-
-[node name="CreateCardButton" type="Button" parent="MarginContainer/VBoxContainerOuter"]
-unique_name_in_owner = true
-layout_mode = 2
-focus_mode = 0
-text = "Create New Card"

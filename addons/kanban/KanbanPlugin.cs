@@ -11,21 +11,9 @@ public partial class KanbanPlugin : EditorPlugin
 	
 	public override void _EnterTree()
 	{
-		BoardData boardData = KanbanSaverInstance.LoadBoard();
-		
-		KanbanInstance = (KanbanBoard)KanbanPackedScene.Instantiate();
-		KanbanInstance.Theme = IntegrateEditorTheme();
+		SetupBoard();
 
-		// Add the main panel to the editor's main viewport.
-		EditorInterfaceSingleton.GetEditorMainScreen().AddChild(KanbanInstance);
-		
-		KanbanInstance.InitializeBoard(boardData);
-		KanbanInstance.OnBoardChanged += SaveBoard;
-
-		//PermanentlyCopyEditorThemeIntoResource();
-		
-		// Hide the main panel. Very much required.
-		_MakeVisible(false);
+		//PermanentlyCopyEditorThemeIntoResource()
 	}
 
 	public override void _ExitTree()
@@ -34,10 +22,37 @@ public partial class KanbanPlugin : EditorPlugin
 		{
 			SaveBoard();
 			KanbanInstance.OnBoardChanged -= SaveBoard;
+			//EditorInterfaceSingleton.GetEditorSettings().SettingsChanged -= RefreshBoard;
 			KanbanInstance.QueueFree();
 		}
 	}
+
+	private void SetupBoard()
+	{
+		BoardData boardData = KanbanSaverInstance.LoadBoard();
+		KanbanInstance = (KanbanBoard)KanbanPackedScene.Instantiate();
+		KanbanInstance.Theme = IntegrateEditorTheme();
+		// Add the main panel to the editor's main viewport.
+		EditorInterfaceSingleton.GetEditorMainScreen().AddChild(KanbanInstance);
+		KanbanInstance.InitializeBoard(boardData);
+		KanbanInstance.OnBoardChanged += SaveBoard;
+		//EditorInterfaceSingleton.GetEditorSettings().SettingsChanged += RefreshBoard;
+		
+		// Hide the main panel. Very much required.
+		_MakeVisible(false);
+	}
+
+	// TODO: This froze the editor for like a minute then crashed it after the color actually set from the settings theme main color change. 
+/* 	private void RefreshBoard()
+	{
+		_ExitTree();
+		SetupBoard();
+	} */
 	
+	// This method is really slow I think. Why?
+	// Try running it in the background somehow? Another thread? Won't help with first load, but maybe with RefreshBoard.
+	// OR, would it be faster to just assign the editor theme directly to the board theme? Can still keep the stylebox variants part.
+	// Then, could just run this method onSettingsChanged. Might be less crashy and slow.
 	private Theme IntegrateEditorTheme()
 	{
 		// Copy needed types' styleboxes from editor theme into copy
@@ -97,6 +112,7 @@ public partial class KanbanPlugin : EditorPlugin
 		return copy;
 	}
 	
+	// IntegrateEditorTheme probably slow from calling this 8 times.
 	private void CopyThemeType(Theme sourceTheme, Theme targetTheme, string themeType)
 	{
 		// Copy styleboxes
