@@ -40,6 +40,19 @@ public partial class ColumnMenuButton : MenuButton
 		PopupMenu.IdPressed -= HandlePressId;
 	}
 
+	// Should stop events like MouseFilter.Stop for button presses only, MouseEntered/Exited events will pass.
+/* 	public override void _GuiInput(InputEvent @event)
+	{
+		if (@event is InputEventMouseButton mouseButtonEvent && mouseButtonEvent.Pressed)
+		{
+			AcceptEvent();
+		}
+		else
+		{
+			base._GuiInput(@event);
+		}
+	} */
+
 	private void HandlePressId(long id)
 	{
 		switch (PopupMenu.GetItemText((int)id))

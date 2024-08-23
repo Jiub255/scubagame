@@ -4,21 +4,26 @@ using System;
 [Tool]
 public partial class KanbanCard : Button
 {
-	public event Action<KanbanCard> OnOpenPopupButtonPressed;
+	/// <summary>
+	/// public event Action OnCardDragStart;
+	/// </summary>
 	public event Action<KanbanCard> OnDeleteButtonPressed;
-	public event Action<KanbanCard, KanbanCard> OnMoveCardToPosition;
-	public event Action OnCardDragStart;
-	public event Action<KanbanCard> OnRemoveCard;
 	public event Action<KanbanCard> OnDeleteCard;
+	public event Action<KanbanCard, KanbanCard> OnMoveCardToPosition;
+	public event Action<KanbanCard> OnOpenPopupButtonPressed;
+	public event Action<KanbanCard> OnRemoveCard;
 	
 	public LabelPlaceholderText Title { get; set; }
 	public TextEditAutoBullet Description { get; set; }
 	public bool Collapsed { get; set; }
+	
 	public PanelContainer DescriptionPanelContainer { get; set; }
 	private CardMenuButton MenuButton { get; set; }
-	private int CollapsedHeight { get; set; } = 50;
-	private int ExpandedHeight { get; set; } = 150;
-	private PackedScene CardScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/cards/kanban_card.tscn");
+	
+	private PackedScene CardScene { get; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/cards/kanban_card.tscn");
+	
+	private const int COLLAPSED_HEIGHT = 50;
+	private const int EXPANDED_HEIGHT = 150;
 
 #region CARD
 
@@ -26,13 +31,15 @@ public partial class KanbanCard : Button
 	{
 		base._EnterTree();
 		
-		MenuButton = (CardMenuButton)GetNode("%MenuButton");
+		MenuButton ??= (CardMenuButton)GetNode("%MenuButton");
 
 		ConnectEvents();
 	}
 	
 	public override void _ExitTree()
 	{
+		base._ExitTree();
+		
 		DisconnectEvents();
 	}
 	
@@ -40,16 +47,16 @@ public partial class KanbanCard : Button
 	{
 		Pressed += OpenPopup;
 		MenuButton.OnCollapsePressed += Collapse;
-		MenuButton.OnExpandPressed += Expand;
 		MenuButton.OnDeletePressed += ConfirmDeleteCard;
+		MenuButton.OnExpandPressed += Expand;
 	}
 	
 	public void DisconnectEvents()
 	{
 		Pressed -= OpenPopup;
 		MenuButton.OnCollapsePressed -= Collapse;
-		MenuButton.OnExpandPressed -= Expand;
 		MenuButton.OnDeletePressed -= ConfirmDeleteCard;
+		MenuButton.OnExpandPressed -= Expand;
 	}
 	
 	public void InitializeCard(CardData cardData)
@@ -61,10 +68,18 @@ public partial class KanbanCard : Button
 		Title.StoredText = cardData.Title;
 		Description.Text = cardData.Description;
 		Description.SetBulletPoints();
-		MenuButton.Initialize(cardData.Collapsed);
+		MenuButton.Initialize();
+		if (cardData.Collapsed)
+		{
+			Collapse();
+		}
+		else
+		{
+			Expand();
+		}
 	}
-	
-	public CardData GetCardData()
+
+    public CardData GetCardData()
 	{
 		CardData cardData = new(Title.StoredText, Description.Text, Collapsed);
 		return cardData;
@@ -94,7 +109,7 @@ public partial class KanbanCard : Button
 	
 	public void Expand()
 	{
-		CustomMinimumSize = new Vector2(CustomMinimumSize.X, ExpandedHeight);
+		CustomMinimumSize = new Vector2(CustomMinimumSize.X, EXPANDED_HEIGHT);
 		DescriptionPanelContainer.Show();
 		MenuButton.SetExpandMenu();
 		Collapsed = false;
@@ -102,7 +117,7 @@ public partial class KanbanCard : Button
 	
 	public void Collapse()
 	{
-		CustomMinimumSize = new Vector2(CustomMinimumSize.X, CollapsedHeight);
+		CustomMinimumSize = new Vector2(CustomMinimumSize.X, COLLAPSED_HEIGHT);
 		DescriptionPanelContainer.Hide();
 		MenuButton.SetCollapseMenu();
 		Collapsed = true;
@@ -119,7 +134,7 @@ public partial class KanbanCard : Button
 
 	public override Variant _GetDragData(Vector2 atPosition)
 	{
-		OnCardDragStart?.Invoke();
+		//OnCardDragStart?.Invoke();
 		
 		Control preview = MakePreview(atPosition);
 		SetDragPreview(preview);
@@ -152,7 +167,7 @@ public partial class KanbanCard : Button
 	}
 	
 	
-	public void SetFiltersToIgnore(Node parent)
+/* 	public void SetFiltersToIgnore(Node parent)
 	{
 		foreach (Node child in parent.GetChildren())
 		{
@@ -165,7 +180,7 @@ public partial class KanbanCard : Button
 				control.MouseFilter = MouseFilterEnum.Ignore;
 			}
 		}
-	}
+	} */
 #endregion
 
 }

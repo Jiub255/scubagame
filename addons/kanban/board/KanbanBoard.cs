@@ -6,38 +6,40 @@ public partial class KanbanBoard : PanelContainer
 {
 	public event Action OnBoardChanged;
 	
-	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/columns/kanban_column.tscn");
-	private CardPopup CardPopup { get; set; }
-	private DeleteConfirmation DeleteConfirmation { get; set; }
 	private LineEdit Title { get; set; }
+	private DeleteConfirmation DeleteConfirmation { get; set; }
 	private BoardMenuButton MenuButton { get; set; }
+	private CardPopup CardPopup { get; set; }
+	
 	public HBoxContainer Columns { get; private set; }
+	
+	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/columns/kanban_column.tscn");
 
 	public override void _EnterTree()
 	{
 		base._EnterTree();
 		
-		CardPopup = (CardPopup)GetNode("%CardPopup");
+		Title = (LineEdit)GetNode("%TitleLineEdit");
 		DeleteConfirmation = (DeleteConfirmation)GetNode("%DeleteConfirmation");
 		DeleteConfirmation.GetChild<Label>(1, true).HorizontalAlignment = HorizontalAlignment.Center;
-		Title = (LineEdit)GetNode("%TitleLineEdit");
 		MenuButton = (BoardMenuButton)GetNode("%MenuButton");
+		CardPopup = (CardPopup)GetNode("%CardPopup");
 		Columns = (HBoxContainer)GetNode("%Columns");
 
-		CardPopup.OnClosePopup += SaveBoard;
 		MenuButton.OnCreateColumnPressed += CreateNewBlankColumn;
 		MenuButton.OnExpandPressed += ExpandAll;
 		MenuButton.OnCollapsePressed += CollapseAll;
+		CardPopup.OnClosePopup += SaveBoard;
 	}
 
 	public override void _ExitTree()
 	{
 		base._ExitTree();
 		
-		CardPopup.OnClosePopup -= SaveBoard;
 		MenuButton.OnCreateColumnPressed -= CreateNewBlankColumn;
 		MenuButton.OnExpandPressed -= ExpandAll;
 		MenuButton.OnCollapsePressed -= CollapseAll;
+		CardPopup.OnClosePopup -= SaveBoard;
 	}
 	
 	private void ExpandAll()
@@ -103,28 +105,28 @@ public partial class KanbanBoard : PanelContainer
 		Columns.AddChild(newColumn);
 		newColumn.InitializeColumn(columnData);
 		
-		newColumn.OnDeleteColumnPressed += OpenConfirmationColumn;
-		newColumn.Cards.OnOpenPopupPressed += OpenPopup;
-		newColumn.OnMoveColumnToPosition += MoveColumnToPosition;
-		newColumn.OnColumnDragStart += SetColumnsFiltersToIgnore;
-		newColumn.Cards.OnCardDragStart += SetCardsFiltersToIgnore;
 		newColumn.OnColumnChanged += SaveBoard;
-		newColumn.Cards.OnDeleteCardPressed += OpenConfirmationCard;
+		//newColumn.OnColumnDragStart += SetColumnsFiltersToIgnore;
 		newColumn.OnDeleteColumn += DeleteColumn;
+		newColumn.OnDeleteColumnPressed += OpenConfirmationColumn;
+		newColumn.OnMoveColumnToPosition += MoveColumnToPosition;
+		//newColumn.Cards.OnCardDragStart += SetCardsFiltersToIgnore;
+		newColumn.Cards.OnDeleteCardPressed += OpenConfirmationCard;
+		newColumn.Cards.OnOpenPopupPressed += OpenPopup;
 
 		SaveBoard();
 	}
 	
 	private void DeleteColumn(KanbanColumn column)
 	{
-		column.OnDeleteColumnPressed -= OpenConfirmationColumn;
-		column.Cards.OnOpenPopupPressed -= OpenPopup;
-		column.OnMoveColumnToPosition -= MoveColumnToPosition;
-		column.OnColumnDragStart -= SetColumnsFiltersToIgnore;
-		column.Cards.OnCardDragStart -= SetCardsFiltersToIgnore;
 		column.OnColumnChanged -= SaveBoard;
-		column.Cards.OnDeleteCardPressed -= OpenConfirmationCard;
+		//column.OnColumnDragStart -= SetColumnsFiltersToIgnore;
 		column.OnDeleteColumn -= DeleteColumn;
+		column.OnDeleteColumnPressed -= OpenConfirmationColumn;
+		column.OnMoveColumnToPosition -= MoveColumnToPosition;
+		//column.Cards.OnCardDragStart -= SetCardsFiltersToIgnore;
+		column.Cards.OnDeleteCardPressed -= OpenConfirmationCard;
+		column.Cards.OnOpenPopupPressed -= OpenPopup;
 		
 		column.QueueFree();
 
@@ -209,7 +211,7 @@ public partial class KanbanBoard : PanelContainer
 		
 		if (what == NotificationDragEnd)
 		{
-			ResetMouseFilters();
+			//ResetMouseFilters();
 			
 			if (GetViewport().GuiIsDragSuccessful())
 			{
@@ -218,7 +220,7 @@ public partial class KanbanBoard : PanelContainer
 		}
 	}
 	
-	private void SetColumnsFiltersToIgnore()
+/* 	private void SetColumnsFiltersToIgnore()
 	{
 		foreach (KanbanColumn column in Columns.GetChildren())
 		{
@@ -243,5 +245,5 @@ public partial class KanbanBoard : PanelContainer
 		{
 			column.ResetMouseFilters(column);
 		}
-	}
+	} */
 }

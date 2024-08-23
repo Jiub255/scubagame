@@ -4,10 +4,10 @@ using System;
 [Tool]
 public partial class Cards : VBoxContainer
 {
-	public event Action OnCardDragStart;
+	//public event Action OnCardDragStart;
 	public event Action OnCardsChanged;
-	public event Action<KanbanCard> OnOpenPopupPressed;
 	public event Action<KanbanCard> OnDeleteCardPressed;
+	public event Action<KanbanCard> OnOpenPopupPressed;
 	
 	private PackedScene CardScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/cards/kanban_card.tscn");
 	
@@ -57,22 +57,22 @@ public partial class Cards : VBoxContainer
 	}
 	private void SubscribeToCardEvents(KanbanCard card)
 	{
+		//card.OnCardDragStart += CardDragStart;
 		card.OnDeleteButtonPressed += DeleteCardPressed;
-		card.OnRemoveCard += RemoveCard;
-		card.OnCardDragStart += CardDragStart;
+		card.OnDeleteCard += DeleteCard;
 		card.OnMoveCardToPosition += MoveCardToPosition;
 		card.OnOpenPopupButtonPressed += OpenPopup;
-		card.OnDeleteCard += DeleteCard;
+		card.OnRemoveCard += RemoveCard;
 	}
 
 	private void UnsubscribeFromCardEvents(KanbanCard card)
 	{
+		//card.OnCardDragStart -= CardDragStart;
 		card.OnDeleteButtonPressed -= DeleteCardPressed;
-		card.OnRemoveCard -= RemoveCard;
-		card.OnCardDragStart -= CardDragStart;
+		card.OnDeleteCard -= DeleteCard;
 		card.OnMoveCardToPosition -= MoveCardToPosition;
 		card.OnOpenPopupButtonPressed -= OpenPopup;
-		card.OnDeleteCard -= DeleteCard;
+		card.OnRemoveCard -= RemoveCard;
 	}
 
 	private void OpenPopup(KanbanCard card)
@@ -80,10 +80,10 @@ public partial class Cards : VBoxContainer
 		OnOpenPopupPressed?.Invoke(card);
 	}
 	
-	private void CardDragStart()
+/* 	private void CardDragStart()
 	{
 		OnCardDragStart?.Invoke();
-	}
+	} */
 	
 	private void MoveCardToPosition(KanbanCard cardToMove, KanbanCard cardWithIndex)
 	{

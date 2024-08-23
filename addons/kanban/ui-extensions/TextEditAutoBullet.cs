@@ -290,7 +290,7 @@ public partial class TextEditAutoBullet : TextEdit
 				HandleBackspaceWordOrAll();
 			}
 			// Space and Tab - Put the space/tab before the bullet point instead of at the caret position. 
-			else if (keyEvent.IsActionPressed("space") || keyEvent.IsActionPressed("ui_text_indent"))
+			else if (keyEvent.Keycode == Key.Space || keyEvent.Keycode == Key.Tab)
 			{
 				HandleSpaceOrTab(keyEvent);
 			}
@@ -315,11 +315,11 @@ public partial class TextEditAutoBullet : TextEdit
 			SetCaretColumn(GetCaretColumn() + BulletPointWithSpace.Length);
 			charBeforeBulletPoint = GetCaretColumn() > 2 ? GetLine(GetCaretLine())[GetCaretColumn() - 3] : '\n';
 		}
-		for (int i = 0; i < BulletPointWithSpace.Length + 1; i++)
+		for (int i = 0; i < BulletPointWithSpace.Length; i++)
 		{
 			Backspace();
 		}
-		GetViewport().SetInputAsHandled();
+		//GetViewport().SetInputAsHandled();
 	}
 
 	private void HandleBackspace()
@@ -328,27 +328,30 @@ public partial class TextEditAutoBullet : TextEdit
 		char charBeforeBulletPoint = caretColumnIndex > 2 ? GetLine(GetCaretLine())[GetCaretColumn() - 3] : '\n';
 		if (charBeforeBulletPoint == '\n')
 		{
-			for (int i = 0; i < BulletPointWithSpace.Length + 1; i++)
+			for (int i = 0; i < BulletPointWithSpace.Length; i++)
 			{
 				Backspace();
 			}
-			GetViewport().SetInputAsHandled();
+			//GetViewport().SetInputAsHandled();
 		}
 		else if (char.IsWhiteSpace(charBeforeBulletPoint))
 		{
 			SetCaretColumn(GetCaretColumn() - BulletPointWithSpace.Length);
 			Backspace();
 			SetCaretColumn(GetCaretColumn() + BulletPointWithSpace.Length);
-			GetViewport().SetInputAsHandled();
+			// TODO: Are any of these necessary? Should I use AcceptEvent instead? Or just nothing?
+			//GetViewport().SetInputAsHandled();
 		}
 	}
 
 	private void HandleSpaceOrTab(InputEventKey keyEvent)
 	{
 		SetCaretColumn(GetCaretColumn() - BulletPointWithSpace.Length);
-		InsertTextAtCaret(keyEvent.IsActionPressed("space") ? " " : "\t");
+		InsertTextAtCaret(keyEvent.Keycode == Key.Space ? " " : "\t");
 		SetCaretColumn(GetCaretColumn() + BulletPointWithSpace.Length);
-		GetViewport().SetInputAsHandled();
+		// TODO: AcceptEvent vs SetInputAsHandled? Both needed? Should I switch all to AcceptEvent?
+		AcceptEvent();
+		//GetViewport().SetInputAsHandled();
 	}
 
 #endregion

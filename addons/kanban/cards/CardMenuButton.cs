@@ -19,6 +19,15 @@ public partial class CardMenuButton : MenuButton
 		base._EnterTree();
 
 		Icon = EditorInterface.Singleton.GetEditorTheme().GetIcon("GuiTabMenu", "EditorIcons");
+		
+		PopupMenu = GetPopup();
+
+		PopupMenu.IdPressed += HandlePressId;
+	}
+	
+	public void Initialize()
+	{
+		PopupMenu = GetPopup();
 	}
 
 	public override void _ExitTree()
@@ -26,22 +35,6 @@ public partial class CardMenuButton : MenuButton
 		base._ExitTree();
 		
 		PopupMenu.IdPressed -= HandlePressId;
-	}
-
-	public void Initialize(bool collapsed)
-	{
-		PopupMenu = GetPopup();
-
-		PopupMenu.IdPressed += HandlePressId;
-
-		if (collapsed)
-		{
-			CollapseCard();
-		}
-		else
-		{
-			ExpandCard();
-		}
 	}
 
 	private void HandlePressId(long id)
@@ -63,11 +56,6 @@ public partial class CardMenuButton : MenuButton
 		}
 	}
 	
-	private void ExpandCard()
-	{
-		OnExpandPressed?.Invoke();
-	}
-	
 	public void SetExpandMenu()
 	{
 		PopupMenu.Clear();
@@ -75,16 +63,21 @@ public partial class CardMenuButton : MenuButton
 		PopupMenu.AddItem(DELETE_LABEL_TEXT, 1);
 	}
 	
-	private void CollapseCard()
-	{
-		OnCollapsePressed?.Invoke();
-	}
-	
 	public void SetCollapseMenu()
 	{
 		PopupMenu.Clear();
 		PopupMenu.AddItem(EXPAND_LABEL_TEXT, 0);
 		PopupMenu.AddItem(DELETE_LABEL_TEXT, 1);
+	}
+	
+	private void ExpandCard()
+	{
+		OnExpandPressed?.Invoke();
+	}
+	
+	private void CollapseCard()
+	{
+		OnCollapsePressed?.Invoke();
 	}
 	
 	private void DeleteCard()

@@ -63,18 +63,20 @@ public partial class CardPopup : Button
 		Title.Text = card.Title.StoredText;
 		Description.Text = card.Description.Text;
 		Description.SetBulletPoints();
-		SetAllMouseFilters(MouseFilterEnum.Stop);
+		//SetAllMouseFilters(MouseFilterEnum.Stop);
 		Show();
 	}
 	
-	private void SetAllMouseFilters(MouseFilterEnum mouseFilterEnum)
+	// TODO: Change this to just changing MouseFilter of Popup.
+	// Might not need it at all, do invisible ui elements accept events?
+/* 	private void SetAllMouseFilters(MouseFilterEnum mouseFilterEnum)
 	{
 		MouseFilter = mouseFilterEnum;
 		foreach (Control control in Controls)
 		{
 			control.MouseFilter = mouseFilterEnum;
 		}
-	}
+	} */
 	
 	public void ClosePopup()
 	{
@@ -83,7 +85,7 @@ public partial class CardPopup : Button
 			Card.Title.StoredText = Title.Text;
 			Card.Description.Text = Description.Text;
 		}
-		SetAllMouseFilters(MouseFilterEnum.Ignore);
+		//SetAllMouseFilters(MouseFilterEnum.Ignore);
 		Hide();
 		OnClosePopup?.Invoke();
 	}

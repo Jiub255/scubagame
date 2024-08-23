@@ -138,11 +138,7 @@ public partial class KanbanPlugin : EditorPlugin
 			loadedStylebox.BorderColor = variation.BorderColor;
 
 			Error error = ResourceSaver.Save(loadedStylebox, path);
-			if (error == Error.Ok)
-			{
-				this.PrintDebug($"Successfully updated and saved resource at {path}");
-			}
-			else
+			if (error != Error.Ok)
 			{
 				GD.PushError(error);
 			}

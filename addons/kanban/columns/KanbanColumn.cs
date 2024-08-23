@@ -4,16 +4,18 @@ using System;
 [Tool]
 public partial class KanbanColumn : PanelContainer
 {
-	public event Action<KanbanColumn> OnDeleteColumnPressed;
-	public event Action<KanbanColumn> OnDeleteColumn;
-	public event Action<KanbanColumn, KanbanColumn> OnMoveColumnToPosition;
-	public event Action OnColumnDragStart;
 	public event Action OnColumnChanged;
+	//public event Action OnColumnDragStart;
+	public event Action<KanbanColumn> OnDeleteColumn;
+	public event Action<KanbanColumn> OnDeleteColumnPressed;
+	public event Action<KanbanColumn, KanbanColumn> OnMoveColumnToPosition;
 	
 	public LineEditDefocus Title { get; private set; }
 	public Cards Cards { get; private set; }
-	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/columns/kanban_column.tscn");
 	private ColumnMenuButton MenuButton { get; set; }
+	
+	
+	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/columns/kanban_column.tscn");
 
 #region COLUMN
 
@@ -27,10 +29,10 @@ public partial class KanbanColumn : PanelContainer
 
 		Title.TextChanged += OnTitleChanged;
 		Cards.OnCardsChanged += OnCardsChanged;
+		MenuButton.OnCollapsePressed += Cards.CollapseAllCards;
 		MenuButton.OnCreateCardPressed += Cards.CreateNewBlankCard;
 		MenuButton.OnDeletePressed += ConfirmDeleteColumn;
 		MenuButton.OnExpandPressed += Cards.ExpandAllCards;
-		MenuButton.OnCollapsePressed += Cards.CollapseAllCards;
 	}
 
 	public override void _ExitTree()
@@ -39,10 +41,10 @@ public partial class KanbanColumn : PanelContainer
 		
 		Title.TextChanged -= OnTitleChanged;
 		Cards.OnCardsChanged -= OnCardsChanged;
+		MenuButton.OnCollapsePressed -= Cards.CollapseAllCards;
 		MenuButton.OnCreateCardPressed -= Cards.CreateNewBlankCard;
 		MenuButton.OnDeletePressed -= ConfirmDeleteColumn;
 		MenuButton.OnExpandPressed -= Cards.ExpandAllCards;
-		MenuButton.OnCollapsePressed -= Cards.CollapseAllCards;
 	}
 	
 	public void InitializeColumn(ColumnData columnData)
@@ -101,8 +103,7 @@ public partial class KanbanColumn : PanelContainer
 
 	public override Variant _GetDragData(Vector2 atPosition)
 	{
-		OnColumnDragStart?.Invoke();
-		
+		//OnColumnDragStart?.Invoke();
 		Control preview = MakePreview(atPosition);
 		SetDragPreview(preview);
 		return this;
@@ -121,7 +122,7 @@ public partial class KanbanColumn : PanelContainer
 	public override bool _CanDropData(Vector2 atPosition, Variant data)
 	{
 		Node node = data.As<Node>();
-		return node != null && (node is KanbanColumn || node is KanbanCard);
+		return node != null && (node is KanbanColumn or KanbanCard);
 	}
 
 	public override void _DropData(Vector2 atPosition, Variant data)
@@ -141,7 +142,10 @@ public partial class KanbanColumn : PanelContainer
 		}
 	}
 	
-	public void SetFiltersToIgnore(Node parent)
+	// TODO: Is this all necessary if nodes are all set to pass or ignore?
+	// What about the buttons that need to be stop?
+	// Or can they be set to pass and just handle/consume the click somehow?
+/* 	public void SetFiltersToIgnore(Node parent)
 	{
 		foreach (Node child in parent.GetChildren())
 		{
@@ -169,16 +173,17 @@ public partial class KanbanColumn : PanelContainer
 					LineEditDefocus or
 					TextEdit or
 					HBoxContainer or
+					Button or
 					ScrollContainer))
 			{
 				control.MouseFilter = MouseFilterEnum.Pass;
 			}
-			else if (child is Button button)
+			/* else if (child is Button button)
 			{
 				button.MouseFilter = MouseFilterEnum.Stop;
-			}
+			} *8/
 		}
-	}
+	} */
 #endregion
 
 }
