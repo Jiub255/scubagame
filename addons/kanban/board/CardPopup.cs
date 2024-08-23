@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Godot;
 
 [Tool]
@@ -10,7 +9,6 @@ public partial class CardPopup : Button
 	private KanbanCard Card;
 	private LineEdit Title { get; set; }
 	private TextEditAutoBullet Description { get; set; }
-	private List<Control> Controls { get; set; } = new();
 
 	public override void _EnterTree()
 	{
@@ -19,73 +17,39 @@ public partial class CardPopup : Button
 		Title = (LineEdit)GetNode("%Title");
 		Description = (TextEditAutoBullet)GetNode("%Description");
 
-		Pressed += ClosePopup;
+		Pressed += Close;
 	}
 
 	public override void _Ready()
 	{
 		base._Ready();
 		
-		Controls = GetAllControlChildren(GetChild(0));
-
-		ClosePopup();
-	}
-	
-	private List<Control> GetAllControlChildren(Node node)
-	{
-		List<Control> controls = new();
-		Godot.Collections.Array<Node> children = node.GetChildren();
-		foreach (Node child in children)
-		{
-			if (child is Control control)
-			{
-				controls.Add(control);
-			}
-			
-			if (child.GetChildCount() > 0)
-			{
-				controls.AddRange(GetAllControlChildren(child));
-			}
-		}
-		return controls;
+		Close();
 	}
 
 	public override void _ExitTree()
 	{
 		base._ExitTree();
 		
-		Pressed -= ClosePopup;
+		Pressed -= Close;
 	}
 
-	public void OpenPopup(KanbanCard card)
+	public void Open(KanbanCard card)
 	{
 		Card = card;
 		Title.Text = card.Title.StoredText;
 		Description.Text = card.Description.Text;
 		Description.SetBulletPoints();
-		//SetAllMouseFilters(MouseFilterEnum.Stop);
 		Show();
 	}
 	
-	// TODO: Change this to just changing MouseFilter of Popup.
-	// Might not need it at all, do invisible ui elements accept events?
-/* 	private void SetAllMouseFilters(MouseFilterEnum mouseFilterEnum)
-	{
-		MouseFilter = mouseFilterEnum;
-		foreach (Control control in Controls)
-		{
-			control.MouseFilter = mouseFilterEnum;
-		}
-	} */
-	
-	public void ClosePopup()
+	public void Close()
 	{
 		if (Card != null)
 		{
 			Card.Title.StoredText = Title.Text;
 			Card.Description.Text = Description.Text;
 		}
-		//SetAllMouseFilters(MouseFilterEnum.Ignore);
 		Hide();
 		OnClosePopup?.Invoke();
 	}

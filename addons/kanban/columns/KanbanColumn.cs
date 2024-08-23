@@ -5,16 +5,13 @@ using System;
 public partial class KanbanColumn : PanelContainer
 {
 	public event Action OnColumnChanged;
-	//public event Action OnColumnDragStart;
-	public event Action<KanbanColumn> OnDeleteColumn;
+	public event Action<KanbanColumn> OnDeleteColumnConfirmed;
 	public event Action<KanbanColumn> OnDeleteColumnPressed;
 	public event Action<KanbanColumn, KanbanColumn> OnMoveColumnToPosition;
 	
 	public LineEditDefocus Title { get; private set; }
 	public Cards Cards { get; private set; }
 	private ColumnMenuButton MenuButton { get; set; }
-	
-	
 	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/columns/kanban_column.tscn");
 
 #region COLUMN
@@ -74,7 +71,7 @@ public partial class KanbanColumn : PanelContainer
 	{
 		if (Title.Text == "" && Cards.GetChildren().Count == 0)
 		{
-			OnDeleteColumn?.Invoke(this);
+			OnDeleteColumnConfirmed?.Invoke(this);
 		}
 		else
 		{
@@ -84,7 +81,7 @@ public partial class KanbanColumn : PanelContainer
 	
 	public void DeleteColumn()
 	{
-		OnDeleteColumn?.Invoke(this);
+		OnDeleteColumnConfirmed?.Invoke(this);
 	}
 	
 	private void OnTitleChanged(string _)
@@ -103,7 +100,6 @@ public partial class KanbanColumn : PanelContainer
 
 	public override Variant _GetDragData(Vector2 atPosition)
 	{
-		//OnColumnDragStart?.Invoke();
 		Control preview = MakePreview(atPosition);
 		SetDragPreview(preview);
 		return this;
@@ -142,48 +138,6 @@ public partial class KanbanColumn : PanelContainer
 		}
 	}
 	
-	// TODO: Is this all necessary if nodes are all set to pass or ignore?
-	// What about the buttons that need to be stop?
-	// Or can they be set to pass and just handle/consume the click somehow?
-/* 	public void SetFiltersToIgnore(Node parent)
-	{
-		foreach (Node child in parent.GetChildren())
-		{
-			if (child.GetChildren().Count > 0)
-			{
-				SetFiltersToIgnore(child);
-			}
-			if (child is Control control)
-			{
-				control.MouseFilter = MouseFilterEnum.Ignore;
-			}
-		}
-	}
-	
-	public void ResetMouseFilters(Node parent)
-	{
-		foreach (Node child in parent.GetChildren())
-		{
-			if (child.GetChildren().Count > 0)
-			{
-				ResetMouseFilters(child);
-			}
-			if (child is Control control and
-					(KanbanCard or
-					LineEditDefocus or
-					TextEdit or
-					HBoxContainer or
-					Button or
-					ScrollContainer))
-			{
-				control.MouseFilter = MouseFilterEnum.Pass;
-			}
-			/* else if (child is Button button)
-			{
-				button.MouseFilter = MouseFilterEnum.Stop;
-			} *8/
-		}
-	} */
 #endregion
 
 }

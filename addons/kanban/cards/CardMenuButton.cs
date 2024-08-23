@@ -8,11 +8,11 @@ public partial class CardMenuButton : MenuButton
 	public event Action OnCollapsePressed;
 	public event Action OnDeletePressed;
 	
-	private PopupMenu PopupMenu { get; set; }
-	
 	private const string EXPAND_LABEL_TEXT = "Expand";
 	private const string COLLAPSE_LABEL_TEXT = "Collapse";
 	private const string DELETE_LABEL_TEXT = "Delete";
+	
+	private PopupMenu PopupMenu { get; set; }
 	
 	public override void _EnterTree()
 	{

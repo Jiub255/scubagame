@@ -12,12 +12,15 @@ public static class KanbanExtensions
 		// Test for key combos that affect text.
 		if (keyEvent.IsActionPressed("ui_cut") ||
 			keyEvent.IsActionPressed("ui_paste") ||
+			keyEvent.IsActionPressed("ui_text_newline") ||
 			keyEvent.IsActionPressed("ui_text_newline_blank") ||
 			keyEvent.IsActionPressed("ui_text_newline_above") ||
 			keyEvent.IsActionPressed("ui_text_indent") ||
 			keyEvent.IsActionPressed("ui_text_dedent") ||
+			keyEvent.IsActionPressed("ui_text_backspace") ||
 			keyEvent.IsActionPressed("ui_text_backspace_word") ||
 			keyEvent.IsActionPressed("ui_text_backspace_all_to_left") ||
+			keyEvent.IsActionPressed("ui_text_delete") ||
 			keyEvent.IsActionPressed("ui_text_delete_word") ||
 			keyEvent.IsActionPressed("ui_text_delete_all_to_right"))// ||
 		{
@@ -41,13 +44,16 @@ public static class KanbanExtensions
 		{
 			return true;
 		}
-		if (keyEvent.Keycode == Key.Tab ||
-			keyEvent.Keycode == Key.Backtab ||
-			keyEvent.Keycode == Key.Backspace ||
-			keyEvent.Keycode == Key.Clear ||
-			keyEvent.Keycode == Key.Delete ||
-			keyEvent.Keycode == Key.Enter ||
-			keyEvent.Keycode == Key.KpEnter)
+		// TODO: Redundant (ish) checks here. If godot editor uses the built-in actions, 
+		// use those over key checks whenever possible (In case of remappings).
+		if (//keyEvent.Keycode == Key.Tab ||
+			//keyEvent.Keycode == Key.Backtab ||
+			//keyEvent.Keycode == Key.Backspace ||
+			keyEvent.Keycode == Key.Clear// ||
+			//keyEvent.Keycode == Key.Delete ||
+			//keyEvent.Keycode == Key.Enter ||
+			//keyEvent.Keycode == Key.KpEnter
+			)
 		{
 			return true;
 		}

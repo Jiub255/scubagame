@@ -8,7 +8,19 @@ public partial class KanbanPlugin : EditorPlugin
 	private KanbanBoard KanbanInstance { get; set; }
 	private EditorInterface EditorInterfaceSingleton { get; set; } = EditorInterface.Singleton;
 	private KanbanSaver KanbanSaverInstance { get; set; } = new();
-	
+
+
+	public override void _PhysicsProcess(double delta)
+	{
+		base._PhysicsProcess(delta);
+
+		//Vector2 mainscreenSize = EditorInterfaceSingleton.GetEditorMainScreen().Size;
+		//this.PrintDebug($"Editor main screen size: {mainscreenSize}");
+	}
+
+
+
+
 	public override void _EnterTree()
 	{
 		SetupBoard();

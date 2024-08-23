@@ -9,12 +9,12 @@ public partial class ColumnMenuButton : MenuButton
 	public event Action OnCollapsePressed;
 	public event Action OnDeletePressed;
 	
-	private PopupMenu PopupMenu { get; set; }
-	
 	private const string CREATE_CARD_LABEL_TEXT = "Create New Card";
 	private const string EXPAND_LABEL_TEXT = "Expand All";
 	private const string COLLAPSE_LABEL_TEXT = "Collapse All";
 	private const string DELETE_LABEL_TEXT = "Delete Column";
+	
+	private PopupMenu PopupMenu { get; set; }
 		
 	public override void _EnterTree()
 	{
@@ -39,19 +39,6 @@ public partial class ColumnMenuButton : MenuButton
 		
 		PopupMenu.IdPressed -= HandlePressId;
 	}
-
-	// Should stop events like MouseFilter.Stop for button presses only, MouseEntered/Exited events will pass.
-/* 	public override void _GuiInput(InputEvent @event)
-	{
-		if (@event is InputEventMouseButton mouseButtonEvent && mouseButtonEvent.Pressed)
-		{
-			AcceptEvent();
-		}
-		else
-		{
-			base._GuiInput(@event);
-		}
-	} */
 
 	private void HandlePressId(long id)
 	{

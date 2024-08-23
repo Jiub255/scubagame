@@ -8,11 +8,11 @@ public partial class BoardMenuButton : MenuButton
 	public event Action OnCollapsePressed;
 	public event Action OnCreateColumnPressed;
 	
-	private PopupMenu PopupMenu { get; set; }
-	
 	private const string CREATE_COLUMN_LABEL_TEXT = "Create New Column";
 	private const string EXPAND_LABEL_TEXT = "Expand All";
 	private const string COLLAPSE_LABEL_TEXT = "Collapse All";
+	
+	private PopupMenu PopupMenu { get; set; }
 		
 	public override void _EnterTree()
 	{

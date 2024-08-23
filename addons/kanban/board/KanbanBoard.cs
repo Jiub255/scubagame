@@ -10,9 +10,7 @@ public partial class KanbanBoard : PanelContainer
 	private DeleteConfirmation DeleteConfirmation { get; set; }
 	private BoardMenuButton MenuButton { get; set; }
 	private CardPopup CardPopup { get; set; }
-	
 	public HBoxContainer Columns { get; private set; }
-	
 	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/columns/kanban_column.tscn");
 
 	public override void _EnterTree()
@@ -84,10 +82,13 @@ public partial class KanbanBoard : PanelContainer
 		{
 			Title = Title.Text
 		};
-		foreach (KanbanColumn column in Columns.GetChildren())
+		foreach (Node node in Columns.GetChildren())
 		{
-			ColumnData columnData = column.GetColumnData();
-			boardData.Columns.Add(columnData);
+			if (node is KanbanColumn column)
+			{
+				ColumnData columnData = column.GetColumnData();
+				boardData.Columns.Add(columnData);
+			}
 		}
 		return boardData;
 	}
@@ -106,11 +107,9 @@ public partial class KanbanBoard : PanelContainer
 		newColumn.InitializeColumn(columnData);
 		
 		newColumn.OnColumnChanged += SaveBoard;
-		//newColumn.OnColumnDragStart += SetColumnsFiltersToIgnore;
-		newColumn.OnDeleteColumn += DeleteColumn;
+		newColumn.OnDeleteColumnConfirmed += DeleteColumn;
 		newColumn.OnDeleteColumnPressed += OpenConfirmationColumn;
 		newColumn.OnMoveColumnToPosition += MoveColumnToPosition;
-		//newColumn.Cards.OnCardDragStart += SetCardsFiltersToIgnore;
 		newColumn.Cards.OnDeleteCardPressed += OpenConfirmationCard;
 		newColumn.Cards.OnOpenPopupPressed += OpenPopup;
 
@@ -120,11 +119,9 @@ public partial class KanbanBoard : PanelContainer
 	private void DeleteColumn(KanbanColumn column)
 	{
 		column.OnColumnChanged -= SaveBoard;
-		//column.OnColumnDragStart -= SetColumnsFiltersToIgnore;
-		column.OnDeleteColumn -= DeleteColumn;
+		column.OnDeleteColumnConfirmed -= DeleteColumn;
 		column.OnDeleteColumnPressed -= OpenConfirmationColumn;
 		column.OnMoveColumnToPosition -= MoveColumnToPosition;
-		//column.Cards.OnCardDragStart -= SetCardsFiltersToIgnore;
 		column.Cards.OnDeleteCardPressed -= OpenConfirmationCard;
 		column.Cards.OnOpenPopupPressed -= OpenPopup;
 		
@@ -135,47 +132,17 @@ public partial class KanbanBoard : PanelContainer
 	
 	private void OpenConfirmationCard(KanbanCard card)
 	{
-		OpenConfirmationDialog(card);
+		DeleteConfirmation.Open(card);
 	}
 	
 	private void OpenConfirmationColumn(KanbanColumn column)
 	{
-		OpenConfirmationDialog(null, column);
-	}
-	
-	private void OpenConfirmationDialog(KanbanCard card, KanbanColumn column = null)
-	{
-		string question = "Are you sure you want to delete ";
-		string title;
-		if (card == null)
-		{
-			if (column == null)
-			{
-				GD.PushError("Must pass in either card or column to this method.");
-				return;
-			}
-			question += "column:";
-			title = column.Title.Text;
-		}
-		else
-		{
-			question += "card:";
-			title = card.Title.Text;
-		}
-		string warning = "This process cannot be undone.";
-		
-		int length = Math.Max(question.Length, warning.Length);
-		title = title.TruncateQuoteQuestion(length);
-
-		DeleteConfirmation.DialogText = $"{question}\n{title}\n{warning}";
-		DeleteConfirmation.Column = column;
-		DeleteConfirmation.Card = card;
-		DeleteConfirmation.Show();
+		DeleteConfirmation.Open(null, column);
 	}
 	
 	private void OpenPopup(KanbanCard card)
 	{
-		CardPopup.OpenPopup(card);
+		CardPopup.Open(card);
 	}
 	
 	private void MoveColumnToPosition(KanbanColumn columnToMove, KanbanColumn columnWithIndex)
@@ -208,42 +175,10 @@ public partial class KanbanBoard : PanelContainer
 	public override void _Notification(int what)
 	{
 		base._Notification(what);
-		
-		if (what == NotificationDragEnd)
+
+		if (what == NotificationDragEnd && GetViewport().GuiIsDragSuccessful())
 		{
-			//ResetMouseFilters();
-			
-			if (GetViewport().GuiIsDragSuccessful())
-			{
-				SaveBoard();
-			}
+			SaveBoard();
 		}
 	}
-	
-/* 	private void SetColumnsFiltersToIgnore()
-	{
-		foreach (KanbanColumn column in Columns.GetChildren())
-		{
-			column.SetFiltersToIgnore(column);
-		}
-	}
-	
-	private void SetCardsFiltersToIgnore()
-	{
-		foreach (KanbanColumn column in Columns.GetChildren())
-		{
-			foreach (KanbanCard card in column.Cards.GetChildren())
-			{
-				card.SetFiltersToIgnore(card);
-			}
-		}
-	}
-	
-	private void ResetMouseFilters()
-	{
-		foreach (KanbanColumn column in Columns.GetChildren())
-		{
-			column.ResetMouseFilters(column);
-		}
-	} */
 }

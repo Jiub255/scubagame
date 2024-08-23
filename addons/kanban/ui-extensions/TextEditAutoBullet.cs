@@ -75,12 +75,12 @@ public partial class TextEditAutoBullet : TextEdit
 			DontSetBulletPoints = false;
 			return;
 		}
-		//this.PrintDebug($"SetBulletPoints called");
+
 		int caretLine = GetCaretLine();
 		int caretColumn = GetCaretColumn();
 
 		List<string> lines = SplitTextIntoLines();
-		int bulletPointsAddedBeforeCaret = InsertBulletPoints(lines);
+		int bulletPointsAddedBeforeCaret = InsertRemoveBulletPoints(lines);
 		RebuildAndAssignText(lines);
 		
 		SetCaretLine(caretLine);
@@ -97,12 +97,12 @@ public partial class TextEditAutoBullet : TextEdit
 		return lines;
 	}
 
-	private int InsertBulletPoints(List<string> lines)
+	private int InsertRemoveBulletPoints(List<string> lines)
 	{
 		int bulletPointsAddedBeforeCaret = 0;
 		for (int i = 0; i < lines.Count; i++)
 		{
-			(string line, bool addedBulletPointBeforeCaret) = InsertBulletPointAfterWhitespace(lines[i], CaretOnOrAfterLine(i));
+			(string line, bool addedBulletPointBeforeCaret) = InsertRemoveBulletPoint(lines[i], CaretOnOrAfterLine(i));
 			lines[i] = line;
 			bulletPointsAddedBeforeCaret += addedBulletPointBeforeCaret ? 1 : 0;
 		}
@@ -116,7 +116,7 @@ public partial class TextEditAutoBullet : TextEdit
 		return caretLine >= lineIndex;
 	}
 
-	private (string, bool) InsertBulletPointAfterWhitespace(string line, bool caretOnOrAfterLine)
+	private (string, bool) InsertRemoveBulletPoint(string line, bool caretOnOrAfterLine)
 	{
 		bool addedBulletPointBeforeCaret = false;
 		if (line == "")
@@ -124,19 +124,32 @@ public partial class TextEditAutoBullet : TextEdit
 			return (line, addedBulletPointBeforeCaret);
 		}
 
-		int i = GetEndOfWhitespaceIndex(line);
+		int firstNonWhiteCharIndex = GetFirstNonWhiteCharIndex(line);
 
 		// Don't insert BulletPoint if one already exists, or if line is all whitespace.
-		if (i < line.Length && line[i] != BulletPoint)
+		if (firstNonWhiteCharIndex < line.Length)
 		{
-			line = line.Insert(i, BulletPointWithSpace);
-			addedBulletPointBeforeCaret = caretOnOrAfterLine;
+			if (line[firstNonWhiteCharIndex] != BulletPoint)
+			{
+				line = line.Insert(firstNonWhiteCharIndex, BulletPointWithSpace);
+				addedBulletPointBeforeCaret = caretOnOrAfterLine;
+			}
+			else
+			{
+				// TODO: Remove bullet point if there's nothing following it.
+				int startOfNonBulletPointIndex = firstNonWhiteCharIndex + BulletPointWithSpace.Length;
+				if (startOfNonBulletPointIndex >= line.Length)
+				{
+					// TODO: Remove bullet point.
+					line = line.Remove(firstNonWhiteCharIndex, BulletPointWithSpace.Length);
+				}
+			}
 		}
 		
 		return (line, addedBulletPointBeforeCaret);
 	}
 
-	private static int GetEndOfWhitespaceIndex(string line)
+	private static int GetFirstNonWhiteCharIndex(string line)
 	{
 		int i = 0;
 		while (i < line.Length && char.IsWhiteSpace(line[i]))
@@ -282,15 +295,24 @@ public partial class TextEditAutoBullet : TextEdit
 				HandleBackspace();
 			}
 			// Backspace word or all - Handle separately. Have them just delete all preceding whitespace and BulletPointString.
-			else if(keyEvent.IsActionPressed("ui_text_backspace_word") ||
+			else if (keyEvent.IsActionPressed("ui_text_backspace_word") ||
 				//keyEvent.IsActionPressed("ui_text_backspace_word.macos") ||
 				keyEvent.IsActionPressed("ui_text_backspace_all_to_left"))// ||
 				//keyEvent.IsActionPressed("ui_text_backspace_all_to_left.macos"))
 			{
 				HandleBackspaceWordOrAll();
 			}
+			// TODO: Delete (char, word, and all) - Delete char/word/all.
+			// Then check if there are no non whitespace chars left on line. If so, delete bullet point too.
+			// TODO: Just add better checks in SetBulletPoints maybe? So it deletes bullet points if there's nothing following it on that line?
+/* 			else if (keyEvent.IsActionPressed("ui_delete") ||
+				keyEvent.IsActionPressed("ui_delete_word") ||
+				keyEvent.IsActionPressed("ui_delete_all_to_right"))
+			{
+				HandleDelete();
+			} */
 			// Space and Tab - Put the space/tab before the bullet point instead of at the caret position. 
-			else if (keyEvent.Keycode == Key.Space || keyEvent.Keycode == Key.Tab)
+			else if (keyEvent.Keycode == Key.Space || keyEvent.IsActionPressed("ui_text_indent"))//Keycode == Key.Tab)
 			{
 				HandleSpaceOrTab(keyEvent);
 			}
@@ -303,23 +325,6 @@ public partial class TextEditAutoBullet : TextEdit
 		{
 			Backspace();
 		}
-	}
-
-	private void HandleBackspaceWordOrAll()
-	{
-		char charBeforeBulletPoint = GetCaretColumn() > 2 ? GetLine(GetCaretLine())[GetCaretColumn() - 3] : '\n';
-		while (charBeforeBulletPoint != '\n')
-		{
-			SetCaretColumn(GetCaretColumn() - BulletPointWithSpace.Length);
-			Backspace();
-			SetCaretColumn(GetCaretColumn() + BulletPointWithSpace.Length);
-			charBeforeBulletPoint = GetCaretColumn() > 2 ? GetLine(GetCaretLine())[GetCaretColumn() - 3] : '\n';
-		}
-		for (int i = 0; i < BulletPointWithSpace.Length; i++)
-		{
-			Backspace();
-		}
-		//GetViewport().SetInputAsHandled();
 	}
 
 	private void HandleBackspace()
@@ -342,6 +347,31 @@ public partial class TextEditAutoBullet : TextEdit
 			// TODO: Are any of these necessary? Should I use AcceptEvent instead? Or just nothing?
 			//GetViewport().SetInputAsHandled();
 		}
+	}
+
+	private void HandleBackspaceWordOrAll()
+	{
+		char charBeforeBulletPoint = GetCaretColumn() > 2 ? GetLine(GetCaretLine())[GetCaretColumn() - 3] : '\n';
+		while (charBeforeBulletPoint != '\n')
+		{
+			SetCaretColumn(GetCaretColumn() - BulletPointWithSpace.Length);
+			Backspace();
+			SetCaretColumn(GetCaretColumn() + BulletPointWithSpace.Length);
+			charBeforeBulletPoint = GetCaretColumn() > 2 ? GetLine(GetCaretLine())[GetCaretColumn() - 3] : '\n';
+		}
+		for (int i = 0; i < BulletPointWithSpace.Length; i++)
+		{
+			Backspace();
+		}
+		//GetViewport().SetInputAsHandled();
+	}
+	
+	private void HandleDelete()
+	{
+		// TODO: If only one char/word/all after caret, delete char/word/all and bullet point. 
+		// Should take care of everything? Delete char/word/all, then check if anything is left.
+		// If not, delete bullet point.
+		
 	}
 
 	private void HandleSpaceOrTab(InputEventKey keyEvent)

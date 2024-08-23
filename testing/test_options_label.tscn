@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://dp1wby5h0dvr7"]
+
+[ext_resource type="Script" path="res://testing/TestOptionsLabel.cs" id="1_gnfik"]
+[ext_resource type="Script" path="res://testing/OptionsMenuButton.cs" id="2_i6ec0"]
+
+[node name="TestOptionsLabel" type="Label"]
+custom_minimum_size = Vector2(500, 50)
+theme_override_font_sizes/font_size = 50
+text = "Nothing Yet"
+script = ExtResource("1_gnfik")
+
+[node name="MenuButton" type="MenuButton" parent="."]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+script = ExtResource("2_i6ec0")

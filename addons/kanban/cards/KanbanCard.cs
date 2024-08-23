@@ -4,9 +4,9 @@ using System;
 [Tool]
 public partial class KanbanCard : Button
 {
-	/// <summary>
-	/// public event Action OnCardDragStart;
-	/// </summary>
+	private const int COLLAPSED_HEIGHT = 50;
+	private const int EXPANDED_HEIGHT = 150;
+
 	public event Action<KanbanCard> OnDeleteButtonPressed;
 	public event Action<KanbanCard> OnDeleteCard;
 	public event Action<KanbanCard, KanbanCard> OnMoveCardToPosition;
@@ -16,15 +16,10 @@ public partial class KanbanCard : Button
 	public LabelPlaceholderText Title { get; set; }
 	public TextEditAutoBullet Description { get; set; }
 	public bool Collapsed { get; set; }
-	
 	public PanelContainer DescriptionPanelContainer { get; set; }
 	private CardMenuButton MenuButton { get; set; }
-	
 	private PackedScene CardScene { get; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/cards/kanban_card.tscn");
 	
-	private const int COLLAPSED_HEIGHT = 50;
-	private const int EXPANDED_HEIGHT = 150;
-
 #region CARD
 
 	public override void _EnterTree()
@@ -79,7 +74,7 @@ public partial class KanbanCard : Button
 		}
 	}
 
-    public CardData GetCardData()
+	public CardData GetCardData()
 	{
 		CardData cardData = new(Title.StoredText, Description.Text, Collapsed);
 		return cardData;
