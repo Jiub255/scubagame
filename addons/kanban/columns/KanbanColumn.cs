@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 [Tool]
 public partial class KanbanColumn : PanelContainer
@@ -11,7 +12,6 @@ public partial class KanbanColumn : PanelContainer
 	
 	public LineEditDefocus Title { get; private set; }
 	public Cards Cards { get; private set; }
-	private ColumnMenuButton MenuButton { get; set; }
 	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/columns/kanban_column.tscn");
 
 #region COLUMN
@@ -22,14 +22,9 @@ public partial class KanbanColumn : PanelContainer
 		
 		Title = (LineEditDefocus)GetNode("%ColumnTitle");
 		Cards = (Cards)GetNode("%Cards");
-		MenuButton = (ColumnMenuButton)GetNode("%MenuButton");
 
 		Title.TextChanged += OnTitleChanged;
 		Cards.OnCardsChanged += OnCardsChanged;
-		MenuButton.OnCollapsePressed += Cards.CollapseAllCards;
-		MenuButton.OnCreateCardPressed += Cards.CreateNewBlankCard;
-		MenuButton.OnDeletePressed += ConfirmDeleteColumn;
-		MenuButton.OnExpandPressed += Cards.ExpandAllCards;
 	}
 
 	public override void _ExitTree()
@@ -38,22 +33,29 @@ public partial class KanbanColumn : PanelContainer
 		
 		Title.TextChanged -= OnTitleChanged;
 		Cards.OnCardsChanged -= OnCardsChanged;
-		MenuButton.OnCollapsePressed -= Cards.CollapseAllCards;
-		MenuButton.OnCreateCardPressed -= Cards.CreateNewBlankCard;
-		MenuButton.OnDeletePressed -= ConfirmDeleteColumn;
-		MenuButton.OnExpandPressed -= Cards.ExpandAllCards;
 	}
 	
 	public void InitializeColumn(ColumnData columnData)
 	{
 		Title ??= (LineEditDefocus)GetNode("%ColumnTitle");
-		Cards ??= (Cards)GetNode("%Cards");
 		Title.Text = columnData.Title;
 		Title.TooltipText = Title.Text;
+	
+		Cards ??= (Cards)GetNode("%Cards");
 		foreach (CardData cardData in columnData.Cards)
 		{
 			Cards.CreateNewCard(cardData);
 		}
+	
+		OptionsMenuButton menuButton = (OptionsMenuButton)GetNode("%MenuButton");
+		Dictionary<string, Action> labelToActionDict = new()
+		{
+			{ "Create New Card", Cards.CreateNewBlankCard },
+			{ "Expand All", Cards.ExpandAllCards },
+			{ "Collapse All", Cards.CollapseAllCards },
+			{ "Delete Column", ConfirmDeleteColumn }
+		};
+		menuButton.Initialize(labelToActionDict);
 	}
 	
 	public ColumnData GetColumnData()

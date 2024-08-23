@@ -9,22 +9,18 @@ public partial class KanbanPlugin : EditorPlugin
 	private EditorInterface EditorInterfaceSingleton { get; set; } = EditorInterface.Singleton;
 	private KanbanSaver KanbanSaverInstance { get; set; } = new();
 
-
-	public override void _PhysicsProcess(double delta)
+	// TODO: Use this to resize columns/cards?
+/* 	public override void _PhysicsProcess(double delta)
 	{
 		base._PhysicsProcess(delta);
 
 		//Vector2 mainscreenSize = EditorInterfaceSingleton.GetEditorMainScreen().Size;
 		//this.PrintDebug($"Editor main screen size: {mainscreenSize}");
-	}
-
-
-
+	} */
 
 	public override void _EnterTree()
 	{
 		SetupBoard();
-		//PermanentlyCopyEditorThemeIntoResource()
 	}
 
 	private void SetupBoard()
@@ -35,6 +31,7 @@ public partial class KanbanPlugin : EditorPlugin
 		// Add the main panel to the editor's main viewport.
 		EditorInterfaceSingleton.GetEditorMainScreen().AddChild(KanbanInstance);
 		KanbanInstance.InitializeBoard(boardData);
+		
 		KanbanInstance.OnBoardChanged += SaveBoard;
 		EditorInterfaceSingleton.GetEditorSettings().SettingsChanged += IntegrateEditorTheme;
 		
@@ -47,8 +44,10 @@ public partial class KanbanPlugin : EditorPlugin
 		if (KanbanInstance != null)
 		{
 			SaveBoard();
+			
 			KanbanInstance.OnBoardChanged -= SaveBoard;
 			EditorInterfaceSingleton.GetEditorSettings().SettingsChanged -= IntegrateEditorTheme;
+			
 			KanbanInstance.QueueFree();
 		}
 	}
@@ -102,34 +101,6 @@ public partial class KanbanPlugin : EditorPlugin
 			StyleBox stylebox = sourceTheme.GetStylebox(styleboxName, themeType);
 			targetTheme.SetStylebox(styleboxName, themeType, stylebox);
 		}
-/* 
-		// Copy fonts
-		foreach (string fontName in sourceTheme.GetFontList(themeType))
-		{
-			Font font = sourceTheme.GetFont(fontName, themeType);
-			targetTheme.SetFont(fontName, themeType, font);
-		}
-
-		// Copy colors
-		foreach (string colorName in sourceTheme.GetColorList(themeType))
-		{
-			Color color = sourceTheme.GetColor(colorName, themeType);
-			targetTheme.SetColor(colorName, themeType, color);
-		}
-
-		// Copy constants
-		foreach (string constantName in sourceTheme.GetConstantList(themeType))
-		{
-			int constantValue = sourceTheme.GetConstant(constantName, themeType);
-			targetTheme.SetConstant(constantName, themeType, constantValue);
-		}
-
-		// Copy icons
-		foreach (string iconName in sourceTheme.GetIconList(themeType))
-		{
-			Texture2D icon = sourceTheme.GetIcon(iconName, themeType);
-			targetTheme.SetIcon(iconName, themeType, icon);
-		} */
 	}
 	
 	private void LoadAndChangeStylebox(StyleBoxFlat variation, Color bgColor, string path)
@@ -199,19 +170,5 @@ public partial class KanbanPlugin : EditorPlugin
 			}
 		}
 	}
-	
-/* 	private void PermanentlyCopyEditorThemeIntoResource()
-	{
-		/////////////////////////////////////////////////////////////////////////////
-		//       TEMPORARY! JUST NEED TO RUN ONCE THEN COMMENT OUT OR DELETE!      //
-		/////////////////////////////////////////////////////////////////////////////
-		// Permanently copies the current editor theme into editor_theme_copy.tres //
-		/////////////////////////////////////////////////////////////////////////////
-		Theme editorTheme = EditorInterfaceSingleton.GetEditorTheme();
-		//SaveResource(editorTheme, "res://addons/kanban/themes/editor_theme_copy3.tres");
-		Theme editorThemeCopyResource = GD.Load<Theme>("res://addons/kanban/themes/editor_theme_copy.tres");
-		editorThemeCopyResource.MergeWith(editorTheme);
-		/////////////////////////////////////////////////////////////////////////////
-	} */
 }
 #endif

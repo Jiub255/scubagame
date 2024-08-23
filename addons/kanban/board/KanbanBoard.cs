@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 
 [Tool]
@@ -8,7 +9,6 @@ public partial class KanbanBoard : PanelContainer
 	
 	private LineEdit Title { get; set; }
 	private DeleteConfirmation DeleteConfirmation { get; set; }
-	private BoardMenuButton MenuButton { get; set; }
 	private CardPopup CardPopup { get; set; }
 	public HBoxContainer Columns { get; private set; }
 	private PackedScene ColumnScene { get; set; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/columns/kanban_column.tscn");
@@ -16,27 +16,20 @@ public partial class KanbanBoard : PanelContainer
 	public override void _EnterTree()
 	{
 		base._EnterTree();
-		
+
 		Title = (LineEdit)GetNode("%TitleLineEdit");
 		DeleteConfirmation = (DeleteConfirmation)GetNode("%DeleteConfirmation");
 		DeleteConfirmation.GetChild<Label>(1, true).HorizontalAlignment = HorizontalAlignment.Center;
-		MenuButton = (BoardMenuButton)GetNode("%MenuButton");
 		CardPopup = (CardPopup)GetNode("%CardPopup");
 		Columns = (HBoxContainer)GetNode("%Columns");
 
-		MenuButton.OnCreateColumnPressed += CreateNewBlankColumn;
-		MenuButton.OnExpandPressed += ExpandAll;
-		MenuButton.OnCollapsePressed += CollapseAll;
 		CardPopup.OnClosePopup += SaveBoard;
 	}
 
 	public override void _ExitTree()
 	{
 		base._ExitTree();
-		
-		MenuButton.OnCreateColumnPressed -= CreateNewBlankColumn;
-		MenuButton.OnExpandPressed -= ExpandAll;
-		MenuButton.OnCollapsePressed -= CollapseAll;
+
 		CardPopup.OnClosePopup -= SaveBoard;
 	}
 	
@@ -69,6 +62,15 @@ public partial class KanbanBoard : PanelContainer
 		{
 			CreateNewColumn(columnData);
 		}
+
+		OptionsMenuButton menuButton = (OptionsMenuButton)GetNode("%MenuButton");
+		Dictionary<string, Action> labelToActionDict = new()
+		{
+			{ "Create New Column", CreateNewBlankColumn },
+			{ "Expand All", ExpandAll },
+			{ "Collapse All", CollapseAll }
+		};
+		menuButton.Initialize(labelToActionDict);
 	}
 	
 	private void SaveBoard()
@@ -92,7 +94,7 @@ public partial class KanbanBoard : PanelContainer
 		}
 		return boardData;
 	}
-	
+
 	private void CreateNewBlankColumn()
 	{
 		ColumnData columnData = new();

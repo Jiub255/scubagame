@@ -3,12 +3,14 @@ using System;
 using System.Collections.Generic;
 
 /// <summary>
-/// Need to initialize with (locally made) Dict in whatever class is using this.
-/// 
+/// Must be initialized with a (string, Action) dictionary from whichever class is using this.
+/// The string is what will be on the button choice's label, and the corresponding Action will
+/// be called when that option is selected. 
 /// </summary>
+[Tool]
 public partial class OptionsMenuButton : MenuButton
 {
-	private Dictionary<string, Action> LabelActionDict { get; set; } = new Dictionary<string, Action>();
+	private Dictionary<string, Action> LabelToActionDict { get; set; } = new();
 	private PopupMenu PopupMenu { get; set; }
 
 	public override void _EnterTree()
@@ -29,16 +31,20 @@ public partial class OptionsMenuButton : MenuButton
 		PopupMenu.IdPressed -= ChooseOption;
 	}
 	
-	public void Initialize(Dictionary<string, Action> labelActionDict)
+	/// <summary>
+	/// The string is the label text, and the Action gets called when that option is chosen.
+	/// </summary>
+	public void Initialize(Dictionary<string, Action> labelToActionDict)
 	{
-		LabelActionDict = labelActionDict;
+		PopupMenu ??= GetPopup();
+		LabelToActionDict = labelToActionDict;
 		SetLabels();
 	}
 	
 	private void SetLabels()
 	{
 		PopupMenu.Clear();
-		foreach (string key in LabelActionDict.Keys)
+		foreach (string key in LabelToActionDict.Keys)
 		{
 			PopupMenu.AddItem(key);
 		}
@@ -46,9 +52,9 @@ public partial class OptionsMenuButton : MenuButton
 	
 	private void InvokeMethod(string label)
 	{
-		if (LabelActionDict.ContainsKey(label))
+		if (LabelToActionDict.ContainsKey(label))
 		{
-			LabelActionDict[label]?.Invoke();
+			LabelToActionDict[label]?.Invoke();
 		}
 		else
 		{

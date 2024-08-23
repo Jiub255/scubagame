@@ -1,11 +1,15 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 [Tool]
 public partial class KanbanCard : Button
 {
 	private const int COLLAPSED_HEIGHT = 50;
 	private const int EXPANDED_HEIGHT = 150;
+	private const string COLLAPSE_LABEL_TEXT = "Collapse";
+	private const string EXPAND_LABEL_TEXT = "Expand";
+	private const string DELETE_LABEL_TEXT = "Delete";
 
 	public event Action<KanbanCard> OnDeleteButtonPressed;
 	public event Action<KanbanCard> OnDeleteCard;
@@ -17,8 +21,10 @@ public partial class KanbanCard : Button
 	public TextEditAutoBullet Description { get; set; }
 	public bool Collapsed { get; set; }
 	public PanelContainer DescriptionPanelContainer { get; set; }
-	private CardMenuButton MenuButton { get; set; }
+	private OptionsMenuButton MenuButton { get; set; }
+	private Dictionary<string, Action> LabelActionDict = new();
 	private PackedScene CardScene { get; } = ResourceLoader.Load<PackedScene>("res://addons/kanban/cards/kanban_card.tscn");
+	
 	
 #region CARD
 
@@ -26,7 +32,7 @@ public partial class KanbanCard : Button
 	{
 		base._EnterTree();
 		
-		MenuButton ??= (CardMenuButton)GetNode("%MenuButton");
+		MenuButton ??= (OptionsMenuButton)GetNode("%MenuButton");
 
 		ConnectEvents();
 	}
@@ -41,29 +47,31 @@ public partial class KanbanCard : Button
 	public void ConnectEvents()
 	{
 		Pressed += OpenPopup;
-		MenuButton.OnCollapsePressed += Collapse;
-		MenuButton.OnDeletePressed += ConfirmDeleteCard;
-		MenuButton.OnExpandPressed += Expand;
 	}
 	
 	public void DisconnectEvents()
 	{
 		Pressed -= OpenPopup;
-		MenuButton.OnCollapsePressed -= Collapse;
-		MenuButton.OnDeletePressed -= ConfirmDeleteCard;
-		MenuButton.OnExpandPressed -= Expand;
 	}
 	
 	public void InitializeCard(CardData cardData)
 	{
 		Title = (LabelPlaceholderText)GetNode("%Title");
-		Description = (TextEditAutoBullet)GetNode("%Description");
-		MenuButton ??= (CardMenuButton)GetNode("%MenuButton");
-		DescriptionPanelContainer = (PanelContainer)GetNode("%DescriptionPanelContainer");
 		Title.StoredText = cardData.Title;
+		
+		Description = (TextEditAutoBullet)GetNode("%Description");
 		Description.Text = cardData.Description;
 		Description.SetBulletPoints();
-		MenuButton.Initialize();
+
+		DescriptionPanelContainer = (PanelContainer)GetNode("%DescriptionPanelContainer");
+		MenuButton ??= (OptionsMenuButton)GetNode("%MenuButton");
+		LabelActionDict = new()
+		{
+			{ EXPAND_LABEL_TEXT, Expand },
+			{ COLLAPSE_LABEL_TEXT, Collapse },
+			{ DELETE_LABEL_TEXT, ConfirmDeleteCard }
+		};
+		
 		if (cardData.Collapsed)
 		{
 			Collapse();
@@ -106,7 +114,12 @@ public partial class KanbanCard : Button
 	{
 		CustomMinimumSize = new Vector2(CustomMinimumSize.X, EXPANDED_HEIGHT);
 		DescriptionPanelContainer.Show();
-		MenuButton.SetExpandMenu();
+		Dictionary<string, Action> expandedDict = new()
+		{
+			{ COLLAPSE_LABEL_TEXT, LabelActionDict[COLLAPSE_LABEL_TEXT]},
+			{ DELETE_LABEL_TEXT, LabelActionDict[DELETE_LABEL_TEXT] }
+		};
+		MenuButton.Initialize(expandedDict);
 		Collapsed = false;
 	}
 	
@@ -114,7 +127,12 @@ public partial class KanbanCard : Button
 	{
 		CustomMinimumSize = new Vector2(CustomMinimumSize.X, COLLAPSED_HEIGHT);
 		DescriptionPanelContainer.Hide();
-		MenuButton.SetCollapseMenu();
+		Dictionary<string, Action> collapsedDict = new()
+		{
+			{ EXPAND_LABEL_TEXT, LabelActionDict[EXPAND_LABEL_TEXT]},
+			{ DELETE_LABEL_TEXT, LabelActionDict[DELETE_LABEL_TEXT] }
+		};
+		MenuButton.Initialize(collapsedDict);
 		Collapsed = true;
 	}
 
@@ -129,8 +147,6 @@ public partial class KanbanCard : Button
 
 	public override Variant _GetDragData(Vector2 atPosition)
 	{
-		//OnCardDragStart?.Invoke();
-		
 		Control preview = MakePreview(atPosition);
 		SetDragPreview(preview);
 		return this;
@@ -161,21 +177,6 @@ public partial class KanbanCard : Button
 		}
 	}
 	
-	
-/* 	public void SetFiltersToIgnore(Node parent)
-	{
-		foreach (Node child in parent.GetChildren())
-		{
-			if (child.GetChildren().Count > 0)
-			{
-				SetFiltersToIgnore(child);
-			}
-			if (child is Control control)
-			{
-				control.MouseFilter = MouseFilterEnum.Ignore;
-			}
-		}
-	} */
 #endregion
 
 }
