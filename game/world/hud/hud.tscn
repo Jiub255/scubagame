@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://c3xkn2ypbw0wf"]
 
 [ext_resource type="Script" path="res://game/world/hud/Hud.cs" id="1_ja4lt"]
-[ext_resource type="Resource" uid="uid://rlyiej3fnis3" path="res://Characters/player/inventory/inventory.tres" id="2_p0tjk"]
-[ext_resource type="Resource" uid="uid://dnwwgqbjjr7t6" path="res://Characters/player/player-data.tres" id="3_6siha"]
+[ext_resource type="Resource" uid="uid://rlyiej3fnis3" path="res://characters/player/inventory/inventory.tres" id="2_p0tjk"]
+[ext_resource type="Resource" uid="uid://dnwwgqbjjr7t6" path="res://characters/player/player-data.tres" id="3_6siha"]
 
 [node name="Hud" type="CanvasLayer"]
 script = ExtResource("1_ja4lt")

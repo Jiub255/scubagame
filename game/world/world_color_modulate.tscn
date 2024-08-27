@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bl66wxqkq3qa8"]
 
 [ext_resource type="Script" path="res://game/world/WorldColorModulate.cs" id="1_pcbop"]
-[ext_resource type="Resource" uid="uid://dnwwgqbjjr7t6" path="res://Characters/player/player-data.tres" id="2_85uno"]
+[ext_resource type="Resource" uid="uid://dnwwgqbjjr7t6" path="res://characters/player/player-data.tres" id="2_85uno"]
 
 [sub_resource type="Gradient" id="Gradient_hbteu"]
 interpolation_color_space = 2

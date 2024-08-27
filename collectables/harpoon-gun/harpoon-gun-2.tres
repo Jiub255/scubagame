@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="HarpoonGunData" load_steps=3 format=3 uid="uid://cnmyov0rykdf"]
 
 [ext_resource type="Script" path="res://collectables/harpoon-gun/HarpoonGunData.cs" id="1_oqlwn"]
-[ext_resource type="Texture2D" uid="uid://bosj4etsb8d5h" path="res://Characters/player/harpoon/harpoon-unloaded-2.png" id="1_r1tp5"]
+[ext_resource type="Texture2D" uid="uid://bosj4etsb8d5h" path="res://characters/player/harpoon/harpoon-unloaded-2.png" id="1_r1tp5"]
 
 [resource]
 script = ExtResource("1_oqlwn")

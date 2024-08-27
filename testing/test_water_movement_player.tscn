@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://7jj787x4nj5j"]
 
 [ext_resource type="Script" path="res://testing/TestWaterMovementPlayer2.cs" id="1_dvk8p"]
-[ext_resource type="Texture2D" uid="uid://bi7ucruuvccx8" path="res://Characters/player/spritesheets/Diver 1.png" id="1_kln3l"]
+[ext_resource type="Texture2D" uid="uid://bi7ucruuvccx8" path="res://characters/player/spritesheets/Diver 1.png" id="1_kln3l"]
 [ext_resource type="Resource" uid="uid://dfre0whjax4md" path="res://testing/test-player-data.tres" id="2_rnl10"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_stb7b"]

@@ -36,10 +36,6 @@ window/stretch/aspect="expand"
 
 project/assembly_name="ScubaGame"
 
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/kanban/plugin.cfg", "res://addons/resources_spreadsheet_view/plugin.cfg")
-
 [input]
 
 up={

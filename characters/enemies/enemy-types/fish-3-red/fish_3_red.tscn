@@ -1,0 +1,143 @@
+[gd_scene load_steps=14 format=3 uid="uid://b3d07q2qhno77"]
+
+[ext_resource type="Script" path="res://characters/enemies/EnemyIdleChase.cs" id="1_qf2rw"]
+[ext_resource type="Resource" uid="uid://1qecjk308ytf" path="res://characters/enemies/enemy-types/fish-3-red/fish-3-red.tres" id="2_okai0"]
+[ext_resource type="Texture2D" uid="uid://ckv81ijn747dl" path="res://characters/enemies/enemy-types/fish-3-red/Red.png" id="3_dqgdb"]
+[ext_resource type="Script" path="res://characters/enemies/SpriteAnimator.cs" id="4_86bhy"]
+[ext_resource type="PackedScene" uid="uid://3knay565lwcp" path="res://characters/enemies/state-nodes/idle/true_idle_state.tscn" id="5_f4sjs"]
+[ext_resource type="PackedScene" uid="uid://cvss3tdvk463r" path="res://characters/enemies/state-nodes/chase/chase_state.tscn" id="6_ou8xn"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5o314"]
+
+[sub_resource type="Animation" id="Animation_ibkiw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ghut5"]
+resource_name = "idle"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 8]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, 1), Vector2(0, 0), Vector2(0, -1), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_b8c80"]
+resource_name = "swim-down"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 7]
+}
+
+[sub_resource type="Animation" id="Animation_sntkl"]
+resource_name = "swim-up"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [8, 15]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_w78p2"]
+_data = {
+"RESET": SubResource("Animation_ibkiw"),
+"idle": SubResource("Animation_ghut5"),
+"swim-down": SubResource("Animation_b8c80"),
+"swim-up": SubResource("Animation_sntkl")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qvi8x"]
+radius = 90.0
+
+[node name="Fish3Red" type="CharacterBody2D" node_paths=PackedStringArray("IdleState", "ChaseState")]
+collision_layer = 8
+collision_mask = 83
+script = ExtResource("1_qf2rw")
+Data = ExtResource("2_okai0")
+IdleState = NodePath("States/TrueIdleState")
+ChaseState = NodePath("States/ChaseState")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_5o314")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("3_dqgdb")
+hframes = 8
+vframes = 4
+script = ExtResource("4_86bhy")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Sprite2D"]
+libraries = {
+"": SubResource("AnimationLibrary_w78p2")
+}
+
+[node name="States" type="Node2D" parent="."]
+
+[node name="TrueIdleState" parent="States" instance=ExtResource("5_f4sjs")]
+
+[node name="ChaseState" parent="States" instance=ExtResource("6_ou8xn")]
+
+[node name="SightRange" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SightRange"]
+shape = SubResource("CircleShape2D_qvi8x")
+debug_color = Color(0.597166, 0.541664, 0.162175, 0.42)

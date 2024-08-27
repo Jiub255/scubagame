@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3 uid="uid://1qecjk308ytf"]
+
+[ext_resource type="Script" path="res://characters/enemies/EnemyData.cs" id="1_x0ues"]
+
+[resource]
+script = ExtResource("1_x0ues")
+Health = 2
+Damage = 1
+IdleSpeed = 25
+ChaseSpeed = 125

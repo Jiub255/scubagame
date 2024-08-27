@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://cvss3tdvk463r"]
-
-[ext_resource type="Script" path="res://Characters/enemies/state-nodes/chase/ChaseState.cs" id="1_gcvdc"]
-
-[node name="ChaseState" type="Node2D"]
-script = ExtResource("1_gcvdc")

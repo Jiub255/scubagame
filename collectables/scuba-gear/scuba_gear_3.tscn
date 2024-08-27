@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://collectables/scuba-gear/ScubaGearCollectable.cs" id="1_xenc3"]
 [ext_resource type="Resource" uid="uid://dugcuarelobpp" path="res://collectables/scuba-gear/scuba-gear-3.tres" id="2_pmjy1"]
-[ext_resource type="Texture2D" uid="uid://dnkh6rote1ehq" path="res://Characters/player/spritesheets/Diver 6.png" id="3_5ahgg"]
+[ext_resource type="Texture2D" uid="uid://dnkh6rote1ehq" path="res://characters/player/spritesheets/Diver 6.png" id="3_5ahgg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ggdcd"]
 size = Vector2(17, 32)

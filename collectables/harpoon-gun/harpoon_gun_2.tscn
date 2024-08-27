@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://collectables/harpoon-gun/HarpoonGunCollectable.cs" id="1_vvlum"]
 [ext_resource type="Resource" uid="uid://cnmyov0rykdf" path="res://collectables/harpoon-gun/harpoon-gun-2.tres" id="2_8883d"]
-[ext_resource type="Texture2D" uid="uid://k5prfy6debph" path="res://Characters/player/harpoon/harpoon-loaded-2.png" id="3_nw0j5"]
+[ext_resource type="Texture2D" uid="uid://k5prfy6debph" path="res://characters/player/harpoon/harpoon-loaded-2.png" id="3_nw0j5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o3xy2"]
 size = Vector2(28, 13)

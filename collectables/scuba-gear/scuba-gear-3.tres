@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ScubaGearData" load_steps=3 format=3 uid="uid://dugcuarelobpp"]
 
-[ext_resource type="Texture2D" uid="uid://dnkh6rote1ehq" path="res://Characters/player/spritesheets/Diver 6.png" id="1_i2vqa"]
+[ext_resource type="Texture2D" uid="uid://dnkh6rote1ehq" path="res://characters/player/spritesheets/Diver 6.png" id="1_i2vqa"]
 [ext_resource type="Script" path="res://collectables/scuba-gear/ScubaGearData.cs" id="2_hxcfx"]
 
 [resource]

@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://3knay565lwcp"]
-
-[ext_resource type="Script" path="res://Characters/enemies/state-nodes/idle/TrueIdleState.cs" id="1_dim4u"]
-
-[node name="TrueIdleState" type="Node2D"]
-script = ExtResource("1_dim4u")

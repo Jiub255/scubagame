@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://x7jr7xj0ls8q"]
 
 [ext_resource type="Script" path="res://game/ui/Ui.cs" id="1_arkjd"]
-[ext_resource type="Resource" uid="uid://rlyiej3fnis3" path="res://Characters/player/inventory/inventory.tres" id="2_xst7o"]
+[ext_resource type="Resource" uid="uid://rlyiej3fnis3" path="res://characters/player/inventory/inventory.tres" id="2_xst7o"]
 
 [node name="UI" type="CanvasLayer" node_paths=PackedStringArray("_saveButton", "_loadButton", "_exitButton")]
 script = ExtResource("1_arkjd")

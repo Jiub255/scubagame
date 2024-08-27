@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ScubaGearData" load_steps=3 format=3 uid="uid://dblf0l15dou15"]
 
 [ext_resource type="Script" path="res://collectables/scuba-gear/ScubaGearData.cs" id="1_hiiaq"]
-[ext_resource type="Texture2D" uid="uid://dnkh6rote1ehq" path="res://Characters/player/spritesheets/Diver 6.png" id="1_qlk04"]
+[ext_resource type="Texture2D" uid="uid://dnkh6rote1ehq" path="res://characters/player/spritesheets/Diver 6.png" id="1_qlk04"]
 
 [resource]
 script = ExtResource("1_hiiaq")

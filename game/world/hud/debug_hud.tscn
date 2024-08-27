@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://b2rsf1kdxr1py"]
 
 [ext_resource type="Script" path="res://game/world/hud/DebugHud.cs" id="1_qhprf"]
-[ext_resource type="Resource" uid="uid://dnwwgqbjjr7t6" path="res://Characters/player/player-data.tres" id="2_myqw5"]
+[ext_resource type="Resource" uid="uid://dnwwgqbjjr7t6" path="res://characters/player/player-data.tres" id="2_myqw5"]
 [ext_resource type="Script" path="res://game/world/hud/Defocus.cs" id="3_5mo7o"]
 
 [node name="DebugHUD" type="CanvasLayer" node_paths=PackedStringArray("MinAcceleration", "MaxAcceleration", "MaxSpeed", "Jerk", "Deceleration")]
